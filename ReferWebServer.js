@@ -8,9 +8,8 @@ var os = require('os');
 var myDataRef = new Firebase('https://glaring-torch-9647.firebaseio.com');
 var usersRef = myDataRef.child("Users");
 
-var mraa = require('mraa');
-var light = new mraa.Gpio(3); //TODO: change to relay port
-light.dir(mraa.DIR_OUT);
+var gpio = require('onoff').Gpio;
+var light = new gpio(3, 'out'); //TODO: change to relay port
 var light_state = 0;
 
 var INDEX_PRIMARY_CMD = 0;
@@ -48,7 +47,7 @@ function updateLightState(new_state) {
   myDataRef.child("light").set({
     state: new_state
   });
-  light.write(new_state);
+  light.writeSync(new_state);
   console.log("New light state ===> " + new_state);
 }
 
