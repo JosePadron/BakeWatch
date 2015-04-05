@@ -54,10 +54,6 @@ app.get('/', function(req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/voice', function(req, res) {
-  res.sendFile(__dirname + '/VoiceExample.html');
-});
-
 server.listen(8080, function() {
   console.log('listening on *:8080');
 });
