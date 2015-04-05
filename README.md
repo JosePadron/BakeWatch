@@ -10,7 +10,9 @@ data structure server running on the Edison to store the water consumption of ea
 ###### Examples of valid commands:
 
 ***Dispense*** 6 ounces ***Water***
+
 ***Dispense Cubed***   => ***Stop***
+
 ***Dispense Crushed***   => ***Stop***
 
 ## Project Setup
