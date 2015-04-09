@@ -41,6 +41,7 @@
           }
         }
         $("#voice").append(final_transcript);
+        socket.emit('voice_command', final_transcript);
         stopVoiceRecognition();
       };
 
@@ -92,6 +93,10 @@
       } else {
         $("#clients_data").append("<div id=\"client_data_" + nickname + "\">" + nickname + ": " + data + "</div>");
       }
+    });
+
+    socket.on('voice_cmd_response', function(result) {
+      showErrorInfo((result) ? "" : "Invalid command!");
     });
 
     socket.on('remove_client', function(nickname) {
