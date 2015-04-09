@@ -11,7 +11,14 @@
   <script src="http://code.jquery.com/jquery-2.1.3.js"></script>
 
   <script>
-    var socket = io.connect('http://localhost:8080');
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
+    var io = require('socket.io-client');
+    require('https').globalAgent.options.rejectUnauthorized = false;
+
+    var socket = io.connect('https://localhost', {
+      secure: true,
+      port: 3210
+    });
 
     var start_timestamp;
     var final_transcript = '';
@@ -41,7 +48,6 @@
           }
         }
         $("#voice").append(final_transcript);
-        socket.emit('voice_command', final_transcript);
         stopVoiceRecognition();
       };
 
@@ -95,46 +101,42 @@
       }
     });
 
-    socket.on('voice_cmd_response', function(result) {
-      showErrorInfo((result) ? "" : "Invalid command!");
-    });
-
     socket.on('remove_client', function(nickname) {
       var client_id = "#client_" + nickname;
       $(client_id).remove();
       recognition.stop();
     });
 
-    socket.on('settings', function(settings) {;
-      $("#oz_per_sec_input").val(settings);
+    socket.on('user_config', function(config) {;
+      $("#oz_per_sec_input").val(config);
     });
 
     function UpdateSettings() {
       socket.emit('settings', $('#oz_per_sec_input').val());
     }
 
-    function startVoiceRecognition(event) {
+    function StartVoiceRecognition(event) {
       final_transcript = '';
       recognition.start();
       start_timestamp = event.timeStamp;
       showErrorInfo('');
     }
 
-    function stopVoiceRecognition(event) {
+    function StopVoiceRecognition(event) {
       $("#recognition_btn").html("Start Recognition");
       voiceRecognitionRunning = false;
       recognition.stop();
     }
 
-    function updateVoiceRecognition(event) {
+    function UpdateVoiceRecognition(event) {
       if (!voiceRecognitionRunning) {
-        startVoiceRecognition(event);
+        StartVoiceRecognition(event);
       } else {
-        stopVoiceRecognition(event);
+        StopVoiceRecognition(event);
       }
     }
 
-    function showErrorInfo(info) {
+    function ShowErrorInfo(info) {
       $("#error").html("Error: " + info);
     }
   </script>
