@@ -2,8 +2,12 @@ var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
-var redis = require('redis');
-var redisClient = redis.createClient();
+var Firebase = require("firebase");
+// var redis = require('redis');
+// var redisClient = redis.createClient();
+
+//Use YOUR Firebase URL (not the one below)
+var myFirebase = new Firebase('https://glaring-torch-9647.firebaseio.com');
 
 var INDEX_PRIMARY_CMD = 0;
 var INDEX_SECOND_CMD_OR_OUNCES = 1;
@@ -49,9 +53,9 @@ function getDateTime() {
   return year + ":" + month + ":" + day + ":" + hour + ":" + min + ":" + sec;
 }
 
-redisClient.on('connect', function() {
-  console.log('Connected to database');
-});
+// redisClient.on('connect', function() {
+//   console.log('Connected to database');
+// });
 
 /*!
  * Send settings to the socket.io client.
@@ -87,11 +91,19 @@ var startDispensingCubed = function() {
   //refrigerator.dispenseCubed();
 
   var currentTime = getDateTime();
-  redisClient.hmset('consumption', {
-    user_id: client.id,
-    timestamp: currentTime,
-    type: 'cubes',
-    ounces: 0
+  // redisClient.hmset('consumption', {
+  //   user_id: client.id,
+  //   timestamp: currentTime,
+  //   type: 'cubes',
+  //   ounces: 0
+  // });
+  myDataRef.set({
+    "consumption": {
+      user_id: client.id,
+      timestamp: currentTime,
+      type: 'cubes',
+      ounces: 0
+    }
   });
 
   clearTimeout(autofillTimeoutId);
@@ -105,11 +117,19 @@ var startDispensingCrushed = function() {
   //refrigerator.dispenseCrushed();
   var currentTime = getDateTime();
 
-  redisClient.hmset('consumption', {
-    user_id: client.id,
-    timestamp: currentTime,
-    type: 'crushes',
-    ounces: 0
+  // redisClient.hmset('consumption', {
+  //   user_id: client.id,
+  //   timestamp: currentTime,
+  //   type: 'crushes',
+  //   ounces: 0
+  // });
+  myDataRef.set({
+    "consumption": {
+      user_id: client.id,
+      timestamp: currentTime,
+      type: 'crushes',
+      ounces: 0
+    }
   });
 
   clearTimeout(autofillTimeoutId);
@@ -121,7 +141,6 @@ var startDispensingCrushed = function() {
  */
 var stopDispensing = function() {
   //refrigerator.dispenseStop();
-  //TODO If it was water and the user stopped then calculate and store
   clearTimeout(autofillTimeoutId);
   console.log("Stop dispensing.");
 };
@@ -133,11 +152,19 @@ var startAutofill = function() {
   console.log("Autofill" + disp_ounces);
 
   var currentTime = getDateTime();
-  redisClient.hmset('consumption', {
-    user_id: client.id,
-    timestamp: currentTime,
-    type: 'autofill',
-    ounces: disp_ounces
+  // redisClient.hmset('consumption', {
+  //   user_id: client.id,
+  //   timestamp: currentTime,
+  //   type: 'autofill',
+  //   ounces: disp_ounces
+  // });
+  myDataRef.set({
+    "consumption": {
+      user_id: client.id,
+      timestamp: currentTime,
+      type: 'autofill',
+      ounces: disp_ounces
+    }
   });
 
   startDispensingWater();
@@ -178,8 +205,12 @@ var commands_table = [
     }
 
     // Get the configuration object from the database
-    redisClient.hgetall('config', function(err, object) {
-      console.log(object);
+    // redisClient.hgetall('config', function(err, object) {
+    //   console.log(object);
+    // });
+
+    myFirebaseRef.child("config").on("value", function(settings) {
+      console.log(settings.val());
     });
 
     // Autofill command?
@@ -255,23 +286,39 @@ io.on('connection', function(client) {
   sendSettings(client);
 
   client.on('config_set', function(settings) {
-    redisClient.hmset('settings', {
-      user_name: settings.username,
-      glass_ounces: settings.glass_ounces,
-      time: settings.time
+    // redisClient.hmset('settings', {
+    //   user_name: settings.username,
+    //   glass_ounces: settings.glass_ounces,
+    //   time: settings.time
+    // });
+    myDataRef.set({
+      "settings": {
+        user_name: settings.username,
+        glass_ounces: settings.glass_ounces,
+        time: settings.time
+      }
     });
     console.log("==> Saving settings to database = " + settings);
   });
 
   client.on('config_get', function(settings) {
-    redisClient.hgetall('config', function(err, settings) {
-      console.log("==> Client " + client + "getting settings = " + settings);
+    // redisClient.hgetall('config', function(err, settings) {
+    //   console.log("==> Client " + client + "getting settings = " + settings);
+    // });
+    myFirebaseRef.child("config").on("value", function(settings) {
+      console.log(settings.val());
     });
     sendSettings(client);
   });
 
   client.on('stats', function(settings) {
-    redisClient.set("settings", settings);
+    myDataRef.set({
+      "settings": {
+        user_name: settings.username,
+        glass_ounces: settings.glass_ounces,
+        time: settings.time
+      }
+    });
     console.log("==> settings = " + settings);
     sendStats(client);
   });
