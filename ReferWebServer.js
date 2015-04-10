@@ -88,10 +88,10 @@ var startDispensingCubed = function() {
 
   var currentTime = getDateTime();
   redisClient.hmset('consumption', {
-    'user_id': client.id,
-    'timestamp': currentTime,
-    'type': 'cubes'
-    'ounces': 0
+    user_id: client.id,
+    timestamp: currentTime,
+    type: 'cubes',
+    ounces: 0
   });
 
   clearTimeout(autofillTimeoutId);
@@ -106,10 +106,10 @@ var startDispensingCrushed = function() {
   var currentTime = getDateTime();
 
   redisClient.hmset('consumption', {
-    'user_id': client.id,
-    'timestamp': currentTime,
-    'type': 'crushes'
-    'ounces': 0
+    user_id: client.id,
+    timestamp: currentTime,
+    type: 'crushes',
+    ounces: 0
   });
 
   clearTimeout(autofillTimeoutId);
@@ -134,10 +134,10 @@ var startAutofill = function() {
 
   var currentTime = getDateTime();
   redisClient.hmset('consumption', {
-    'user_id': client.id,
-    'timestamp': currentTime,
-    'type': 'autofill'
-    'ounces': disp_ounces
+    user_id: client.id,
+    timestamp: currentTime,
+    type: 'autofill',
+    ounces: disp_ounces
   });
 
   startDispensingWater();
@@ -253,38 +253,38 @@ io.on('connection', function(client) {
   });
 
   sendSettings(client);
-});
 
-client.on('config_set', function(settings) {
-  redisClient.hmset('settings', {
-    'user_name': settings.username,
-    'glass_ounces': settings.glass_ounces,
-    'time': settings.time
+  client.on('config_set', function(settings) {
+    redisClient.hmset('settings', {
+      user_name: settings.username,
+      glass_ounces: settings.glass_ounces,
+      time: settings.time
+    });
+    console.log("==> Saving settings to database = " + settings);
   });
-  console.log("==> Saving settings to database = " + settings);
-});
 
-client.on('config_get', function(settings) {
-  redisClient.hgetall('config', function(err, settings) {
-    console.log("==> Client " + client + "getting settings = " + settings);
+  client.on('config_get', function(settings) {
+    redisClient.hgetall('config', function(err, settings) {
+      console.log("==> Client " + client + "getting settings = " + settings);
+    });
+    sendSettings(client);
   });
-  sendSettings(client);
-});
 
-client.on('stats', function(settings) {
-  redisClient.set("settings", settings);
-  console.log("==> settings = " + settings);
-  sendStats(client);
-});
+  client.on('stats', function(settings) {
+    redisClient.set("settings", settings);
+    console.log("==> settings = " + settings);
+    sendStats(client);
+  });
 
-client.on('disconnect', function(name) {
-  //TODO Save identifier for next time user connects
-});
+  client.on('disconnect', function(name) {
+    //TODO Save identifier for next time user connects
+  });
 
-client.on('voice_command', function(voice_command) {
-client.emit('voice_cmd_response',
-  executeCommand(getReceivedCommand(voice_command)));
-});
+  client.on('voice_command', function(voice_command) {
+    client.emit('voice_cmd_response',
+      executeCommand(getReceivedCommand(voice_command)));
+  });
+
 });
 
 //TODO Enable later
