@@ -3,10 +3,7 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var Firebase = require("firebase");
-// var redis = require('redis');
-// var redisClient = redis.createClient();
 
-//Use YOUR Firebase URL (not the one below)
 var myDataRef = new Firebase('https://glaring-torch-9647.firebaseio.com');
 var usersRef = myDataRef.child("Users");
 
@@ -30,23 +27,12 @@ var autofillTimeoutId;
 //var greenBean = require("green-bean");
 //var refrigerator;
 
-//TODO Remove this later
-var settings = {
-  glass_fill_time: 2000,
-  glass_ounces: 12,
-  weight_lbs: 120,
-  name: "Nelson"
+var user_settings = {
+  name: "Default",
+  glass_ounces: 0,
+  glass_fill_time: 0,
+  weight_lbs: 0,
 };
-
-var client = {
-  name: settings.name
-};
-
-// usersRef.child(settings.name).child("settings").push({
-//   glass_ounces: settings.glass_ounces,
-//   glass_fill_time: settings.glass_fill_time,
-//   weight_lbs: settings.weight_lbs
-// });
 
 function getDateTime() {
 
@@ -72,18 +58,22 @@ function getDateTime() {
   return year + ":" + month + ":" + day + ":" + hour + ":" + min + ":" + sec;
 }
 
+var sendCommandToDispenseWater = function() {
+  //refrigerator.dispenseColdWater();
+  clearTimeout(autofillTimeoutId);
+  console.log("Start dispensing water.");
+};
+
 /*!
  * Function to start dispensing water.
  */
 var startDispensingWater = function() {
-  //refrigerator.dispenseColdWater();
-  usersRef.child(client.name).child("consumption").push({
+  sendCommandToDispenseWater();
+  usersRef.child(user_settings.name).child("consumption").push({
     type: 'water',
     timestamp: getDateTime(),
     ounces: disp_ounces
   });
-  clearTimeout(autofillTimeoutId);
-  console.log("Start dispensing water.");
 };
 
 /*!
@@ -91,7 +81,7 @@ var startDispensingWater = function() {
  */
 var startDispensingCubed = function() {
   //refrigerator.dispenseCubed();
-  usersRef.child(client.name).child("consumption").push({
+  usersRef.child(user_settings.name).child("consumption").push({
     type: 'cubes',
     timestamp: getDateTime(),
     ounces: 0
@@ -105,7 +95,7 @@ var startDispensingCubed = function() {
  */
 var startDispensingCrushed = function() {
   //refrigerator.dispenseCrushed();
-  usersRef.child(client.name).child("consumption").push({
+  usersRef.child(user_settings.name).child("consumption").push({
     type: 'crushes',
     timestamp: getDateTime(),
     ounces: 0
@@ -128,12 +118,12 @@ var stopDispensing = function() {
  */
 var startAutofill = function() {
   console.log("Autofill " + disp_ounces);
-  usersRef.child(client.name).child("consumption").push({
+  usersRef.child(user_settings.name).child("consumption").push({
     type: 'autofill',
     timestamp: getDateTime(),
     ounces: disp_ounces
   });
-  startDispensingWater();
+  sendCommandToDispenseWater();
   autofillTimeoutId = setTimeout(function() {
     stopDispensing();
   }, disp_time_ms)
@@ -156,7 +146,7 @@ var commands_table = [
  * @param voice_command The received voice command.
  * @return The voice commands sections.
  */
-  function getReceivedCommand(voice_command) {
+  function getReceivedCommand(client, voice_command) {
     var rcvd_voice_cmd = [UNUSED, UNUSED, UNUSED, UNUSED];
     var voice_command_sections = voice_command.split(" ");
     var numberOfSections = voice_command_sections.length;
@@ -174,14 +164,14 @@ var commands_table = [
     if ((numberOfSections > INDEX_PRIMARY_CMD) &&
       (AUTOFILL == rcvd_voice_cmd[INDEX_PRIMARY_CMD])) {
       // TODO read from redis
-      disp_ounces = settings.glass_ounces;
-      disp_time_ms = settings.time;
+      disp_ounces = client.glass_ounces;
+      disp_time_ms = client.glass_fill_time;
       rcvd_voice_cmd[INDEX_SECOND_CMD_OR_OUNCES] = UNUSED;
     } // Precise fill command
     else if ((numberOfSections > INDEX_SECOND_CMD_OR_OUNCES) &&
       (!isNaN(parseInt(rcvd_voice_cmd[INDEX_SECOND_CMD_OR_OUNCES], 10)))) {
       disp_ounces = parseInt(rcvd_voice_cmd[INDEX_SECOND_CMD_OR_OUNCES], 10);
-      disp_time_ms = disp_ounces * (settings.glass_ounces / settings.time);
+      disp_time_ms = disp_ounces * (client.glass_ounces / client.glass_fill_time);
       rcvd_voice_cmd[INDEX_SECOND_CMD_OR_OUNCES] = NUMBER;
     }
     return rcvd_voice_cmd;
@@ -213,53 +203,54 @@ var commands_table = [
     return false;
   }
 
-  // TODO Remove later - Testing only
-executeCommand(getReceivedCommand("dispense water"));
-executeCommand(getReceivedCommand("dispense cubed"));
-executeCommand(getReceivedCommand("dispense crushed"));
-executeCommand(getReceivedCommand("stop"));
-executeCommand(getReceivedCommand("autofill"));
-setTimeout(function() {
-  executeCommand(getReceivedCommand("dispense 20 ounces water"))
-}, 10000);
-
 //TODO Enable later
 //greenBean.connect("refrigerator", function(refrigerator) {
 //console.log("========> Refrigerator connected");
 io.on('connection', function(client) {
   client.on('join', function(user_info) {
-    client.name = user_info.username;
+    console.log("Username ===> " +  user_info.name);
+    console.log("Password ===> " +  user_info.password);
 
-    usersRef.child(client.name).child("settings").on("value", function(settings) {
-      console.log(settings.glass_ounces.val());
-      console.log(settings.glass_fill_time.val());
-      console.log(settings.weight_lbs.val());
-    }, function(errorObject) {
-      console.log("The read failed: " + errorObject.code);
-    });
+    user_settings.name = user_info.name;
+    // usersRef.child(client.name).child("settings").on("value", function(settings) {
+    //   console.log(settings.glass_ounces.val());
+    //   console.log(settings.glass_fill_time.val());
+    //   console.log(settings.weight_lbs.val());
+    //
+    //   user_settings.glass_ounces = settings.glass_ounces.val();
+    //   user_settings.glass_fill_time = settings.glass_fill_time.val();
+    //   user_settings.weight_lbs = settings.weight_lbs.val();
+    // }, function(errorObject) {
+    //   console.log("The read failed: " + errorObject.code);
+    // });
 
-    usersRef.child(client.username).push({
+    usersRef.child(user_settings.name).set({
       password: user_info.password
     });
-    console.log(client.username + " is connected");
+    console.log(user_settings.name + " is connected");
   });
 
   client.on('settings', function(settings) {
-    usersRef.child(settings.name).child("settings").push({
+    usersRef.child(user_settings.name).child("settings").set({
       glass_ounces: settings.glass_ounces,
       glass_fill_time: settings.glass_fill_time,
       weight_lbs: settings.weight_lbs
     });
+
+    user_settings.glass_ounces = settings.glass_ounces;
+    user_settings.glass_fill_time = settings.glass_fill_time;
+    user_settings.weight_lbs = settings.weight_lbs;
+
     console.log("==> settings = " + settings);
   });
 
   client.on('disconnect', function(name) {
-    //TODO Save identifier for next time user connects
+    console.log("==> Client disconnected = " + name);
   });
 
   client.on('voice_command', function(voice_command) {
     client.emit('voice_cmd_response',
-      executeCommand(getReceivedCommand(voice_command)));
+      executeCommand(getReceivedCommand(user_settings, "autofill")));
   });
 });
 
