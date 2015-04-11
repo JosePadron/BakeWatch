@@ -121,17 +121,38 @@
 	
 	<!-- READING QUERIES -->
 	<script>
-		var fixData = new Firebase('https://glaring-torch-9647.firebaseio.com/');
-		console.log("FIRE!");
-		fixData.on("value", function(snapshot) {
+		//BELOW GETS ALL USER DATA
+		// var fixData = new Firebase('https://glaring-torch-9647.firebaseio.com/Users');
+		
+		// fixData.once('value', function(allUserData, username, password) {
+		//   allUserData.forEach(function(dataSnapshot) {
+		//     // Will be called with a messageSnapshot for each message under message_list.
+		//     var userId = dataSnapshot.key();
+		//     var pass = dataSnapshot.child('password').val();
+		//     // Do something with message.
+		//     console.log(userId + '-'+ pass);
+		//   });
+		// });
 
-			console.log( snapshot.val() );
+		<!-- Get User Data -->
+		var fixData = new Firebase('https://glaring-torch-9647.firebaseio.com');
+		var userData = {};
 
-		}, function (errorObject) {
-
-			console.log("The read failed: " + errorObject.code);
-
+		jQuery('form input[type="submit"]').on('click', function(){
+			var username = jQuery('#username-input').val();
+			var password = document.getElementById('password-input').value;
+			
+			fixData.child('Users').child(username).once('value', function(allUserData) {
+			  if( allUserData.child('password').val() == password ){
+			  	console.log('Successful Login');
+			  	userData = allUserData;
+			  	//console.log(allUserData);
+			  }else{
+			  	console.log('You entered ' + password + ' but the password was ' + allUserData.child('password').val() )
+			  }
+			});
 		});
+		
 	</script>
 
 </body>

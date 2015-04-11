@@ -215,14 +215,14 @@ var commands_table = [
   }
 
   // TODO Remove later - Testing only
-executeCommand(getReceivedCommand("dispense water"));
-executeCommand(getReceivedCommand("dispense cubed"));
-executeCommand(getReceivedCommand("dispense crushed"));
-executeCommand(getReceivedCommand("stop"));
-executeCommand(getReceivedCommand("autofill"));
-setTimeout(function() {
-  executeCommand(getReceivedCommand("dispense 20 ounces water"))
-}, 10000);
+// executeCommand(getReceivedCommand("dispense water"));
+// executeCommand(getReceivedCommand("dispense cubed"));
+// executeCommand(getReceivedCommand("dispense crushed"));
+// executeCommand(getReceivedCommand("stop"));
+// executeCommand(getReceivedCommand("autofill"));
+// setTimeout(function() {
+//   executeCommand(getReceivedCommand("dispense 20 ounces water"))
+// }, 10000);
 
 //TODO Enable later
 //greenBean.connect("refrigerator", function(refrigerator) {
@@ -272,6 +272,6 @@ app.get('/', function(req, res) {
   res.sendFile( __dirname + '/index.html');
 });
 
-server.listen(3000, function() {
+server.listen(8080, function() {
   console.log('listening on *:8080');
 });
