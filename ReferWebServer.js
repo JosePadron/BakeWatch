@@ -278,10 +278,10 @@ greenBean.connect("refrigerator", function(refer) {
       });
 
       // Update light state
-      usersRef.child("light").once("value", function(light) {
-        var lightFromCloud = light.val();
+      myDataRef.child("light").once("value", function(lightState) {
+        var lightFromCloud = lightState.val();
         console.log("Back from the cloud light ===> " + lightFromCloud.state);
-        if (light != null) {
+        if (lightState != null) {
           updateLightState(lightFromCloud.state);
         } else {
           updateLightState(OFF);
