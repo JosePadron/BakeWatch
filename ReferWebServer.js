@@ -8,9 +8,9 @@ var os = require('os');
 var myDataRef = new Firebase('https://glaring-torch-9647.firebaseio.com');
 var usersRef = myDataRef.child("Users");
 
-// var mraa = require('mraa');
-// var light = new mraa.Gpio(3); //TODO: change to relay port
-// light.dir(mraa.DIR_OUT);
+var mraa = require('mraa');
+var light = new mraa.Gpio(3); //TODO: change to relay port
+light.dir(mraa.DIR_OUT);
 var light_state = 0;
 
 var INDEX_PRIMARY_CMD = 0;
@@ -35,8 +35,8 @@ var disp_time_ms = 0;
 var autofillTimeoutId;
 
 
-// var greenBean = require("green-bean");
-// var refrigerator;
+var greenBean = require("green-bean");
+var refrigerator;
 
 var user_settings = {
   name: "Default",
@@ -99,7 +99,7 @@ function ip_address(interface) {
 }
 
 var sendCommandToDispenseWater = function() {
-  // refrigerator.dispenseColdWater();
+  refrigerator.dispenseColdWater();
   clearTimeout(autofillTimeoutId);
   console.log("Start dispensing water.");
 };
@@ -120,7 +120,7 @@ var startDispensingWater = function() {
  * Function to start dispensing cubed.
  */
 var startDispensingCubed = function() {
-  // refrigerator.dispenseCubed();
+  refrigerator.dispenseCubed();
   usersRef.child(user_settings.name).child("consumption").push({
     type: CUBED,
     timestamp: getDateTime(),
@@ -134,7 +134,7 @@ var startDispensingCubed = function() {
  * Function to start dispensing crushed.
  */
 var startDispensingCrushed = function() {
-  // refrigerator.dispenseCrushed();
+  refrigerator.dispenseCrushed();
   usersRef.child(user_settings.name).child("consumption").push({
     type: 'crushes',
     timestamp: getDateTime(),
@@ -148,7 +148,7 @@ var startDispensingCrushed = function() {
  * Function to stop dispensing.
  */
 var stopDispensing = function() {
-  // refrigerator.dispenseStop();
+  refrigerator.dispenseStop();
   clearTimeout(autofillTimeoutId);
   console.log("Stop dispensing.");
 };
@@ -246,13 +246,13 @@ function executeCommand(voice_command) {
 }
 
 //Set server ip
-// myDataRef.child("server").set({
-//   server_ip: ip_address('wlan0')
-// });
+myDataRef.child("server").set({
+  server_ip: ip_address('wlan0')
+});
 
-// greenBean.connect("refrigerator", function(refer) {
+greenBean.connect("refrigerator", function(refer) {
   console.log("========> Refrigerator connected");
-  // refrigerator = refer;
+  refrigerator = refer;
   io.on('connection', function(client) {
     client.on('join', function(user_info) {
       console.log("Username ===> " + user_info.name);
@@ -332,7 +332,7 @@ function executeCommand(voice_command) {
   });
 
   //TODO Enable later
-// });
+});
 
 // Serve Static Files
 app.use( "/public/", express.static( __dirname + '/public/'));
