@@ -272,6 +272,6 @@ app.get('/', function(req, res) {
   res.sendFile( __dirname + '/index.html');
 });
 
-server.listen(3000, function() {
+server.listen(8080, function() {
   console.log('listening on *:8080');
 });

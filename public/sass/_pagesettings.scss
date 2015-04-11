@@ -1,36 +1,63 @@
-form{
-
-	input[type="text"]{
-		display: block;
-		width: 80%;
-		padding: 5px;
-		font-size: 0.7em;
-		margin-bottom: 1em;
-	}
-
-	input[type="submit"]{
-		-webkit-appearance: none;
-		appearance: none;
-		box-shadow: none;
-		border-radius: 15px;
-		padding: 14px;
-		display: inline-block;
-		color: blue;
-		outline: none;
-		border: 2px blue solid;
-		background: transparent;
-	}
-
-}
-
 #teamtext{
 	margin-top: 20px;
 	font-size: 0.5em;
 	text-align: center;
+	color: $white;
 }
 
 #settings-page{
-	.app-section{
-		padding: 30px;
+	
+	.centered{
+		top: 40%;
+
+		h1{
+			font-size: 2em;
+			margin-bottom: 1em;
+			text-align: center;
+		}
 	}
+
+	form{
+
+		input[type="text"]{
+			background: none;
+			padding: 0px;
+			margin-bottom: 10px;
+			display: block;
+			position: relative;
+			padding: 15px 10%;
+
+			width: 80%;
+			text-align: left;
+			background: rgba($black, 0.3);
+			font-size: 0.8em;
+			box-shadow: none;
+			border: $white 0px solid;
+			color: $white;
+			text-transform: uppercase;
+
+			&::-webkit-input-placeholder {
+			   color: $white;
+			}
+		}
+
+		input[type="submit"]{
+			appearance: none;
+			-webkit-appearance: none;
+			border: none;
+			border-radius: 0px;
+			background: none;
+			color: $white;
+
+			border: $white solid 2px;
+			padding: 20px 0px;
+			display: block;
+			text-transform: uppercase;
+			width: 100%;
+
+			font-size: 0.8em;
+		}
+
+	}
+
 }

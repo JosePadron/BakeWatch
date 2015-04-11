@@ -19,16 +19,20 @@
 	<div class="app-page" data-page="Home" id="app-login">
 		<div class="bg"></div>
 		<div class="app-topbar">
-			<div class="app-title">FIX OF WATER</div>
+			<div class="app-title"></div>
 		</div>
 		<div class="app-content">
 
+
 			<div class="centered">
+				<h1>Fix Of <br><span class="larger">Water</span></h1>
+				
 				<form action="#">
 					<input id="username-input" type="username" placeholder="Username">
 					<input id="password-input" type="password" placeholder="Password">
-					<input type="submit">
+					<input type="submit" value="Sign In">
 				</form>
+
 			</div>
 			
 		</div>
@@ -36,26 +40,27 @@
 	
 	<!-- Settings Page -->
 	<div class="app-page" data-page="Settings" id="settings-page">
-		<div class="app-topbar">
-			<div class="app-title">FIX OF WATER</div>
-		</div>
 		<div class="app-content">
-			<div class="app-section">
-				<h1>User Settings</h1>
 
+
+			<div class="centered">
+
+				<h1>Settings</h1>
+				
 				<form action="#">
 					
 					<input type="text" placeholder="Username">
 					<input type="text" placeholder="Favorite Glass Size">
 					<input type="text" placeholder="Fill Time ( in miliseconds )">
 					<input type="text" placeholder="User Weight ( For Scientific Purposes )">
-					<input type="submit">
+					<input type="submit" id="save-settings-btn" value="Save Settings">
 
 				</form>
 
 				<div id="teamtext">Created at FirstBuild with awesome people.</div>
 
 			</div>
+
 			<div class="app-bottombar">
 				<div class="app-button nav-home"><i class="fa fa-home fa-2x"></i></div>
 				<div class="app-button nav-statsPage"><i class="fa fa-pie-chart fa-2x"></i></div>
@@ -72,7 +77,7 @@
 		<div class="app-content">
 
 
-			
+			<img src="#" alt="" id="commandbutton">
 
 
 			<div class="app-bottombar">
@@ -89,6 +94,8 @@
 			<div class="app-title">FIX OF WATER</div>
 		</div>
 		<div class="app-content">
+			<div id="doughnutChart" class="chart"></div>
+			
 			<div class="top-info">
 				<div class="btngroup">
 					<button class="btngroup--btn">Today</button>
@@ -112,26 +119,17 @@
 	</div>
 
 	<!-- Javascript Includes -->
-	<script src="http://code.jquery.com/jquery-2.1.3.js"></script>
+	<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
 	<script src="/public/js/app.min.js"></script>
 	<script src="/public/js/controllers.js"></script>
+	<script src="/public/js/donutchart.js"></script>
  	<script src="/public/js/scripts.js"></script>
 	
 	<!-- READING QUERIES -->
 	<script>
-		var fixData = new Firebase('https://glaring-torch-9647.firebaseio.com/');
-		console.log("FIRE!");
-		fixData.on("value", function(snapshot) {
-
-			console.log( snapshot.val() );
-
-		}, function (errorObject) {
-
-			console.log("The read failed: " + errorObject.code);
-
-		});
+		
 	</script>
 
 </body>

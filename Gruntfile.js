@@ -40,7 +40,8 @@ module.exports = function(grunt) {
                 },
                 options: {
                     watchTask: true,
-                    server: './'
+                    server: './',
+                    //proxy: "http://localhost:8080"
                 }
             }
         }

@@ -35,6 +35,11 @@ App.controller('Home', function(page){
 
 App.controller('StatsPage', function(page){
 
+	$("#doughnutChart").drawDoughnutChart([
+		{ title: "Water",         value : 120,  color: "#2C3E50" },
+		{ title: "Iced", 		value:  80,   color: "#FC4349" },
+		{ title: "Cubed",      value:  70,   color: "#6DBCDB" }
+	]);
 	
 	
 	$(page).on('click', '.app-bottombar .nav-home', function(){
@@ -75,8 +80,8 @@ App.controller('Settings', function(page){
 
 // Try to keep the app in current state when page refreshes.
 try{
-	App.load('Home');
+	App.load('StatsPage');
 	//App.restore();
 } catch (error){
-	App.load('Home');
+	App.load('StatsPage');
 }
