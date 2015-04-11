@@ -40,9 +40,9 @@ var refrigerator;
 
 var user_settings = {
   name: "Default",
-  glass_ounces: 0,
-  glass_fill_time: 0,
-  weight_lbs: 0,
+  glass_ounces: 8,
+  glass_fill_time: 11000,
+  weight_lbs: 180,
 };
 
 function updateLightState(new_state) {
