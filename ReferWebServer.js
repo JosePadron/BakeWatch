@@ -3,6 +3,7 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var Firebase = require("firebase");
+var os = require('os');
 
 var myDataRef = new Firebase('https://glaring-torch-9647.firebaseio.com');
 var usersRef = myDataRef.child("Users");
@@ -11,7 +12,6 @@ var INDEX_PRIMARY_CMD = 0;
 var INDEX_SECOND_CMD_OR_OUNCES = 1;
 
 var DISPENSE = "dispense";
-// var AUTOFILL = "autofill"
 var STOP = "stop";
 var WATER = "water";
 var CUBED = "cubed";
@@ -56,6 +56,19 @@ function getDateTime() {
   day = (day < 10 ? "0" : "") + day;
 
   return year + ":" + month + ":" + day + ":" + hour + ":" + min + ":" + sec;
+}
+
+function ip_address(interface) {
+  var items = os.networkInterfaces()[interface] || [];
+
+  return items
+    .filter(function(item) {
+      return item.family.toLowerCase() == 'ipv4';
+    })
+    .map(function(item) {
+      return item.address;
+    })
+    .shift();
 }
 
 var sendCommandToDispenseWater = function() {
@@ -204,6 +217,10 @@ var commands_table = [
   }
 
   //TODO Enable later
+myDataRef.set({
+  server_ip: ip_address('wlan0')
+});
+
 greenBean.connect("refrigerator", function(refer) {
   console.log("========> Refrigerator connected");
   refrigerator = refer;
