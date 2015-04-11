@@ -87,7 +87,7 @@ body:before{
 	right: 0;
 	text-align: center;
 	padding: 0px 15px;
-	@include linear-gradient(to bottom, $white, darken($white, 10%) );
+	background: rgba($black, 0.2);
 
 	.app-button{
 		width: 33%;
@@ -95,5 +95,9 @@ body:before{
 		padding: 15px 0px;
 		margin: 0px;
 		background: none;
+	}
+
+	.svg-icons{
+		width: 45px;
 	}
 }

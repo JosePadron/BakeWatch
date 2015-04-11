@@ -10,13 +10,25 @@
 #command-btn{
 	display: block;
 	position: relative;
-	width: 50px;
-	height: 50px;
 	margin: 0 auto;
-	background: $black;
+	text-align:center;
+	// background: $black;
+	margin-bottom: 50px;
+
+	img{
+		border-radius: 50%;
+		padding: 30px;
+		background: rgba($black, 0.2);
+	}
 }
 
 #light_toggle{
+	span{
+		text-align: center;
+		font-size: 1em;
+		display: block;
+		margin-bottom: 1em;
+	}
 }
 
 #cFeedback{
@@ -41,7 +53,7 @@
 	width: auto; /* # of chars */
 	max-width: 0; /* # of chars */
 	text-align:center;
-	margin: 2em 1em;
+	margin: 1em 1em;
 	white-space: nowrap;
 	overflow: hidden;
 	font-family: 'Orbitron', sans-serif;
@@ -83,8 +95,8 @@
     position: absolute;
     top: 4px;
     bottom: 4px;
-    left: 4px;
-    width: calc(50% - 4px);
+    left: 1px;
+    width: calc(50% - 5px);
     line-height: 45px;
     text-align: center;
     text-transform: uppercase;
@@ -113,13 +125,13 @@
 .toggle--moving {
   background-color: darken(#263238, 5%);
   &:after {
-    color: transparent;
-    border-color: darken(#546E7A, 8%);
-    background-color: darken(#37474F, 10%);
-    transition: color 0s,
-                transform 500ms,
-                border-radius 500ms,          
-                background-color 500ms;
+		color: transparent;
+		border-color: darken(#546E7A, 8%);
+		background-color: darken(#37474F, 10%);
+		transition: color 0s,
+		transform 500ms,
+		border-radius 500ms,          
+		background-color 500ms;
   }
 }
 

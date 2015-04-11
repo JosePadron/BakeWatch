@@ -109,7 +109,7 @@ App.controller('CommandPage', function(page){
 
 	function stopVoiceRecognition(event) {
 		console.log("Stop Voice Recognition");
-		$(page).find("#command-btn").css({"background":"red"});
+		$(page).find("#command-btn img").css({"background": "rbga(0,0,0,0.2)" });
 
 		//$("#recognition_btn").html("Start Recognition");
 		voiceRecognitionRunning = false;
@@ -167,7 +167,7 @@ App.controller('CommandPage', function(page){
 			//$("#voice").append(final_transcript);
 			stopVoiceRecognition();
 
-			$(page).find("#command-btn").html( final_transcript );
+			// $(page).find("#command-btn").html( final_transcript );
 			console.log( final_transcript );
 
 			// TODO: SEND IT TO SERVER!
@@ -177,8 +177,7 @@ App.controller('CommandPage', function(page){
 
 		recognition.onstart = function() {
 			voiceRecognitionRunning = true;
-			$(page).find("#command-btn").html('');
-			$(page).find("#command-btn").css({"background":"green"});
+			$(page).find("#command-btn img").css({"background":"green"});
 		}; // On Start
 
 		recognition.onend = function() {
@@ -226,13 +225,21 @@ App.controller('CommandPage', function(page){
 
 			e.preventDefault();
 
-			$(toggle).toggleClass('toggle--on')
-			.toggleClass('toggle--off')
-			.addClass('toggle--moving');
+			$(toggle).toggleClass('toggle--on').toggleClass('toggle--off').addClass('toggle--moving');
 
 			setTimeout(function() {
 				$(toggle).removeClass('toggle--moving');
 			}, 200)
+
+			$(page).find("#light_toggle").toggleClass("light_on");
+
+			if( $(page).find("#light_toggle").attr("class") == "light_on" ){
+				socket.emit('lightOn', true);
+				console.log("Turn Light On");
+			} else {
+				socket.emit('lightOn', true);
+				console.log("Turn Light Off" + $(toggle).attr("class"));
+			}
 		});
 
     } // Is Supported.

@@ -295,6 +295,16 @@ function executeCommand(voice_command) {
       console.log(user_settings.name + " is connected");
     });
 
+	client.on('lightOn', function(on){
+		if( on ){
+			turnLightOn();
+			console.log("Turn Light On");
+		} else {
+			turnLightOff();
+			console.log("Turn Light Off");
+		}
+	});
+
     client.on('settings', function(settings) {
       usersRef.child(user_settings.name).child("settings").set({
         glass_ounces: settings.glass_ounces,
