@@ -8,8 +8,7 @@ var Firebase = require("firebase");
 
 //Use YOUR Firebase URL (not the one below)
 var myDataRef = new Firebase('https://glaring-torch-9647.firebaseio.com');
-var userConsumptionTable = myDataRef.child("consumption");
-var userSettingsTable = myDataRef.child("settings");
+var usersRef = myDataRef.child("Users");
 
 var INDEX_PRIMARY_CMD = 0;
 var INDEX_SECOND_CMD_OR_OUNCES = 1;
@@ -38,7 +37,7 @@ var settings = {
   name: "FixOfWater"
 };
 var client = {
-  id: 0
+  name: "Nelson"
 };
 
 function getDateTime() {
@@ -70,8 +69,7 @@ function getDateTime() {
  */
 var startDispensingWater = function() {
   //refrigerator.dispenseColdWater();
-  userConsumptionTable.push({
-    user_id: client.id,
+  usersRef.child(client.name).child("consumption").push({
     type: 'water',
     timestamp: getDateTime(),
     ounces: disp_ounces
@@ -85,8 +83,7 @@ var startDispensingWater = function() {
  */
 var startDispensingCubed = function() {
   //refrigerator.dispenseCubed();
-  userConsumptionTable.push({
-    user_id: client.id,
+  usersRef.child(client.name).child("consumption").push({
     type: 'cubes',
     timestamp: getDateTime(),
     ounces: 0
@@ -100,8 +97,7 @@ var startDispensingCubed = function() {
  */
 var startDispensingCrushed = function() {
   //refrigerator.dispenseCrushed();
-  userConsumptionTable.push({
-    user_id: client.id,
+  usersRef.child(client.name).child("consumption").push({
     type: 'crushes',
     timestamp: getDateTime(),
     ounces: 0
@@ -124,8 +120,7 @@ var stopDispensing = function() {
  */
 var startAutofill = function() {
   console.log("Autofill " + disp_ounces);
-  userConsumptionTable.push({
-    user_id: client.id,
+  usersRef.child(client.name).child("consumption").push({
     type: 'autofill',
     timestamp: getDateTime(),
     ounces: disp_ounces
