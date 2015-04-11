@@ -107,3 +107,20 @@
   font-size: 55px;
 }
 .chart path:hover { opacity: 0.65; }
+
+.current-consumption{
+	  text-align: center;
+	  margin-top: 100px;
+	  color: white;
+	  font-size: 110px;
+	  font-weight: bold;
+
+	  h1{
+	  	display: inline;
+
+	  }
+	  span{
+	  	display: inline;
+	  	font-size: 20px;
+	  }
+}

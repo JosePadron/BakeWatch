@@ -453,6 +453,21 @@ body:before {
   opacity: 0.65;
 }
 
+.current-consumption {
+  text-align: center;
+  margin-top: 100px;
+  color: white;
+  font-size: 110px;
+  font-weight: bold;
+}
+.current-consumption h1 {
+  display: inline;
+}
+.current-consumption span {
+  display: inline;
+  font-size: 20px;
+}
+
 #teamtext {
   margin-top: 20px;
   font-size: 0.5em;

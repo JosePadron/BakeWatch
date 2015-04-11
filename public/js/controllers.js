@@ -238,7 +238,7 @@ App.controller('CommandPage', function(page){
 				console.log("Turn Light On");
 			} else {
 				socket.emit('lightOn', true);
-				console.log("Turn Light Off" + $(toggle).attr("class"));
+				console.log("Turn Light Off" );
 			}
 		});
 
@@ -262,9 +262,16 @@ App.controller('CommandPage', function(page){
 
 }); // APP CONTROLLER | APP COMMAND
 
+var ouncesConsumed = 0;
 
 /*********** STATS PAGE ****************/
 App.controller('StatsPage', function(page){
+
+	$.each(App.consumption, function(index, value) {
+		ouncesConsumed = ouncesConsumed + parseFloat(value['ounces']);
+	});
+
+	$(page).find('.current-consumption h1').html( ouncesConsumed );
 
 	// TODO: Display Relevant User Data.
 
