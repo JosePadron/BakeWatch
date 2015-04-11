@@ -1,0 +1,36 @@
+form{
+
+	input[type="text"]{
+		display: block;
+		width: 80%;
+		padding: 5px;
+		font-size: 0.7em;
+		margin-bottom: 1em;
+	}
+
+	input[type="submit"]{
+		-webkit-appearance: none;
+		appearance: none;
+		box-shadow: none;
+		border-radius: 15px;
+		padding: 14px;
+		display: inline-block;
+		color: blue;
+		outline: none;
+		border: 2px blue solid;
+		background: transparent;
+	}
+
+}
+
+#teamtext{
+	margin-top: 20px;
+	font-size: 0.5em;
+	text-align: center;
+}
+
+#settings-page{
+	.app-section{
+		padding: 30px;
+	}
+}

@@ -1,0 +1,51 @@
+.btngroup {
+	font-size: 0;
+	line-height: 1;
+	white-space: nowrap;
+	display: block;
+	text-align: center;
+
+
+	&--btn { // sass bem is cool
+		font-size: 0.8rem;
+		letter-spacing: .1em;
+		text-decoration: none;
+		text-transform: uppercase;
+		background: $white;
+		color: $black;
+		border: 2px solid $white;
+		border-left-width: 2px;
+		display: inline-block;
+		padding: 0.3em 1.0em;
+		outline: 0; // no glow crap
+
+		&:first-child {
+			border-left-width: 2px;
+			border-radius: 2em 0 0 2em;
+		}
+
+		&:last-child {
+			border-radius: 0 2em 2em 0;
+		}
+
+		&:visted {
+			background: $white;
+			color: $black;
+		}
+
+		&:hover {
+			background: transparent;
+			color: $white;
+		}
+
+		&:active {
+			background: transparent;
+			color: $white;
+		}
+	}
+}
+
+.analytics-page{
+	background: url('../images/FixOfWater_bg.png') no-repeat;
+	background-position: 50% 50%;
+}

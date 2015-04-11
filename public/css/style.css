@@ -1,0 +1,222 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+@import url("http://fonts.googleapis.com/css?family=Lato:300,400");
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  position: relative;
+  height: 100%;
+  font-family: 'Lato', sans-serif;
+}
+
+body:before {
+  content: "";
+  background: url("../images/bg.gif") no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
+  -webkit-filter: blur(5px);
+  position: absolute;
+  height: 110%;
+  width: 110%;
+  top: -5%;
+  left: -5%;
+  right: 0;
+  bottom: 0;
+}
+
+.app-topbar {
+  background: none;
+  box-shadow: none;
+  margin-bottom: 10px;
+}
+.app-topbar .app-title {
+  font-size: 2em;
+}
+
+.app-page {
+  background: none;
+}
+
+.app-content {
+  box-shadow: none;
+  background: none;
+  z-index: 4001;
+}
+
+.app-button.button-round {
+  width: 50%;
+  height: auto;
+  line-height: initial;
+  padding: 15px;
+  margin: 0 auto;
+  margin-top: 20px;
+  display: block;
+  position: relative;
+  text-align: center;
+  border-radius: 30px;
+  background: #6CB4D9;
+  border: #ffffff 3px solid;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.app-bottombar {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 0px 15px;
+  background: #ffffff;
+  background: -webkit-linear-gradient(legacy-direction(to bottom), #ffffff, #e6e6e6);
+  background: linear-gradient(to bottom, #ffffff, #e6e6e6);
+}
+.app-bottombar .app-button {
+  width: 33%;
+  float: left;
+  padding: 15px 0px;
+  margin: 0px;
+  background: none;
+}
+
+#app-login .centered {
+  width: 80%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.btngroup {
+  font-size: 0;
+  line-height: 1;
+  white-space: nowrap;
+  display: block;
+  text-align: center;
+}
+.btngroup--btn {
+  font-size: 0.8rem;
+  letter-spacing: .1em;
+  text-decoration: none;
+  text-transform: uppercase;
+  background: #ffffff;
+  color: #212022;
+  border: 2px solid #ffffff;
+  border-left-width: 2px;
+  display: inline-block;
+  padding: 0.3em 1.0em;
+  outline: 0;
+}
+.btngroup--btn:first-child {
+  border-left-width: 2px;
+  border-radius: 2em 0 0 2em;
+}
+.btngroup--btn:last-child {
+  border-radius: 0 2em 2em 0;
+}
+.btngroup--btn:visted {
+  background: #ffffff;
+  color: #212022;
+}
+.btngroup--btn:hover {
+  background: transparent;
+  color: #ffffff;
+}
+.btngroup--btn:active {
+  background: transparent;
+  color: #ffffff;
+}
+
+.analytics-page {
+  background: url("../images/FixOfWater_bg.png") no-repeat;
+  background-position: 50% 50%;
+}
+
+form input[type="text"] {
+  display: block;
+  width: 80%;
+  padding: 5px;
+  font-size: 0.7em;
+  margin-bottom: 1em;
+}
+form input[type="submit"] {
+  -webkit-appearance: none;
+  appearance: none;
+  box-shadow: none;
+  border-radius: 15px;
+  padding: 14px;
+  display: inline-block;
+  color: blue;
+  outline: none;
+  border: 2px blue solid;
+  background: transparent;
+}
+
+#teamtext {
+  margin-top: 20px;
+  font-size: 0.5em;
+  text-align: center;
+}
+
+#settings-page .app-section {
+  padding: 30px;
+}
+
+/*# sourceMappingURL=style.css.map */

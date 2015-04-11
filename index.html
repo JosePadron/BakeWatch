@@ -1,172 +1,138 @@
-<!doctype html>
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>Refrigerator Web Server</title>
-  <script src="https://cdn.firebase.com/js/client/2.2.3/firebase.js"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+	<title>Fix Of Water</title>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/public/css/app.min.css">
+	<link rel="stylesheet" href="/public/css/style.css">
 </head>
-
 <body>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="http://code.jquery.com/jquery-2.1.3.js"></script>
-
-  <script>
-    var socket = io.connect('http://localhost:8080');
-
-    var start_timestamp;
-    var final_transcript = '';
-    var intervalId;
-    var voiceRecognitionRunning = false;
-
-    var settings = {
-      glass_fill_time: 2000,
-      glass_ounces: 12,
-      weight_lbs: 120,
-      name: "Default"
-    };
-
-    if (!('webkitSpeechRecognition' in window)) {
-      showErrorInfo('not_supported');
-    } else {
-      var recognition = new webkitSpeechRecognition();
-      recognition.continuous = false;
-      recognition.interimResults = false;
-      recognition.lang = 'en-US';
-
-      recognition.onresult = function(event) {
-        var interim_transcript = '';
-        if (typeof(event.results) == 'undefined') {
-          recognition.onend = null;
-          stopVoiceRecognition();
-          return;
-        }
-        for (var i = event.resultIndex; i < event.results.length; ++i) {
-          if (event.results[i].isFinal) {
-            final_transcript += event.results[i][0].transcript;
-          } else {
-            interim_transcript += event.results[i][0].transcript;
-          }
-        }
-        $("#voice").append(final_transcript);
-        socket.emit('voice_command', final_transcript);
-        stopVoiceRecognition();
-      };
-
-      recognition.onstart = function() {
-        voiceRecognitionRunning = true;
-        $("#recognition_btn").html("Stop Recognition");
-        $("#voice").html('');
-      };
-
-      recognition.onerror = function(event) {
-        if (event.error == 'no-speech') {
-          showErrorInfo('info_no_speech');
-        }
-        if (event.error == 'audio-capture') {
-          showErrorInfo('info_no_microphone');
-        }
-        if (event.error == 'not-allowed') {
-          if (event.timeStamp - start_timestamp < 100) {
-            showErrorInfo('info_blocked');
-          } else {
-            showErrorInfo('info_denied');
-          }
-        }
-        stopVoiceRecognition();
-      };
-
-      recognition.onend = function() {
-        if (!final_transcript) {
-          return;
-        } else {
-          stopVoiceRecognition();
-        }
-      }
-    }
-
-    //TODO Remove this later
-    socket.on('connect', function(data) {
-      nickname = prompt("What is your nickname?");
-      socket.emit('join', nickname);
-    });
-
-    socket.on('join', function(nickname) {
-      $('#clients').append("<div id=\"client_" + nickname + "\">" + nickname + "</div>");
-    });
-
-    // socket.on('refer_data', function(nickname, data) {
-    //   var client_id = "#client_data_" + nickname;
-    //   if ($(client_id).length) {
-    //     $(client_id).html(nickname + ": " + data);
-    //   } else {
-    //     $("#clients_data").append("<div id=\"client_data_" + nickname + "\">" + nickname + ": " + data + "</div>");
-    //   }
-    // });
-
-    socket.on('voice_cmd_response', function(result) {
-      showErrorInfo((result) ? "" : "Invalid command!");
-    });
-
-    function UpdateSettings() {
-      socket.emit('settings', $('#oz_per_sec_input').val());
-    }
-
-    function startVoiceRecognition(event) {
-      final_transcript = '';
-      recognition.start();
-      start_timestamp = event.timeStamp;
-      showErrorInfo('');
-    }
-
-    function stopVoiceRecognition(event) {
-      $("#recognition_btn").html("Start Recognition");
-      voiceRecognitionRunning = false;
-      recognition.stop();
-    }
-
-    function updateVoiceRecognition(event) {
-      if (!voiceRecognitionRunning) {
-        startVoiceRecognition(event);
-      } else {
-        stopVoiceRecognition(event);
-      }
-    }
-
-    function showErrorInfo(info) {
-      $("#error").html("Error: " + info);
-    }
-  </script>
+	<!--**********************-->
+	<!--****** APP PAGES *****-->
+	<!--**********************-->
 
 
-  <h1>Refrigerator Water Dispense</h1>
+	<!-- Home Page -->
+	<div class="app-page" data-page="Home" id="app-login">
+		<div class="bg"></div>
+		<div class="app-topbar">
+			<div class="app-title">FIX OF WATER</div>
+		</div>
+		<div class="app-content">
 
-  <p>
-    <div id="error"></div>
-  </p>
-  <p>
-    <div id="client_list">Clients:
-      <div id="clients"></div>
-    </div>
-  </p>
+			<div class="centered">
+				<form action="#">
+					<input id="username-input" type="username" placeholder="Username">
+					<input id="password-input" type="password" placeholder="Password">
+					<input type="submit">
+				</form>
+			</div>
+			
+		</div>
+	</div>
+	
+	<!-- Settings Page -->
+	<div class="app-page" data-page="Settings" id="settings-page">
+		<div class="app-topbar">
+			<div class="app-title">FIX OF WATER</div>
+		</div>
+		<div class="app-content">
+			<div class="app-section">
+				<h1>User Settings</h1>
 
-  <p>Number of Dispense:
-    <div id="clients_data"></div>
-  </p>
+				<form action="#">
+					
+					<input type="text" placeholder="Username">
+					<input type="text" placeholder="Favorite Glass Size">
+					<input type="text" placeholder="Fill Time ( in miliseconds )">
+					<input type="text" placeholder="User Weight ( For Scientific Purposes )">
+					<input type="submit">
 
-  <button id="recognition_btn" onclick="updateVoiceRecognition(event);">Start Talking</button <p>
-  <div>Text:
-    <div id="voice"></div>
-  </div>
-  </p>
+				</form>
+
+				<div id="teamtext">Created at FirstBuild with awesome people.</div>
+
+			</div>
+			<div class="app-bottombar">
+				<div class="app-button nav-home"><i class="fa fa-home fa-2x"></i></div>
+				<div class="app-button nav-statsPage"><i class="fa fa-pie-chart fa-2x"></i></div>
+				<div class="app-button nav-settings"><i class="fa fa-cog fa-2x"></i></div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Command Page -->
+	<div class="app-page" data-page="CommandPage">
+		<div class="app-topbar">
+			<div class="app-title">FIX OF WATER</div>
+		</div>
+		<div class="app-content">
 
 
-  <p>Ounces per sec:&nbsp;
-    <input id="oz_per_sec_input" type="text" value="2" />
-    <button onclick="UpdateSettings();">Update</button>
-  </p>
+			
 
-  <p>&nbsp;</p>
+
+			<div class="app-bottombar">
+				<div class="app-button nav-home"><i class="fa fa-home fa-2x"></i></div>
+				<div class="app-button nav-statsPage"><i class="fa fa-pie-chart fa-2x"></i></div>
+				<div class="app-button nav-settings"><i class="fa fa-cog fa-2x"></i></div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Analytics Page -->
+	<div class="app-page analytics-page" data-page="StatsPage">
+		<div class="app-topbar">
+			<div class="app-title">FIX OF WATER</div>
+		</div>
+		<div class="app-content">
+			<div class="top-info">
+				<div class="btngroup">
+					<button class="btngroup--btn">Today</button>
+					<button class="btngroup--btn">Week</button>
+					<button class="btngroup--btn">Month</button>
+				</div>
+
+				<div class="current-consumption">
+					<h1>27</h1>
+					<span>OZs</span>
+				</div>
+			</div>
+			
+
+			<div class="app-bottombar">
+				<div class="app-button nav-home"><i class="fa fa-home fa-2x"></i></div>
+				<div class="app-button nav-statsPage"><i class="fa fa-pie-chart fa-2x"></i></div>
+				<div class="app-button nav-settings"><i class="fa fa-cog fa-2x"></i></div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Javascript Includes -->
+	<script src="http://code.jquery.com/jquery-2.1.3.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+	<script src="/public/js/app.min.js"></script>
+	<script src="/public/js/controllers.js"></script>
+ 	<script src="/public/js/scripts.js"></script>
+	
+	<!-- READING QUERIES -->
+	<script>
+		var fixData = new Firebase('https://glaring-torch-9647.firebaseio.com/');
+		console.log("FIRE!");
+		fixData.on("value", function(snapshot) {
+
+			console.log( snapshot.val() );
+
+		}, function (errorObject) {
+
+			console.log("The read failed: " + errorObject.code);
+
+		});
+	</script>
+
 </body>
-
 </html>
