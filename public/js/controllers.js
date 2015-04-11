@@ -237,7 +237,7 @@ App.controller('CommandPage', function(page){
 				socket.emit('lightOn', true);
 				console.log("Turn Light On");
 			} else {
-				socket.emit('lightOn', true);
+				socket.emit('lightOn', false);
 				console.log("Turn Light Off" + $(toggle).attr("class"));
 			}
 		});
