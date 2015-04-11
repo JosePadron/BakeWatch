@@ -32,13 +32,21 @@ var autofillTimeoutId;
 
 //TODO Remove this later
 var settings = {
-  time: 2400,
-  glass_ounces: 6,
-  name: "FixOfWater"
-};
-var client = {
+  glass_fill_time: 2000,
+  glass_ounces: 12,
+  weight_lbs: 120,
   name: "Nelson"
 };
+
+var client = {
+  name: settings.name
+};
+
+// usersRef.child(settings.name).child("settings").push({
+//   glass_ounces: settings.glass_ounces,
+//   glass_fill_time: settings.glass_fill_time,
+//   weight_lbs: settings.weight_lbs
+// });
 
 function getDateTime() {
 
@@ -220,24 +228,27 @@ setTimeout(function() {
 //console.log("========> Refrigerator connected");
 io.on('connection', function(client) {
   client.on('join', function(user_info) {
-    client.username = user_info.username;
-    client.id = user_info.id;
+    client.name = user_info.username;
 
-    client.emit('join', nickname);
-    console.log(nickname + " is connected");
-    myFirebaseRef.child("config").on("value", function(settings) {
-      console.log("Settings " + settings.val());
-      user_settings = settings;
+    usersRef.child(client.name).child("settings").on("value", function(settings) {
+      console.log(settings.glass_ounces.val());
+      console.log(settings.glass_fill_time.val());
+      console.log(settings.weight_lbs.val());
+    }, function(errorObject) {
+      console.log("The read failed: " + errorObject.code);
     });
+
+    usersRef.child(client.username).push({
+      password: user_info.password
+    });
+    console.log(client.username + " is connected");
   });
 
   client.on('settings', function(settings) {
-    myDataRef.push({
-      "settings": {
-        user_name: settings.username,
-        glass_ounces: settings.glass_ounces,
-        time: settings.time
-      }
+    usersRef.child(settings.name).child("settings").push({
+      glass_ounces: settings.glass_ounces,
+      glass_fill_time: settings.glass_fill_time,
+      weight_lbs: settings.weight_lbs
     });
     console.log("==> settings = " + settings);
   });

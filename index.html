@@ -19,6 +19,13 @@
     var intervalId;
     var voiceRecognitionRunning = false;
 
+    var settings = {
+      glass_fill_time: 2000,
+      glass_ounces: 12,
+      weight_lbs: 120,
+      name: "Default"
+    };
+
     if (!('webkitSpeechRecognition' in window)) {
       showErrorInfo('not_supported');
     } else {
@@ -78,6 +85,7 @@
       }
     }
 
+    //TODO Remove this later
     socket.on('connect', function(data) {
       nickname = prompt("What is your nickname?");
       socket.emit('join', nickname);
@@ -87,27 +95,17 @@
       $('#clients').append("<div id=\"client_" + nickname + "\">" + nickname + "</div>");
     });
 
-    socket.on('refer_data', function(nickname, data) {
-      var client_id = "#client_data_" + nickname;
-      if ($(client_id).length) {
-        $(client_id).html(nickname + ": " + data);
-      } else {
-        $("#clients_data").append("<div id=\"client_data_" + nickname + "\">" + nickname + ": " + data + "</div>");
-      }
-    });
+    // socket.on('refer_data', function(nickname, data) {
+    //   var client_id = "#client_data_" + nickname;
+    //   if ($(client_id).length) {
+    //     $(client_id).html(nickname + ": " + data);
+    //   } else {
+    //     $("#clients_data").append("<div id=\"client_data_" + nickname + "\">" + nickname + ": " + data + "</div>");
+    //   }
+    // });
 
     socket.on('voice_cmd_response', function(result) {
       showErrorInfo((result) ? "" : "Invalid command!");
-    });
-
-    socket.on('remove_client', function(nickname) {
-      var client_id = "#client_" + nickname;
-      $(client_id).remove();
-      recognition.stop();
-    });
-
-    socket.on('settings', function(settings) {;
-      $("#oz_per_sec_input").val(settings);
     });
 
     function UpdateSettings() {
