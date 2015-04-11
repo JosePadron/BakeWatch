@@ -117,11 +117,11 @@ var stopDispensing = function() {
  * Function to start autofill.
  */
 var startAutofill = function() {
-  console.log("Autofill " + disp_ounces);
+  console.log("Autofill " + user_settings.glass_ounces);
   usersRef.child(user_settings.name).child("consumption").push({
-    type: 'autofill',
+    type: 'water',
     timestamp: getDateTime(),
-    ounces: disp_ounces
+    ounces: user_settings.glass_ounces
   });
   sendCommandToDispenseWater();
   autofillTimeoutId = setTimeout(function() {
@@ -146,7 +146,7 @@ var commands_table = [
  * @param voice_command The received voice command.
  * @return The voice commands sections.
  */
-  function getReceivedCommand(client, voice_command) {
+  function getReceivedCommand(voice_command) {
     var rcvd_voice_cmd = [UNUSED, UNUSED, UNUSED, UNUSED];
     var voice_command_sections = voice_command.split(" ");
     var numberOfSections = voice_command_sections.length;
@@ -163,15 +163,14 @@ var commands_table = [
     // Autofill command?
     if ((numberOfSections > INDEX_PRIMARY_CMD) &&
       (AUTOFILL == rcvd_voice_cmd[INDEX_PRIMARY_CMD])) {
-      // TODO read from redis
-      disp_ounces = client.glass_ounces;
-      disp_time_ms = client.glass_fill_time;
+      disp_ounces = user_settings.glass_ounces;
+      disp_time_ms = user_settings.glass_fill_time;
       rcvd_voice_cmd[INDEX_SECOND_CMD_OR_OUNCES] = UNUSED;
     } // Precise fill command
     else if ((numberOfSections > INDEX_SECOND_CMD_OR_OUNCES) &&
       (!isNaN(parseInt(rcvd_voice_cmd[INDEX_SECOND_CMD_OR_OUNCES], 10)))) {
       disp_ounces = parseInt(rcvd_voice_cmd[INDEX_SECOND_CMD_OR_OUNCES], 10);
-      disp_time_ms = disp_ounces * (client.glass_ounces / client.glass_fill_time);
+      disp_time_ms = disp_ounces * (user_settings.glass_ounces / user_settings.glass_fill_time);
       rcvd_voice_cmd[INDEX_SECOND_CMD_OR_OUNCES] = NUMBER;
     }
     return rcvd_voice_cmd;
@@ -203,30 +202,35 @@ var commands_table = [
     return false;
   }
 
-//TODO Enable later
-//greenBean.connect("refrigerator", function(refrigerator) {
-//console.log("========> Refrigerator connected");
+  //TODO Enable later
+  //greenBean.connect("refrigerator", function(refrigerator) {
+  //console.log("========> Refrigerator connected");
 io.on('connection', function(client) {
   client.on('join', function(user_info) {
-    console.log("Username ===> " +  user_info.name);
-    console.log("Password ===> " +  user_info.password);
+    console.log("Username ===> " + user_info.name);
+    console.log("Password ===> " + user_info.password);
 
     user_settings.name = user_info.name;
-    // usersRef.child(client.name).child("settings").on("value", function(settings) {
-    //   console.log(settings.glass_ounces.val());
-    //   console.log(settings.glass_fill_time.val());
-    //   console.log(settings.weight_lbs.val());
-    //
-    //   user_settings.glass_ounces = settings.glass_ounces.val();
-    //   user_settings.glass_fill_time = settings.glass_fill_time.val();
-    //   user_settings.weight_lbs = settings.weight_lbs.val();
-    // }, function(errorObject) {
-    //   console.log("The read failed: " + errorObject.code);
-    // });
+    usersRef.child(user_settings.name).child("settings").once("value", function(settings) {
+      var cloud_settings = settings.val();
+      console.log("Back from the cloud ===> " + cloud_settings);
+      if (cloud_settings != null) {
+        user_settings.glass_ounces = cloud_settings.glass_ounces;
+        user_settings.glass_fill_time = cloud_settings.glass_fill_time;
+        user_settings.weight_lbs = cloud_settings.weight_lbs;
 
-    usersRef.child(user_settings.name).set({
-      password: user_info.password
+        console.log("Cloud settings glass_ounces ===> " + user_settings.glass_ounces);
+        console.log("Cloud settings glass_fill_time ===> " + user_settings.glass_fill_time);
+        console.log("Cloud settings weight_lbs ===> " + user_settings.weight_lbs);
+      } else {
+        usersRef.child(user_settings.name).set({
+          password: user_info.password
+        });
+      }
+    }, function(errorObject) {
+      console.log("The read failed: " + errorObject.code);
     });
+
     console.log(user_settings.name + " is connected");
   });
 
@@ -241,7 +245,9 @@ io.on('connection', function(client) {
     user_settings.glass_fill_time = settings.glass_fill_time;
     user_settings.weight_lbs = settings.weight_lbs;
 
-    console.log("==> settings = " + settings);
+    console.log("New settings glass_ounces ===> " + settings.glass_ounces);
+    console.log("New settings glass_fill_time ===> " + settings.glass_fill_time);
+    console.log("New settings weight_lbs ===> " + settings.weight_lbs);
   });
 
   client.on('disconnect', function(name) {
@@ -250,7 +256,7 @@ io.on('connection', function(client) {
 
   client.on('voice_command', function(voice_command) {
     client.emit('voice_cmd_response',
-      executeCommand(getReceivedCommand(user_settings, "autofill")));
+      executeCommand(getReceivedCommand(voice_command)));
   });
 });
 
