@@ -15,9 +15,9 @@
     var myDataRef = new Firebase('https//glaring-torch-9647.firebaseio.com');
 
     var socket = io.connect('http://10.10.4.108:8080');
-    myDataRef.child('server').once("value", function(data) {
-      socket = io.connect('http://' + data.val().server_ip + ':8080');
-    });
+    // myDataRef.child('server').once("value", function(data) {
+    //   socket = io.connect('http://' + data.val().server_ip + ':8080');
+    // });
 
     var start_timestamp;
     var final_transcript = '';
