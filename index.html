@@ -73,10 +73,19 @@
 		<div class="app-topbar">
 			<div class="app-title">FIX OF WATER</div>
 		</div>
-		<div class="app-content">
+		<div class="app-content" id="CommandPage">
 
+			<h2>Tap &amp; Hold</h2>
+
+			<div id="cFeedback" class="ope">
+				...
+			</div>
 
 			<div id="command-btn"></div>
+
+			<div id="light_toggle">
+				<a href="#" class="toggle toggle--on"></a>
+			</div>
 
 			<div class="app-bottombar">
 				<div class="app-button nav-home"><i class="fa fa-home fa-2x"></i></div>
@@ -125,8 +134,8 @@
 
 		// Get the data! Create a new User Data object.
 		var myDataRef = new Firebase('https//glaring-torch-9647.firebaseio.com');
-		var socket = io.connect('http://10.10.4.108:8080');
-		// var socket = io.connect('http://localhost:8080');
+		// var socket = io.connect('http://10.10.4.108:8080');
+		var socket = io.connect('http://localhost:8080');
 		// myDataRef.child('server').once("value", function(data) {
 			//socket = io.connect('http://' + data.val().server_ip + ':8080');
 		// });

@@ -1,8 +1,125 @@
+#CommandPage{
+	h2{
+		text-align: center;
+		display: block;
+		font-size: 2em;
+		margin-top: 30px;
+	}
+}
+
 #command-btn{
 	display: block;
 	position: relative;
-	width: 80%;
-	height: 60%;
+	width: 50px;
+	height: 50px;
 	margin: 0 auto;
-	background: red;
+	background: $black;
 }
+
+#light_toggle{
+}
+
+#cFeedback{
+	// display: block;
+	// //text-align: center;
+	// margin-bottom: 50px;
+}
+
+
+@import url(http://fonts.googleapis.com/css?family=Orbitron);
+
+@-webkit-keyframes typing { from { width: 0; } }
+@keyframes typing { from { width: 0; } }	
+
+@-webkit-keyframes blink-caret { 50%{ border-color: transparent; }}		
+@keyframes blink-caret { 50%{ border-color: transparent; } }
+
+#cFeedback { 
+	font: bold 200% Consolas, Monaco, monospace;
+	width: 16.5em; /* fallback */
+	// width: 16ch; /* # of chars */
+	width: auto; /* # of chars */
+	max-width: 0; /* # of chars */
+	text-align:center;
+	margin: 2em 1em;
+	white-space: nowrap;
+	overflow: hidden;
+	font-family: 'Orbitron', sans-serif;
+}
+
+#cFeedback.open { 	
+	max-width: 16ch;
+	border-right: .1em solid;
+	-webkit-animation:.5s blink-caret step-end infinite , typing 4s steps(12,end);/*,  # of steps = # of chars */
+	animation:.5s blink-caret step-end infinite , typing 4s steps(12,end);/*,  # of steps = # of chars */
+}
+
+
+
+// Light Toggle
+.toggle {
+  position: relative;
+  display: block;
+  margin: 0 auto;
+  width: 150px;
+  height: 60px;
+  color: white;
+  outline: 0;
+  text-decoration: none;
+  border-radius: 100px;
+  border: 2px solid #546E7A;
+  background-color: #263238;
+  transition: all 500ms;
+  &:active {
+    background-color: darken(#263238, 5%);
+  }
+  &:hover:not(.toggle--moving) {
+    &:after {
+      background-color: #455A64;
+    }
+  }
+  &:after {
+    display: block;
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    line-height: 45px;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 20px;
+    color: white;
+    background-color: #37474F;
+    border: 2px solid;
+    transition: all 500ms; 
+  }
+}
+.toggle--on {
+  &:after {
+    content: 'On';
+    border-radius: 50px 5px 5px 50px;
+    color: #66BB6A;
+  }
+}
+.toggle--off {
+  &:after {
+    content: 'Off';
+    border-radius: 5px 50px 50px 5px;
+    transform: translate(100%, 0);
+    color: #f44336;
+  }
+}
+.toggle--moving {
+  background-color: darken(#263238, 5%);
+  &:after {
+    color: transparent;
+    border-color: darken(#546E7A, 8%);
+    background-color: darken(#37474F, 10%);
+    transition: color 0s,
+                transform 500ms,
+                border-radius 500ms,          
+                background-color 500ms;
+  }
+}
+

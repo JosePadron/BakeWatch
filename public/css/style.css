@@ -3,6 +3,7 @@
    License: none (public domain)
 */
 @import url("http://fonts.googleapis.com/css?family=Lato:300,400");
+@import url(http://fonts.googleapis.com/css?family=Orbitron);
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -85,6 +86,7 @@ body:before {
 }
 .app-topbar .app-title {
   font-size: 2em;
+  background: rgba(33, 32, 34, 0.2);
 }
 
 .app-page {
@@ -108,9 +110,9 @@ body:before {
   position: relative;
   text-align: center;
   border-radius: 30px;
-  background: #6cb4d9;
-  border: white 3px solid;
-  color: white;
+  background: #6CB4D9;
+  border: #ffffff 3px solid;
+  color: #ffffff;
   text-transform: uppercase;
 }
 
@@ -122,9 +124,9 @@ body:before {
   right: 0;
   text-align: center;
   padding: 0px 15px;
-  background: white;
-  background: -webkit-linear-gradient(legacy-direction(to bottom), white, #e6e6e6);
-  background: linear-gradient(to bottom, white, #e6e6e6);
+  background: #ffffff;
+  background: -webkit-linear-gradient(legacy-direction(to bottom), #ffffff, #e6e6e6);
+  background: linear-gradient(to bottom, #ffffff, #e6e6e6);
 }
 .app-bottombar .app-button {
   width: 33%;
@@ -135,7 +137,7 @@ body:before {
 }
 
 #app-login h1, #settings-page h1 {
-  color: white;
+  color: #ffffff;
   font-size: 3em;
   text-align: left;
 }
@@ -172,8 +174,8 @@ body:before {
   background: rgba(33, 32, 34, 0.3);
   font-size: 0.8em;
   box-shadow: none;
-  border: white 0px solid;
-  color: white;
+  border: #ffffff 0px solid;
+  color: #ffffff;
   text-transform: uppercase;
 }
 #app-login form input[type="text"]::-webkit-input-placeholder,
@@ -181,7 +183,7 @@ body:before {
 #app-login form input[type="password"]::-webkit-input-placeholder, #settings-page form input[type="text"]::-webkit-input-placeholder,
 #settings-page form input[type="username"]::-webkit-input-placeholder,
 #settings-page form input[type="password"]::-webkit-input-placeholder {
-  color: white;
+  color: #ffffff;
 }
 #app-login form input[type="password"]:before, #settings-page form input[type="password"]:before {
   content: "";
@@ -200,8 +202,8 @@ body:before {
   border: none;
   border-radius: 0px;
   background: none;
-  color: white;
-  border: white solid 2px;
+  color: #ffffff;
+  border: #ffffff solid 2px;
   padding: 20px 0px;
   display: block;
   text-transform: uppercase;
@@ -209,13 +211,124 @@ body:before {
   font-size: 0.8em;
 }
 
+#CommandPage h2 {
+  text-align: center;
+  display: block;
+  font-size: 2em;
+  margin-top: 30px;
+}
+
 #command-btn {
   display: block;
   position: relative;
-  width: 80%;
-  height: 60%;
+  width: 50px;
+  height: 50px;
   margin: 0 auto;
-  background: red;
+  background: #212022;
+}
+
+@-webkit-keyframes typing {
+  from {
+    width: 0;
+  }
+}
+@keyframes typing {
+  from {
+    width: 0;
+  }
+}
+@-webkit-keyframes blink-caret {
+  50% {
+    border-color: transparent;
+  }
+}
+@keyframes blink-caret {
+  50% {
+    border-color: transparent;
+  }
+}
+#cFeedback {
+  font: bold 200% Consolas, Monaco, monospace;
+  width: 16.5em;
+  /* fallback */
+  width: auto;
+  /* # of chars */
+  max-width: 0;
+  /* # of chars */
+  text-align: center;
+  margin: 2em 1em;
+  white-space: nowrap;
+  overflow: hidden;
+  font-family: 'Orbitron', sans-serif;
+}
+
+#cFeedback.open {
+  max-width: 16ch;
+  border-right: .1em solid;
+  -webkit-animation: 0.5s blink-caret step-end infinite, typing 4s steps(12, end);
+  /*,  # of steps = # of chars */
+  animation: 0.5s blink-caret step-end infinite, typing 4s steps(12, end);
+  /*,  # of steps = # of chars */
+}
+
+.toggle {
+  position: relative;
+  display: block;
+  margin: 0 auto;
+  width: 150px;
+  height: 60px;
+  color: white;
+  outline: 0;
+  text-decoration: none;
+  border-radius: 100px;
+  border: 2px solid #546E7A;
+  background-color: #263238;
+  transition: all 500ms;
+}
+.toggle:active {
+  background-color: #1c2429;
+}
+.toggle:hover:not(.toggle--moving):after {
+  background-color: #455A64;
+}
+.toggle:after {
+  display: block;
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  line-height: 45px;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 20px;
+  color: white;
+  background-color: #37474F;
+  border: 2px solid;
+  transition: all 500ms;
+}
+
+.toggle--on:after {
+  content: 'On';
+  border-radius: 50px 5px 5px 50px;
+  color: #66BB6A;
+}
+
+.toggle--off:after {
+  content: 'Off';
+  border-radius: 5px 50px 50px 5px;
+  transform: translate(100%, 0);
+  color: #f44336;
+}
+
+.toggle--moving {
+  background-color: #1c2429;
+}
+.toggle--moving:after {
+  color: transparent;
+  border-color: #435862;
+  background-color: #222c31;
+  transition: color 0s, transform 500ms, border-radius 500ms,           background-color 500ms;
 }
 
 .btngroup {
@@ -230,9 +343,9 @@ body:before {
   letter-spacing: .1em;
   text-decoration: none;
   text-transform: uppercase;
-  background: white;
+  background: #ffffff;
   color: #212022;
-  border: 2px solid white;
+  border: 2px solid #ffffff;
   border-left-width: 2px;
   display: inline-block;
   padding: 0.3em 1.0em;
@@ -246,16 +359,16 @@ body:before {
   border-radius: 0 2em 2em 0;
 }
 .btngroup--btn:visted {
-  background: white;
+  background: #ffffff;
   color: #212022;
 }
 .btngroup--btn:hover {
   background: transparent;
-  color: white;
+  color: #ffffff;
 }
 .btngroup--btn:active {
   background: transparent;
-  color: white;
+  color: #ffffff;
 }
 
 .chart {
@@ -332,7 +445,7 @@ body:before {
   margin-top: 20px;
   font-size: 0.5em;
   text-align: center;
-  color: white;
+  color: #ffffff;
 }
 
 #settings-page .centered {
@@ -355,12 +468,12 @@ body:before {
   background: rgba(33, 32, 34, 0.3);
   font-size: 0.8em;
   box-shadow: none;
-  border: white 0px solid;
-  color: white;
+  border: #ffffff 0px solid;
+  color: #ffffff;
   text-transform: uppercase;
 }
 #settings-page form input[type="text"]::-webkit-input-placeholder {
-  color: white;
+  color: #ffffff;
 }
 #settings-page form input[type="submit"] {
   appearance: none;
@@ -368,11 +481,13 @@ body:before {
   border: none;
   border-radius: 0px;
   background: none;
-  color: white;
-  border: white solid 2px;
+  color: #ffffff;
+  border: #ffffff solid 2px;
   padding: 20px 0px;
   display: block;
   text-transform: uppercase;
   width: 100%;
   font-size: 0.8em;
 }
+
+/*# sourceMappingURL=style.css.map */

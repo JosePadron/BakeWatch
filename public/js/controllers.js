@@ -171,6 +171,7 @@ App.controller('CommandPage', function(page){
 			console.log( final_transcript );
 
 			// TODO: SEND IT TO SERVER!
+			$(page).find('#cFeedback').addClass('open').html( final_transcript );
 			socket.emit('voice_command', final_transcript);
 		}; // On Result
 
@@ -216,6 +217,22 @@ App.controller('CommandPage', function(page){
 
 		$(page).on("click", "#command-btn", function(){
 			updateVoiceRecognition(event);
+			// jQuery('h1').addClass('open').html('Light On');
+			jQuery(page).find("#cFeedback").removeClass('open').html("Recording...");
+		});
+
+		$(page).on("click", ".toggle", function(e) {
+			var toggle = this;
+
+			e.preventDefault();
+
+			$(toggle).toggleClass('toggle--on')
+			.toggleClass('toggle--off')
+			.addClass('toggle--moving');
+
+			setTimeout(function() {
+				$(toggle).removeClass('toggle--moving');
+			}, 200)
 		});
 
     } // Is Supported.
@@ -322,8 +339,8 @@ App.controller('Settings', function(page){
 
 // Try to keep the app in current state when page refreshes.
 try{
-	App.load('Home');
+	App.load('CommandPage');
 	//App.restore();
 } catch (error){
-	App.load('Home');
+	App.load('CommandPage');
 }
