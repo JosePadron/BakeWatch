@@ -19,6 +19,8 @@ var INDEX_SECOND_CMD_OR_OUNCES = 1;
 var LIGHT = "light";
 var ON = 1;
 var OFF = 0;
+var ON_TXT = "on";
+var OFF_TXT = "off";
 var AUTOFILL = "autofill";
 var DISPENSE = "dispense";
 var STOP = "stop";
@@ -177,8 +179,8 @@ var commands_table = [
   [AUTOFILL, UNUSED, UNUSED, UNUSED, startAutofill],
   [DISPENSE, NUMBER, OUNCES, WATER, startAutofill],
   [STOP, UNUSED, UNUSED, UNUSED, stopDispensing],
-  [LIGHT, ON, UNUSED, UNUSED, turnLightOn],
-  [LIGHT, OFF, UNUSED, UNUSED, turnLightOff],
+  [LIGHT, ON_TXT, UNUSED, UNUSED, turnLightOn],
+  [LIGHT, OFF_TXT, UNUSED, UNUSED, turnLightOff],
 ]
 
 /*!
