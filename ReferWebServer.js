@@ -9,7 +9,7 @@ var myDataRef = new Firebase('https://glaring-torch-9647.firebaseio.com');
 var usersRef = myDataRef.child("Users");
 
 var mraa = require('mraa');
-var light = new mraa.Gpio(13); //TODO: change to relay port
+var light = new mraa.Gpio(3); //TODO: change to relay port
 light.dir(mraa.DIR_OUT);
 var light_state = 0;
 
