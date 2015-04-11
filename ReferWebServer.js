@@ -49,8 +49,8 @@ function updateLightState(new_state) {
   myDataRef.child("light").set({
     state: new_state
   });
-  light.write(light_state);
-  console.log("New light state ===> " + light_state);
+  light.write(new_state);
+  console.log("New light state ===> " + new_state);
 }
 
 function turnLightOn() {
