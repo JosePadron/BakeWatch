@@ -17,9 +17,7 @@
     var socket = io.connect('http://10.10.3.5:8080');
     myDataRef.child('server').once("value", function(data) {
       socket = io.connect('http://' + data.val().server_ip + ':8080');
-
     });
-
 
     var start_timestamp;
     var final_transcript = '';
