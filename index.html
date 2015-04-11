@@ -12,7 +12,14 @@
   <script src="http://code.jquery.com/jquery-2.1.3.js"></script>
 
   <script>
+    var myDataRef = new Firebase('https//glaring-torch-9647.firebaseio.com');
+    
     var socket = io.connect('http://10.10.3.5:8080');
+    myDataRef.child('server').once("value", function(data) {
+     socket = io.connect('http://' + data.val().server_ip + ':8080');
+
+});
+
 
     var start_timestamp;
     var final_transcript = '';
@@ -133,6 +140,7 @@
     function showErrorInfo(info) {
       $("#error").html("Error: " + info);
     }
+
   </script>
 
 

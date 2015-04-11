@@ -11,6 +11,7 @@ var usersRef = myDataRef.child("Users");
 var INDEX_PRIMARY_CMD = 0;
 var INDEX_SECOND_CMD_OR_OUNCES = 1;
 
+var AUTOFILL = "autofill";
 var DISPENSE = "dispense";
 var STOP = "stop";
 var WATER = "water";
@@ -70,6 +71,7 @@ function ip_address(interface) {
     })
     .shift();
 }
+
 
 var sendCommandToDispenseWater = function() {
   refrigerator.dispenseColdWater();
@@ -217,7 +219,7 @@ var commands_table = [
   }
 
   //TODO Enable later
-myDataRef.set({
+myDataRef.child("server").set({
   server_ip: ip_address('wlan0')
 });
 
