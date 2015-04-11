@@ -24,8 +24,8 @@ var disp_time_ms = 0;
 var autofillTimeoutId;
 
 //TODO Enable later
-//var greenBean = require("green-bean");
-//var refrigerator;
+var greenBean = require("green-bean");
+var refrigerator;
 
 var user_settings = {
   name: "Default",
@@ -59,7 +59,7 @@ function getDateTime() {
 }
 
 var sendCommandToDispenseWater = function() {
-  //refrigerator.dispenseColdWater();
+  refrigerator.dispenseColdWater();
   clearTimeout(autofillTimeoutId);
   console.log("Start dispensing water.");
 };
@@ -80,7 +80,7 @@ var startDispensingWater = function() {
  * Function to start dispensing cubed.
  */
 var startDispensingCubed = function() {
-  //refrigerator.dispenseCubed();
+  refrigerator.dispenseCubed();
   usersRef.child(user_settings.name).child("consumption").push({
     type: 'cubes',
     timestamp: getDateTime(),
@@ -94,7 +94,7 @@ var startDispensingCubed = function() {
  * Function to start dispensing crushed.
  */
 var startDispensingCrushed = function() {
-  //refrigerator.dispenseCrushed();
+  refrigerator.dispenseCrushed();
   usersRef.child(user_settings.name).child("consumption").push({
     type: 'crushes',
     timestamp: getDateTime(),
@@ -108,7 +108,7 @@ var startDispensingCrushed = function() {
  * Function to stop dispensing.
  */
 var stopDispensing = function() {
-  //refrigerator.dispenseStop();
+  refrigerator.dispenseStop();
   clearTimeout(autofillTimeoutId);
   console.log("Stop dispensing.");
 };
@@ -170,7 +170,8 @@ var commands_table = [
     else if ((numberOfSections > INDEX_SECOND_CMD_OR_OUNCES) &&
       (!isNaN(parseInt(rcvd_voice_cmd[INDEX_SECOND_CMD_OR_OUNCES], 10)))) {
       disp_ounces = parseInt(rcvd_voice_cmd[INDEX_SECOND_CMD_OR_OUNCES], 10);
-      disp_time_ms = disp_ounces * (user_settings.glass_ounces / user_settings.glass_fill_time);
+      disp_time_ms = disp_ounces * user_settings.glass_fill_time / user_settings.glass_ounces;
+      console.log("--> Dispense time: " + disp_time_ms);
       rcvd_voice_cmd[INDEX_SECOND_CMD_OR_OUNCES] = NUMBER;
     }
     return rcvd_voice_cmd;
@@ -203,8 +204,9 @@ var commands_table = [
   }
 
   //TODO Enable later
-  //greenBean.connect("refrigerator", function(refrigerator) {
-  //console.log("========> Refrigerator connected");
+  greenBean.connect("refrigerator", function(refer) {
+  console.log("========> Refrigerator connected");
+  refrigerator = refer;
 io.on('connection', function(client) {
   client.on('join', function(user_info) {
     console.log("Username ===> " + user_info.name);
@@ -261,7 +263,7 @@ io.on('connection', function(client) {
 });
 
 //TODO Enable later
-//});
+});
 
 app.get('/', function(req, res) {
   res.sendFile(__dirname + '/index.html');
