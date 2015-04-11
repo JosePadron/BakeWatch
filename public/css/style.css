@@ -108,9 +108,9 @@ body:before {
   position: relative;
   text-align: center;
   border-radius: 30px;
-  background: #6cb4d9;
-  border: white 3px solid;
-  color: white;
+  background: #6CB4D9;
+  border: #ffffff 3px solid;
+  color: #ffffff;
   text-transform: uppercase;
 }
 
@@ -122,9 +122,9 @@ body:before {
   right: 0;
   text-align: center;
   padding: 0px 15px;
-  background: white;
-  background: -webkit-linear-gradient(legacy-direction(to bottom), white, #e6e6e6);
-  background: linear-gradient(to bottom, white, #e6e6e6);
+  background: #ffffff;
+  background: -webkit-linear-gradient(legacy-direction(to bottom), #ffffff, #e6e6e6);
+  background: linear-gradient(to bottom, #ffffff, #e6e6e6);
 }
 .app-bottombar .app-button {
   width: 33%;
@@ -209,6 +209,15 @@ body:before {
   font-size: 0.8em;
 }
 
+#command-btn {
+  display: block;
+  position: relative;
+  width: 80%;
+  height: 60%;
+  margin: 0 auto;
+  background: red;
+}
+
 .btngroup {
   font-size: 0;
   line-height: 1;
@@ -221,9 +230,9 @@ body:before {
   letter-spacing: .1em;
   text-decoration: none;
   text-transform: uppercase;
-  background: white;
+  background: #ffffff;
   color: #212022;
-  border: 2px solid white;
+  border: 2px solid #ffffff;
   border-left-width: 2px;
   display: inline-block;
   padding: 0.3em 1.0em;
@@ -237,16 +246,16 @@ body:before {
   border-radius: 0 2em 2em 0;
 }
 .btngroup--btn:visted {
-  background: white;
+  background: #ffffff;
   color: #212022;
 }
 .btngroup--btn:hover {
   background: transparent;
-  color: white;
+  color: #ffffff;
 }
 .btngroup--btn:active {
   background: transparent;
-  color: white;
+  color: #ffffff;
 }
 
 .chart {
@@ -367,3 +376,5 @@ body:before {
   width: 100%;
   font-size: 0.8em;
 }
+
+/*# sourceMappingURL=style.css.map */

@@ -5,8 +5,11 @@ var socket = io.connect('http://localhost:8080');
     var voiceRecognitionRunning = false;
 
     if (!('webkitSpeechRecognition' in window)) {
+    
       showErrorInfo('not_supported');
+    
     } else {
+
       var recognition = new webkitSpeechRecognition();
       recognition.continuous = false;
       recognition.interimResults = false;
@@ -110,9 +113,13 @@ var socket = io.connect('http://localhost:8080');
 
     function updateVoiceRecognition(event) {
       if (!voiceRecognitionRunning) {
+        
         startVoiceRecognition(event);
+      
       } else {
+
         stopVoiceRecognition(event);
+      
       }
     }
 
