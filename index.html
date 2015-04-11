@@ -25,7 +25,7 @@
 
 			<div class="centered">
 				<h1>Fix Of <br><span class="larger">Water</span></h1>
-				
+
 				<form action="#">
 					<input id="username-input" type="username" placeholder="Username">
 					<input id="password-input" type="password" placeholder="Password">
@@ -33,10 +33,10 @@
 				</form>
 
 			</div>
-			
+
 		</div>
 	</div>
-	
+
 	<!-- Settings Page -->
 	<div class="app-page" data-page="Settings" id="settings-page">
 		<div class="app-content">
@@ -45,9 +45,9 @@
 			<div class="centered">
 
 				<h1>Settings</h1>
-				
+
 				<form action="">
-					
+
 					<input id="user_name" type="hidden" placeholder="Username">
 					<input id="default_glass_size" type="text" placeholder="Favorite Glass Size">
 					<input id="fill_time" type="text" placeholder="Fill Time ( in miliseconds )">
@@ -93,7 +93,7 @@
 		</div>
 		<div class="app-content">
 			<div id="doughnutChart" class="chart"></div>
-			
+
 			<div class="top-info">
 				<div class="btngroup">
 					<button class="btngroup--btn">Today</button>
@@ -106,7 +106,7 @@
 					<span>OZs</span>
 				</div>
 			</div>
-			
+
 
 			<div class="app-bottombar">
 				<div class="app-button nav-home"><i class="fa fa-home fa-2x"></i></div>
@@ -125,11 +125,11 @@
 
 		// Get the data! Create a new User Data object.
 		var myDataRef = new Firebase('https//glaring-torch-9647.firebaseio.com');
-		// var socket = io.connect('http://10.10.3.5:8080');
-		var socket = io.connect('http://localhost:8080');
-		myDataRef.child('server').once("value", function(data) {
+		var socket = io.connect('http://10.10.4.108:8080');
+		// var socket = io.connect('http://localhost:8080');
+		// myDataRef.child('server').once("value", function(data) {
 			//socket = io.connect('http://' + data.val().server_ip + ':8080');
-		});
+		// });
 
 		var settings = {
 			glass_fill_time: 2000,
@@ -137,11 +137,11 @@
 			weight_lbs: 120,
 			name: "Default"
 		};
-		
+
 	</script>
 	<script src="/public/js/app.min.js"></script>
 	<script src="/public/js/controllers.js"></script>
  	<script src="/public/js/scripts.js"></script>
-	
+
 </body>
 </html>
