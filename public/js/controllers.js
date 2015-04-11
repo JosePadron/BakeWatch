@@ -38,6 +38,11 @@ App.controller('Home', function(page){
 						// Send User to Command Page.
 					});
 
+					user_info = {
+						name: username,
+						password: password
+					}
+
 					socket.emit('join', user_info);
 					
 					// Success, Log In.
@@ -46,13 +51,15 @@ App.controller('Home', function(page){
 				}else{
 					console.log('You entered ' + password + ' but the password was ' + allUserData.child('password').val() )
 					
-					App.load("Settings", "slide-up");
+					
 					user_info = {
 						name: username,
 						password: password
 					}
-					// TODO: Send User Object
+
 					socket.emit('join', user_info);
+					
+					App.load("Settings", "slide-up");
 				}
 
             }); // myDataRef.Child(Users)...
@@ -61,8 +68,8 @@ App.controller('Home', function(page){
 
 	// Bottom Bar Navigation.
 	$(page).on('click', '.app-bottombar .nav-home', function(){
-		App.load('Home', "fade");
-		console.log("Navigate To Home");
+		App.load('CommandPage', "fade");
+		console.log("Navigate To CommandPage");
 	});
 
 	$(page).on('click', '.app-bottombar .nav-statsPage', function(){
@@ -81,7 +88,7 @@ App.controller('Home', function(page){
 /************** COMMAND PAGE *****************/
 App.controller('CommandPage', function(page){
 
-	$(page).find(".app-title").html( userData.key() + " Logged In. " );
+	//$(page).find(".app-title").html( userData.key() + " Logged In. " );
 
 
 	var start_timestamp;
@@ -205,26 +212,7 @@ App.controller('CommandPage', function(page){
 			showErrorInfo((result) ? "Successful Command" : "Invalid command!");
 		});
 
-
-
-
 		/*************** PAGE INTERACTIONS *****************/
-		// $(page).on("vmousedown", "#command-btn", function(){
-		// 	voiceRecognitionRunning = true;
-		// 	// While Holding
-		// 	$(this).css({"background": "green"});
-		// 	$(this).html("VR Running:  " + voiceRecognitionRunning);
-		// 	updateVoiceRecognition(event);
-
-		// }).on("vmouseup", "#command-btn", function(){
-		// 	voiceRecognitionRunning = false;
-		// 	updateVoiceRecognition(event);
-		// 	// When Done Holding.
-		// 	$(this).css({"background": "red"});
-		// 	$(this).html("VR Running:  " + voiceRecognitionRunning);
-		
-		// });
-
 
 		$(page).on("click", "#command-btn", function(){
 			updateVoiceRecognition(event);
@@ -232,12 +220,10 @@ App.controller('CommandPage', function(page){
 
     } // Is Supported.
 
-
-
 	/************* BOTTOM NAV BAR ****************/
 	$(page).on('click', '.app-bottombar .nav-home', function(){
-		App.load('Home', "fade");
-		console.log("Navigate To Home");
+		//App.load('CommandPage', "fade");
+		console.log("Navigate To CommandPage");
 	});
 
 	$(page).on('click', '.app-bottombar .nav-statsPage', function(){
@@ -256,13 +242,15 @@ App.controller('CommandPage', function(page){
 /*********** STATS PAGE ****************/
 App.controller('StatsPage', function(page){
 	
+	// TODO: Display Relevant User Data.
+
 	$(page).on('click', '.app-bottombar .nav-home', function(){
-		App.load('Home', "fade");
-		console.log("Navigate To Home");
+		App.load('CommandPage', "fade");
+		console.log("Navigate To CommandPage");
 	});
 
 	$(page).on('click', '.app-bottombar .nav-statsPage', function(){
-		App.load('StatsPage', "fade");
+		//App.load('StatsPage', "fade");
 		console.log("Navigate To Stats Page");
 	});
 
@@ -277,6 +265,13 @@ App.controller('StatsPage', function(page){
 App.controller('Settings', function(page){
 
 	// TODO: Auto Populate Form
+	//console.dir(settings);
+	// var username = userData.key();
+	// myDataRef.child('Users').child(username).once('value', function(allUserData) {
+	// 	var stuff = allUserData.child("settings");
+	// 	console.dir(stuff);
+	// });
+
 
 	$(page).on("click", "#save-settings-btn" ,function(){
 		
@@ -286,13 +281,11 @@ App.controller('Settings', function(page){
 		var fillTime = $(page).find("#fill_time").val();
 		
 		settings = {
-
 			glass_ounces: defaultGlassSize,
 			glass_fill_time: fillTime,
 			weight_lbs: user_weight
 		}
 
-		console.dir( settings );
 		// Recommended OZs Per Day.
 		var roz = user_weight * 0.5;
 		// Recommended (8oz) Glasses Per Day.
@@ -300,14 +293,20 @@ App.controller('Settings', function(page){
 
 		console.log( roz + " oz of fluid or " + glasses + " 8oz glasses." );
 		
+		
 		// TODO: Emit Settings to Server.
 		socket.emit('settings', settings);
-		return false
+
+		
+		App.load("CommandPage");		
+		
+		return false;
+		
 	});
 	
 	$(page).on('click', '.app-bottombar .nav-home', function(){
-		App.load('Home', "slide-down");
-		console.log("Navigate To Home");
+		App.load('CommandPage', "slide-down");
+		console.log("Navigate To CommandPage");
 	});
 
 	$(page).on('click', '.app-bottombar .nav-statsPage', function(){
@@ -316,7 +315,7 @@ App.controller('Settings', function(page){
 	});
 
 	$(page).on('click', '.app-bottombar .nav-settings', function(){
-		App.load('Settings', "slide-down");
+		//App.load('Settings', "slide-down");
 		console.log("Navigate to Settings");
 	});
 });
