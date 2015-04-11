@@ -16,9 +16,9 @@ App.controller('Home', function(page){
 
             var username = $('#username-input').val();
             var password = $('#password-input').val();
-            
+
             myDataRef.child('Users').child(username).once('value', function(allUserData) {
-              
+
 				if( allUserData.child('password').val() == password ){
 					console.log('Successful Login');
 					userData = allUserData;
@@ -44,21 +44,21 @@ App.controller('Home', function(page){
 					}
 
 					socket.emit('join', user_info);
-					
+
 					// Success, Log In.
 					App.load("CommandPage", "fade");
 
 				}else{
 					console.log('You entered ' + password + ' but the password was ' + allUserData.child('password').val() )
-					
-					
+
+
 					user_info = {
 						name: username,
 						password: password
 					}
 
 					socket.emit('join', user_info);
-					
+
 					App.load("Settings", "slide-up");
 				}
 
@@ -147,7 +147,7 @@ App.controller('CommandPage', function(page){
 
 		recognition.onresult = function(event) {
 			var interim_transcript = '';
-			
+
 			// If nothing comes back.
 			if (typeof(event.results) == 'undefined') {
 				recognition.onend = null;
@@ -265,7 +265,7 @@ App.controller('CommandPage', function(page){
 
 /*********** STATS PAGE ****************/
 App.controller('StatsPage', function(page){
-	
+
 	// TODO: Display Relevant User Data.
 
 	$(page).on('click', '.app-bottombar .nav-home', function(){
@@ -298,12 +298,12 @@ App.controller('Settings', function(page){
 
 
 	$(page).on("click", "#save-settings-btn" ,function(){
-		
+
 		//var user_name = $(page).find("#user_name").val();
 		var user_weight = $(page).find("#user_weight").val();
 		var defaultGlassSize = $(page).find("#default_glass_size").val();
 		var fillTime = $(page).find("#fill_time").val();
-		
+
 		settings = {
 			glass_ounces: defaultGlassSize,
 			glass_fill_time: fillTime,
@@ -316,18 +316,18 @@ App.controller('Settings', function(page){
 		var glasses = roz / 8;
 
 		console.log( roz + " oz of fluid or " + glasses + " 8oz glasses." );
-		
-		
+
+
 		// TODO: Emit Settings to Server.
 		socket.emit('settings', settings);
 
-		
-		App.load("CommandPage");		
-		
+
+		App.load("CommandPage");
+
 		return false;
-		
+
 	});
-	
+
 	$(page).on('click', '.app-bottombar .nav-home', function(){
 		App.load('CommandPage', "slide-down");
 		console.log("Navigate To CommandPage");
@@ -346,8 +346,8 @@ App.controller('Settings', function(page){
 
 // Try to keep the app in current state when page refreshes.
 try{
-	App.load('CommandPage');
+	App.load('Home');
 	//App.restore();
 } catch (error){
-	App.load('CommandPage');
+	App.load('Home');
 }

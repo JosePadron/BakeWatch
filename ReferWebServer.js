@@ -34,7 +34,6 @@ var disp_ounces = 0;
 var disp_time_ms = 0;
 var autofillTimeoutId;
 
-
 var greenBean = require("green-bean");
 var refrigerator;
 
