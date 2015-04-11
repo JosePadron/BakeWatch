@@ -4,17 +4,20 @@
 *
 */
 
+
+/***************** LOGIN PAGE *******************/
 App.controller('Home', function(page){
 
 	$(page).find('#username-input').val("alex");
     $(page).find('#password-input').val("123");
+    var user_info = {};
 
 	$(page).on('click', 'input[type="submit"]', function(){
 
             var username = $('#username-input').val();
             var password = $('#password-input').val();
             
-            fixData.child('Users').child(username).once('value', function(allUserData) {
+            myDataRef.child('Users').child(username).once('value', function(allUserData) {
               
 				if( allUserData.child('password').val() == password ){
 					console.log('Successful Login');
@@ -35,16 +38,24 @@ App.controller('Home', function(page){
 						// Send User to Command Page.
 					});
 
+					socket.emit('join', user_info);
+					
 					// Success, Log In.
 					App.load("CommandPage", "fade");
 
 				}else{
 					console.log('You entered ' + password + ' but the password was ' + allUserData.child('password').val() )
-				
-					//socket.emit('join', username);
+					
+					App.load("Settings", "slide-up");
+					user_info = {
+						name: username,
+						password: password
+					}
+					// TODO: Send User Object
+					socket.emit('join', user_info);
 				}
 
-            }); // FixData.Child(Users)...
+            }); // myDataRef.Child(Users)...
     }); //On Click Event.
 
 
@@ -67,28 +78,11 @@ App.controller('Home', function(page){
 }); // App Controller.
 
 
-
+/************** COMMAND PAGE *****************/
 App.controller('CommandPage', function(page){
 
 	$(page).find(".app-title").html( userData.key() + " Logged In. " );
 
-
-	/*************** PAGE INTERACTIONS *****************/
-	// $(page).on("vmousedown", "#command-btn", function(){
-	// 	voiceRecognitionRunning = true;
-	// 	// While Holding
-	// 	$(this).css({"background": "green"});
-	// 	$(this).html("VR Running:  " + voiceRecognitionRunning);
-	// 	updateVoiceRecognition(event);
-
-	// }).on("vmouseup", "#command-btn", function(){
-	// 	voiceRecognitionRunning = false;
-	// 	updateVoiceRecognition(event);
-	// 	// When Done Holding.
-	// 	$(this).css({"background": "red"});
-	// 	$(this).html("VR Running:  " + voiceRecognitionRunning);
-	
-	// });
 
 	var start_timestamp;
 	var final_transcript = '';
@@ -127,7 +121,7 @@ App.controller('CommandPage', function(page){
 
 	function showErrorInfo(info) {
 		console.log("Error: " + info);
-		alert("Error: " + info);
+		//alert("Error: " + info);
 		//$("#error").html("Error: " + info);
 	}
 
@@ -147,12 +141,14 @@ App.controller('CommandPage', function(page){
 		recognition.onresult = function(event) {
 			var interim_transcript = '';
 			
+			// If nothing comes back.
 			if (typeof(event.results) == 'undefined') {
 				recognition.onend = null;
 				stopVoiceRecognition();
 				return;
 			}
 
+			// Batch Together Transcript
 			for (var i = event.resultIndex; i < event.results.length; ++i) {
 				if (event.results[i].isFinal) {
 					final_transcript += event.results[i][0].transcript;
@@ -163,16 +159,18 @@ App.controller('CommandPage', function(page){
 
 			//$("#voice").append(final_transcript);
 			stopVoiceRecognition();
+
 			$(page).find("#command-btn").html( final_transcript );
 			console.log( final_transcript );
+
+			// TODO: SEND IT TO SERVER!
+			socket.emit('voice_command', final_transcript);
 		}; // On Result
 
 		recognition.onstart = function() {
 			voiceRecognitionRunning = true;
 			$(page).find("#command-btn").html('');
 			$(page).find("#command-btn").css({"background":"green"});
-			//$("#recognition_btn").html("Stop Recognition");
-			//$("#voice").html('');
 		}; // On Start
 
 		recognition.onend = function() {
@@ -203,13 +201,37 @@ App.controller('CommandPage', function(page){
 			stopVoiceRecognition();
 		}; // On Error
 
+		socket.on('voice_cmd_response', function(result) {
+			showErrorInfo((result) ? "Successful Command" : "Invalid command!");
+		});
+
+
+
+
+		/*************** PAGE INTERACTIONS *****************/
+		// $(page).on("vmousedown", "#command-btn", function(){
+		// 	voiceRecognitionRunning = true;
+		// 	// While Holding
+		// 	$(this).css({"background": "green"});
+		// 	$(this).html("VR Running:  " + voiceRecognitionRunning);
+		// 	updateVoiceRecognition(event);
+
+		// }).on("vmouseup", "#command-btn", function(){
+		// 	voiceRecognitionRunning = false;
+		// 	updateVoiceRecognition(event);
+		// 	// When Done Holding.
+		// 	$(this).css({"background": "red"});
+		// 	$(this).html("VR Running:  " + voiceRecognitionRunning);
+		
+		// });
+
+
+		$(page).on("click", "#command-btn", function(){
+			updateVoiceRecognition(event);
+		});
 
     } // Is Supported.
 
-
-	$(page).on("click", "#command-btn", function(){
-		updateVoiceRecognition(event);
-	});
 
 
 	/************* BOTTOM NAV BAR ****************/
@@ -231,6 +253,7 @@ App.controller('CommandPage', function(page){
 }); // APP CONTROLLER | APP COMMAND
 
 
+/*********** STATS PAGE ****************/
 App.controller('StatsPage', function(page){
 	
 	$(page).on('click', '.app-bottombar .nav-home', function(){
@@ -249,15 +272,36 @@ App.controller('StatsPage', function(page){
 	});
 });
 
+
+/*********** SETINGS PAGE *******************/
 App.controller('Settings', function(page){
+
+	// TODO: Auto Populate Form
 
 	$(page).on("click", "#save-settings-btn" ,function(){
 		
-		var weight = $("#user_weight").val();
-		var roz = weight * 0.5;
-		var glasses = roz / 8;
-		console.log( roz + " oz of fluid or " + glasses + " 8oz glasses." );
+		//var user_name = $(page).find("#user_name").val();
+		var user_weight = $(page).find("#user_weight").val();
+		var defaultGlassSize = $(page).find("#default_glass_size").val();
+		var fillTime = $(page).find("#fill_time").val();
+		
+		settings = {
 
+			glass_ounces: defaultGlassSize,
+			glass_fill_time: fillTime,
+			weight_lbs: user_weight
+		}
+
+		console.dir( settings );
+		// Recommended OZs Per Day.
+		var roz = user_weight * 0.5;
+		// Recommended (8oz) Glasses Per Day.
+		var glasses = roz / 8;
+
+		console.log( roz + " oz of fluid or " + glasses + " 8oz glasses." );
+		
+		// TODO: Emit Settings to Server.
+		socket.emit('settings', settings);
 		return false
 	});
 	

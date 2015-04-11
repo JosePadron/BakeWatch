@@ -49,7 +49,7 @@
 				
 				<form action="">
 					
-					<input id="user_name" type="text" placeholder="Username">
+					<input id="user_name" type="hidden" placeholder="Username">
 					<input id="default_glass_size" type="text" placeholder="Favorite Glass Size">
 					<input id="fill_time" type="text" placeholder="Fill Time ( in miliseconds )">
 					<input id="user_weight" type="text" placeholder="User Weight ( For Scientific Purposes )">
@@ -125,8 +125,19 @@
 	<script>
 
 		// Get the data! Create a new User Data object.
-		var fixData = new Firebase('https://glaring-torch-9647.firebaseio.com');
-		var userData = {};
+		var myDataRef = new Firebase('https//glaring-torch-9647.firebaseio.com');
+		// var socket = io.connect('http://10.10.3.5:8080');
+		var socket = io.connect('http://localhost:8080');
+		myDataRef.child('server').once("value", function(data) {
+			//socket = io.connect('http://' + data.val().server_ip + ':8080');
+		});
+
+		var settings = {
+			glass_fill_time: 2000,
+			glass_ounces: 12,
+			weight_lbs: 120,
+			name: "Default"
+		};
 		
 	</script>
 	<script src="/public/js/app.min.js"></script>
