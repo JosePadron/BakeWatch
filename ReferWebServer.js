@@ -8,9 +8,17 @@ var os = require('os');
 var myDataRef = new Firebase('https://glaring-torch-9647.firebaseio.com');
 var usersRef = myDataRef.child("Users");
 
+var mraa = require('mraa');
+var light = new mraa.Gpio(13); //TODO: change to relay port
+light.dir(mraa.DIR_OUT);
+var light_state = 0;
+
 var INDEX_PRIMARY_CMD = 0;
 var INDEX_SECOND_CMD_OR_OUNCES = 1;
 
+var LIGHT = "light";
+var ON = 1;
+var OFF = 0;
 var AUTOFILL = "autofill";
 var DISPENSE = "dispense";
 var STOP = "stop";
@@ -24,7 +32,7 @@ var disp_ounces = 0;
 var disp_time_ms = 0;
 var autofillTimeoutId;
 
-//TODO Enable later
+//Green bean object
 var greenBean = require("green-bean");
 var refrigerator;
 
@@ -34,6 +42,22 @@ var user_settings = {
   glass_fill_time: 0,
   weight_lbs: 0,
 };
+
+function updateLightState(new_state) {
+  myDataRef.child("light").set({
+    state: new_state
+  });
+  light.write(light_state);
+  console.log("New light state ===> " + light_state);
+}
+
+function turnLightOn() {
+  updateLightState(ON);
+}
+
+function turnLightOff() {
+  updateLightState(OFF);
+}
 
 function getDateTime() {
 
@@ -71,7 +95,6 @@ function ip_address(interface) {
     })
     .shift();
 }
-
 
 var sendCommandToDispenseWater = function() {
   refrigerator.dispenseColdWater();
@@ -153,7 +176,9 @@ var commands_table = [
   [DISPENSE, CRUSHED, UNUSED, UNUSED, startDispensingCrushed],
   [AUTOFILL, UNUSED, UNUSED, UNUSED, startAutofill],
   [DISPENSE, NUMBER, OUNCES, WATER, startAutofill],
-  [STOP, UNUSED, UNUSED, UNUSED, stopDispensing]
+  [STOP, UNUSED, UNUSED, UNUSED, stopDispensing],
+  [LIGHT, ON, UNUSED, UNUSED, turnLightOn],
+  [LIGHT, OFF, UNUSED, UNUSED, turnLightOff],
 ]
 
 /*!
@@ -161,64 +186,64 @@ var commands_table = [
  * @param voice_command The received voice command.
  * @return The voice commands sections.
  */
-  function getReceivedCommand(voice_command) {
-    var rcvd_voice_cmd = [UNUSED, UNUSED, UNUSED, UNUSED];
-    var voice_command_sections = voice_command.split(" ");
-    var numberOfSections = voice_command_sections.length;
+function getReceivedCommand(voice_command) {
+  var rcvd_voice_cmd = [UNUSED, UNUSED, UNUSED, UNUSED];
+  var voice_command_sections = voice_command.split(" ");
+  var numberOfSections = voice_command_sections.length;
 
-    // Short message?
-    if (numberOfSections < 2) {
-      rcvd_voice_cmd[INDEX_PRIMARY_CMD] = voice_command;
-    } else {
-      for (var index = 0; index < numberOfSections; index++) {
-        rcvd_voice_cmd[index] = voice_command_sections[index];
-      }
+  // Short message?
+  if (numberOfSections < 2) {
+    rcvd_voice_cmd[INDEX_PRIMARY_CMD] = voice_command;
+  } else {
+    for (var index = 0; index < numberOfSections; index++) {
+      rcvd_voice_cmd[index] = voice_command_sections[index];
     }
-
-    // Autofill command?
-    if ((numberOfSections > INDEX_PRIMARY_CMD) &&
-      (AUTOFILL == rcvd_voice_cmd[INDEX_PRIMARY_CMD])) {
-      disp_ounces = user_settings.glass_ounces;
-      disp_time_ms = user_settings.glass_fill_time;
-      rcvd_voice_cmd[INDEX_SECOND_CMD_OR_OUNCES] = UNUSED;
-    } // Precise fill command
-    else if ((numberOfSections > INDEX_SECOND_CMD_OR_OUNCES) &&
-      (!isNaN(parseInt(rcvd_voice_cmd[INDEX_SECOND_CMD_OR_OUNCES], 10)))) {
-      disp_ounces = parseInt(rcvd_voice_cmd[INDEX_SECOND_CMD_OR_OUNCES], 10);
-      disp_time_ms = disp_ounces * user_settings.glass_fill_time / user_settings.glass_ounces;
-      console.log("--> Dispense time: " + disp_time_ms);
-      rcvd_voice_cmd[INDEX_SECOND_CMD_OR_OUNCES] = NUMBER;
-    }
-    return rcvd_voice_cmd;
   }
 
-  /*!
-   * Execute command a valid command.
-   * @param voice_command The voice command array.
-   * @return True if valid command; otherwise false;
-   */
-  function executeCommand(voice_command) {
-    var numberOfSections = commands_table[0].length - 1;
-    var numberOfCommands = commands_table.length;
-    var validSections;
+  // Autofill command?
+  if ((numberOfSections > INDEX_PRIMARY_CMD) &&
+    (AUTOFILL == rcvd_voice_cmd[INDEX_PRIMARY_CMD])) {
+    disp_ounces = user_settings.glass_ounces;
+    disp_time_ms = user_settings.glass_fill_time;
+    rcvd_voice_cmd[INDEX_SECOND_CMD_OR_OUNCES] = UNUSED;
+  } // Precise fill command
+  else if ((numberOfSections > INDEX_SECOND_CMD_OR_OUNCES) &&
+    (!isNaN(parseInt(rcvd_voice_cmd[INDEX_SECOND_CMD_OR_OUNCES], 10)))) {
+    disp_ounces = parseInt(rcvd_voice_cmd[INDEX_SECOND_CMD_OR_OUNCES], 10);
+    disp_time_ms = disp_ounces * user_settings.glass_fill_time / user_settings.glass_ounces;
+    console.log("--> Dispense time: " + disp_time_ms);
+    rcvd_voice_cmd[INDEX_SECOND_CMD_OR_OUNCES] = NUMBER;
+  }
+  return rcvd_voice_cmd;
+}
 
-    for (var cmd = 0; cmd < numberOfCommands; cmd++) {
-      validSections = 0;
-      for (var section = 0; section < numberOfSections; section++) {
-        if (voice_command[section] == commands_table[cmd][section]) {
-          validSections += 1;
-        }
-      }
-      if (validSections == numberOfSections) {
-        // Execute function
-        commands_table[cmd][numberOfSections]();
-        return true;
+/*!
+ * Execute command a valid command.
+ * @param voice_command The voice command array.
+ * @return True if valid command; otherwise false;
+ */
+function executeCommand(voice_command) {
+  var numberOfSections = commands_table[0].length - 1;
+  var numberOfCommands = commands_table.length;
+  var validSections;
+
+  for (var cmd = 0; cmd < numberOfCommands; cmd++) {
+    validSections = 0;
+    for (var section = 0; section < numberOfSections; section++) {
+      if (voice_command[section] == commands_table[cmd][section]) {
+        validSections += 1;
       }
     }
-    return false;
+    if (validSections == numberOfSections) {
+      // Execute function
+      commands_table[cmd][numberOfSections]();
+      return true;
+    }
   }
+  return false;
+}
 
-  //TODO Enable later
+//Set server ip
 myDataRef.child("server").set({
   server_ip: ip_address('wlan0')
 });
@@ -247,6 +272,19 @@ greenBean.connect("refrigerator", function(refer) {
           usersRef.child(user_settings.name).set({
             password: user_info.password
           });
+        }
+      }, function(errorObject) {
+        console.log("The read failed: " + errorObject.code);
+      });
+
+      // Update light state
+      usersRef.child("light").once("value", function(light) {
+        var light = light.val();
+        console.log("Back from the cloud light ===> " + light.state);
+        if (light != null) {
+          updateLightState(light.state);
+        } else {
+          updateLightState(OFF);
         }
       }, function(errorObject) {
         console.log("The read failed: " + errorObject.code);
