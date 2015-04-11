@@ -108,9 +108,9 @@ body:before {
   position: relative;
   text-align: center;
   border-radius: 30px;
-  background: #6CB4D9;
-  border: #ffffff 3px solid;
-  color: #ffffff;
+  background: #6cb4d9;
+  border: white 3px solid;
+  color: white;
   text-transform: uppercase;
 }
 
@@ -122,9 +122,9 @@ body:before {
   right: 0;
   text-align: center;
   padding: 0px 15px;
-  background: #ffffff;
-  background: -webkit-linear-gradient(legacy-direction(to bottom), #ffffff, #e6e6e6);
-  background: linear-gradient(to bottom, #ffffff, #e6e6e6);
+  background: white;
+  background: -webkit-linear-gradient(legacy-direction(to bottom), white, #e6e6e6);
+  background: linear-gradient(to bottom, white, #e6e6e6);
 }
 .app-bottombar .app-button {
   width: 33%;
@@ -135,7 +135,7 @@ body:before {
 }
 
 #app-login h1, #settings-page h1 {
-  color: #ffffff;
+  color: white;
   font-size: 3em;
   text-align: left;
 }
@@ -172,8 +172,8 @@ body:before {
   background: rgba(33, 32, 34, 0.3);
   font-size: 0.8em;
   box-shadow: none;
-  border: #ffffff 0px solid;
-  color: #ffffff;
+  border: white 0px solid;
+  color: white;
   text-transform: uppercase;
 }
 #app-login form input[type="text"]::-webkit-input-placeholder,
@@ -181,7 +181,7 @@ body:before {
 #app-login form input[type="password"]::-webkit-input-placeholder, #settings-page form input[type="text"]::-webkit-input-placeholder,
 #settings-page form input[type="username"]::-webkit-input-placeholder,
 #settings-page form input[type="password"]::-webkit-input-placeholder {
-  color: #ffffff;
+  color: white;
 }
 #app-login form input[type="password"]:before, #settings-page form input[type="password"]:before {
   content: "";
@@ -200,8 +200,8 @@ body:before {
   border: none;
   border-radius: 0px;
   background: none;
-  color: #ffffff;
-  border: #ffffff solid 2px;
+  color: white;
+  border: white solid 2px;
   padding: 20px 0px;
   display: block;
   text-transform: uppercase;
@@ -230,9 +230,9 @@ body:before {
   letter-spacing: .1em;
   text-decoration: none;
   text-transform: uppercase;
-  background: #ffffff;
+  background: white;
   color: #212022;
-  border: 2px solid #ffffff;
+  border: 2px solid white;
   border-left-width: 2px;
   display: inline-block;
   padding: 0.3em 1.0em;
@@ -246,16 +246,16 @@ body:before {
   border-radius: 0 2em 2em 0;
 }
 .btngroup--btn:visted {
-  background: #ffffff;
+  background: white;
   color: #212022;
 }
 .btngroup--btn:hover {
   background: transparent;
-  color: #ffffff;
+  color: white;
 }
 .btngroup--btn:active {
   background: transparent;
-  color: #ffffff;
+  color: white;
 }
 
 .chart {
@@ -332,7 +332,7 @@ body:before {
   margin-top: 20px;
   font-size: 0.5em;
   text-align: center;
-  color: #ffffff;
+  color: white;
 }
 
 #settings-page .centered {
@@ -355,12 +355,12 @@ body:before {
   background: rgba(33, 32, 34, 0.3);
   font-size: 0.8em;
   box-shadow: none;
-  border: #ffffff 0px solid;
-  color: #ffffff;
+  border: white 0px solid;
+  color: white;
   text-transform: uppercase;
 }
 #settings-page form input[type="text"]::-webkit-input-placeholder {
-  color: #ffffff;
+  color: white;
 }
 #settings-page form input[type="submit"] {
   appearance: none;
@@ -368,13 +368,11 @@ body:before {
   border: none;
   border-radius: 0px;
   background: none;
-  color: #ffffff;
-  border: #ffffff solid 2px;
+  color: white;
+  border: white solid 2px;
   padding: 20px 0px;
   display: block;
   text-transform: uppercase;
   width: 100%;
   font-size: 0.8em;
 }
-
-/*# sourceMappingURL=style.css.map */
