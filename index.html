@@ -13,12 +13,12 @@
 
   <script>
     var myDataRef = new Firebase('https//glaring-torch-9647.firebaseio.com');
-    
+
     var socket = io.connect('http://10.10.3.5:8080');
     myDataRef.child('server').once("value", function(data) {
-     socket = io.connect('http://' + data.val().server_ip + ':8080');
+      socket = io.connect('http://' + data.val().server_ip + ':8080');
 
-});
+    });
 
 
     var start_timestamp;
@@ -140,9 +140,7 @@
     function showErrorInfo(info) {
       $("#error").html("Error: " + info);
     }
-
   </script>
-
 
   <h1>Refrigerator Water Dispense</h1>
 
@@ -164,7 +162,6 @@
     <div id="voice"></div>
   </div>
   </p>
-
 
   <p>Ounces per sec:&nbsp;
     <input id="oz_per_sec_input" type="text" value="2" />
