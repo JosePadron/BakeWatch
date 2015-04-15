@@ -3,8 +3,8 @@
 
 Keep track of how much water you drink per day. This project uses the Intel Edison ioT
 development board and the Green Bean to control the water dispenser of a GE Refrigerator
-with voice commands like Dispense, Stop, Water, Cubed, Crushed. The system has a Redis
-data structure server running on the Edison to store the water consumption of each user.
+with voice commands like Dispense, Stop, Water, Cubed, Crushed. The system uses Firebase
+to store user data such as water consumption.
 
 
 ###### Examples of valid commands:
@@ -14,6 +14,10 @@ data structure server running on the Edison to store the water consumption of ea
 ***Dispense Cubed***   => ***Stop***
 
 ***Dispense Crushed***   => ***Stop***
+
+***Light On***
+
+***Light Off***
 
 ## Project Setup
 
@@ -29,26 +33,8 @@ https://nodejs.org/download/
 npm install green-bean
 npm install socket.io
 npm install express
-npm install redis --save
-```
-
-### Install Redis Server
-Download and Install latest stable version from: http://redis.io/
-
-Using homebrew:
-
-- Install Homebrew
-```
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-```
-
-- Install Redis
-```
-brew install redis
 ```
 
 ### Install GEA Refer Plugin
 Modified to allow dispenser control: https://github.com/elrafapadron/gea-plugin-refrigerator
 
-### Run Redis Server
-redis-server /usr/local/etc/redis.conf
