@@ -6,6 +6,15 @@ var os = require('os');
 
 var greenBean = require("green-bean");
 var rangeAppliance;
+var ON = 1
+var OFF = 0
+var lightState = OFF;
+
+function UpdateLight(state)
+{
+   console.log("Update light:", state)
+   range.lightState.Write(state);
+}
 
 greenBean.connect("range", function(range) {
   console.log("========> Appliance connected");
@@ -25,7 +34,6 @@ io.on('connection', function(client) {
     client.on('take_picture', function(){
         console.log("io.on:Taking picture");
         TakePicture();
-        io.emit('get_picture');
     });
 
     client.on('oven_light_toggle', function(){
@@ -54,20 +62,28 @@ app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
 });
 
+app.post('/get-picture/', function(req, res){
+  console.log("Taking picture");
+  UpdateLight(ON);
+  TakePicture();
+  if(!lightState)
+  {
+     UpdateLight(OFF);
+  }
+});
 
 function TakePicture()
 {
    console.log("Taking picture");
    var exec = require('child_process').exec;
 
-    exec('raspistill -t 1500 -vf -hf -o /home/pi/firstbuild_hackathon/public/image.jpg', function(error, stdout, stderr) {
-        // console.log('stdout: ' + stdout);
-        // console.log('stderr: ' + stderr);
+    exec('raspistill -vf -hf -o /home/pi/firstbuild_hackathon/public/image.jpg', function(error, stdout, stderr) {
+        console.log('stdout: ' + stdout);
+        console.log('stderr: ' + stderr);
         if (error !== null) {
             console.log('exec error: ' + error);
         }
     });
-
 }
 
 server.listen(8080, function() {
