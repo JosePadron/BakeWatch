@@ -337,8 +337,8 @@ greenBean.connect("range", function(refer) {
     //   client.emit('voice_cmd_response',
     //     executeCommand(getReceivedCommand(voice_command)));
     // });
-  });
-});
+  // });
+// });
 
 // Serve Static Files
 app.use( "/public/", express.static( __dirname + '/public/'));
