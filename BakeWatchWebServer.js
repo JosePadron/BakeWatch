@@ -171,16 +171,16 @@ var startAutofill = function() {
 /*!
  * Table with available commands.
  */
-var commands_table = [
-  [DISPENSE, WATER, UNUSED, UNUSED, startDispensingWater],
-  [DISPENSE, CUBED, UNUSED, UNUSED, startDispensingCubed],
-  [DISPENSE, CRUSHED, UNUSED, UNUSED, startDispensingCrushed],
-  [AUTOFILL, UNUSED, UNUSED, UNUSED, startAutofill],
-  [DISPENSE, NUMBER, OUNCES, WATER, startAutofill],
-  [STOP, UNUSED, UNUSED, UNUSED, stopDispensing],
-  [LIGHT, ON_TXT, UNUSED, UNUSED, turnLightOn],
-  [LIGHT, OFF_TXT, UNUSED, UNUSED, turnLightOff],
-]
+// var commands_table = [
+//   [DISPENSE, WATER, UNUSED, UNUSED, startDispensingWater],
+//   [DISPENSE, CUBED, UNUSED, UNUSED, startDispensingCubed],
+//   [DISPENSE, CRUSHED, UNUSED, UNUSED, startDispensingCrushed],
+//   [AUTOFILL, UNUSED, UNUSED, UNUSED, startAutofill],
+//   [DISPENSE, NUMBER, OUNCES, WATER, startAutofill],
+//   [STOP, UNUSED, UNUSED, UNUSED, stopDispensing],
+//   [LIGHT, ON_TXT, UNUSED, UNUSED, turnLightOn],
+//   [LIGHT, OFF_TXT, UNUSED, UNUSED, turnLightOff],
+// ]
 
 /*!
  * Process the received voice data and return an array with its sections.
