@@ -22,6 +22,7 @@ greenBean.connect("range", function(range) {
 
     io.on('connection', function(client) {
         client.on('take_picture', function(){
+            console.log("io.on:Taking picture");
             TakePicture();
         });
     });
@@ -35,6 +36,7 @@ app.get('/', function(req, res) {
 });
 
 app.post('/get-picture/', function(req, res){
+  console.log("Taking picture");
   TakePicture();
 });
 
