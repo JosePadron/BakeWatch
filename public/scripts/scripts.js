@@ -1,4 +1,4 @@
-var socket = io.connect('http://10.203.26.184:8080');
+var socket = io.connect('http://10.203.9.184:8080');
 
 // Constructor
 var App = function () {
@@ -24,6 +24,7 @@ var App = function () {
   App.prototype.updateImage = function(){
     var image = new Image(640, 480);
     image.src = "/public/image.jpg";
+    image.id = "ovenImage";
     jQuery("#ovenImage").remove();
     jQuery(".oven-image-container").append(image);
   }
@@ -40,8 +41,8 @@ var App = function () {
     jQuery("#btn-capture").on('click', function(){      
       socket.emit('take_picture', {}, function(data){
         console.log("Take Picture");
-        app.updateImage();
       });
+      app.updateImage();
     });
 
     jQuery("#btn-light-toggle").on('click', function(){
@@ -59,4 +60,8 @@ var App = function () {
 
   socket.on('get_picture', function(){
     app.updateImage();
+  });
+
+  socket.on('oven_data', function(data){
+    console.log('Data', data);
   });
