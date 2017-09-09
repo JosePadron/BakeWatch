@@ -35,10 +35,12 @@ var App = function () {
   jQuery(document).on('ready', function () {
   
     jQuery("#btn-share").on('click', function () {
+      console.log("Share");
       app.submit_photo();
     });
 
-    jQuery("#btn-capture").on('click', function(){      
+    jQuery("#btn-capture").on('click', function(){   
+      console.log("Take Picture");   
       socket.emit('take_picture', {}, function(data){
         console.log("Take Picture");
       });
@@ -46,14 +48,17 @@ var App = function () {
     });
 
     jQuery("#btn-light-toggle").on('click', function(){
+      console.log("Light Toggle");
       socket.emit('oven_light_toggle');
     });
 
     jQuery("#btn-oven-off").on('click', function(){
+      console.log("Oven Off");
       socket.emit('oven_temp_off');
     });
 
     jQuery("#btn-data").on('click', function(){
+      console.log("Get Oven Data");
       socket.emit('get_oven_data');
     });
   });
