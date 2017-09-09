@@ -16,18 +16,19 @@ function UpdateLight(state)
    range.lightState.Write(state);
 }
 
+function StopCooking()
+{
+   console.log("Stop cooking")
+   range.upperOven.cookMode.Write(OFF);
+}
+
 greenBean.connect("range", function(range) {
   console.log("========> Appliance connected");
   rangeAppliance = range;
 
-
-    range.lowerOven.displayTemperature.read(function(value) {
-        console.log("lower oven display temperature is:", value);
-    });
-
-    range.lowerOven.displayTemperature.subscribe(function(value) {
-        console.log("lower oven display temperature changed:", value);
-    });
+  range.upperOven.displayTemperature.read(function(value) {
+     console.log("Oven display temperature is:", value);
+  });
 });
 
 io.on('connection', function(client) {
@@ -69,6 +70,7 @@ app.post('/get-picture/', function(req, res){
   if(!lightState)
   {
      UpdateLight(OFF);
+     StopCooking();
   }
 });
 
