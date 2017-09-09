@@ -1,3 +1,6 @@
+var socket = io.connect('http://10.10.4.247:8080');
+
+
 // Constructor
 var App = function () {
     console.log("Constructor");
@@ -7,7 +10,7 @@ var App = function () {
     FB.login(function (response) {
       console.log(response);
       // app.successMessage();
-  
+
       fileUpload(response.authResponse.accessToken);
     }, {
       scope: 'publish_actions'
@@ -31,4 +34,11 @@ var App = function () {
     jQuery("#btn-share").on('click', function () {
       app.submit_photo();
     });
+
+    jQuery("#btn-capture").on('click', function(){
+      socket.emit('take_picture', {}, function(data){
+        console.log("Event Happened");
+        jQuery("#ovenImage").attr('src', '/public/image.jpg');
+      });
+    })
   });

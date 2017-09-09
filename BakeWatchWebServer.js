@@ -19,6 +19,12 @@ greenBean.connect("range", function(range) {
     range.lowerOven.displayTemperature.subscribe(function(value) {
         console.log("lower oven display temperature changed:", value);
     });
+
+    io.on('connection', function(client) {
+        client.on('take_picture', function(){
+            TakePicture();
+        });
+    });
 });
 
 // Serve Static Files
