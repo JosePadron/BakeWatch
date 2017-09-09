@@ -25,24 +25,29 @@ function StopCooking()
 greenBean.connect("range", function(range) {
   console.log("========> Appliance connected");
   rangeAppliance = range;
-
-  range.upperOven.displayTemperature.read(function(value) {
-     console.log("Oven display temperature is:", value);
-  });
 });
 
 io.on('connection', function(client) {
     client.on('take_picture', function(){
         console.log("io.on:Taking picture");
+        UpdateLight(ON);
         TakePicture();
+        if(!lightState)
+        {
+           UpdateLight(OFF);
+           StopCooking();
+        }
     });
 
     client.on('oven_light_toggle', function(){
         console.log("io.on:Oven Light Toggle");
+        lightState = !lightState;
+        UpdateLight(lightState);
     });
 
     client.on('oven_temp_off', function(){
         console.log("io.on:Oven Off");
+        StopCooking();
     });
 
     client.on('get_oven_data', function(){
@@ -50,10 +55,11 @@ io.on('connection', function(client) {
         var ovenData = {};
 
         // get the oven data and attach it to ovenData object
-
-        io.emit('oven_data', ovenData);
+        rangeAppliance.upperOven.displayTemperature.read(function(value) {
+           console.log("Oven display temperature is:", value);
+           io.emit('oven_data', value);
+        });
     });
-
 });
 
 // Serve Static Files
@@ -61,17 +67,6 @@ app.use( "/public/", express.static( __dirname + '/public/'));
 
 app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
-});
-
-app.post('/get-picture/', function(req, res){
-  console.log("Taking picture");
-  UpdateLight(ON);
-  TakePicture();
-  if(!lightState)
-  {
-     UpdateLight(OFF);
-     StopCooking();
-  }
 });
 
 function TakePicture()
