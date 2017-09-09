@@ -1,4 +1,4 @@
-var socket = io.connect('http://10.10.4.247:8080');
+var socket = io.connect('http://10.203.26.184:8080');
 
 
 // Constructor
