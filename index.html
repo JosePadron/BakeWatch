@@ -1,159 +1,83 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
+
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-	<title>Fix Of Water</title>
-	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="/public/css/app.min.css">
-	<link rel="stylesheet" href="/public/css/style.css">
+  <title>BakeWatch v1</title>
+  <link rel="stylesheet" href="/public/styles/styles.css">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+
 <body>
 
-	<!--**********************-->
-	<!--****** APP PAGES *****-->
-	<!--**********************-->
-
-	<!-- Home Page -->
-	<div class="app-page" data-page="Home" id="app-login">
-		<div class="bg"></div>
-		<div class="app-topbar">
-			<div class="app-title"></div>
-		</div>
-		<div class="app-content">
-
-
-			<div class="centered">
-				<h1>Fix Of <br><span class="larger">Water</span></h1>
-
-				<form action="#">
-					<input id="username-input" type="username" placeholder="Username">
-					<input id="password-input" type="password" placeholder="Password">
-					<input type="submit" value="Sign In">
-				</form>
-
-			</div>
-
-		</div>
-	</div>
-
-	<!-- Settings Page -->
-	<div class="app-page" data-page="Settings" id="settings-page">
-		<div class="app-content">
-
-
-			<div class="centered">
-
-				<h1>Settings</h1>
-
-				<form action="">
-
-					<input id="user_name" type="hidden" placeholder="Username">
-					<input id="default_glass_size" type="text" placeholder="Favorite Glass Size">
-					<input id="fill_time" type="text" placeholder="Fill Time ( in miliseconds )">
-					<input id="user_weight" type="text" placeholder="User Weight ( For Scientific Purposes )">
-					<input type="submit" id="save-settings-btn" value="Save Settings">
-
-				</form>
-
-				<div id="teamtext">Created at FirstBuild with awesome people.</div>
-
-			</div>
-
-			<div class="app-bottombar">
-				<div class="app-button nav-home"><img src="/public/images/home.svg" class="svg-icons"></div>
-				<div class="app-button nav-statsPage"><img src="/public/images/chart.svg" class="svg-icons"></div>
-				<div class="app-button nav-settings"><img src="/public/images/gear.svg" class="svg-icons"></div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Command Page -->
-	<div class="app-page" data-page="CommandPage">
-		<div class="app-topbar">
-			<div class="app-title">FIX OF WATER</div>
-		</div>
-		<div class="app-content" id="CommandPage">
-
-			<!-- <h2>Tap &amp; Hold</h2> -->
-
-			<div id="cFeedback" class="ope">
-				...
-			</div>
-
-			<div id="command-btn">
-				<img src="/public/images/mic.svg" alt="">
-			</div>
-
-			<div id="light_toggle">
-				<span>Light Switch</span>
-				<a href="#" class="toggle toggle--off"></a>
-			</div>
-
-			<div class="app-bottombar">
-				<div class="app-button nav-home"><img src="/public/images/home.svg" class="svg-icons"></div>
-				<div class="app-button nav-statsPage"><img src="/public/images/chart.svg" class="svg-icons"></div>
-				<div class="app-button nav-settings"><img src="/public/images/gear.svg" class="svg-icons"></div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Analytics Page -->
-	<div class="app-page analytics-page" data-page="StatsPage">
-		<div class="app-topbar">
-			<div class="app-title">FIX OF WATER</div>
-		</div>
-		<div class="app-content">
-			<div id="doughnutChart" class="chart"></div>
-
-			<div class="top-info">
-				<div class="btngroup">
-					<button class="btngroup--btn">Today</button>
-					<button class="btngroup--btn">Week</button>
-					<button class="btngroup--btn">Month</button>
-				</div>
-
-				<div class="current-consumption">
-					<h1>27</h1>
-					<span>OZs</span>
-				</div>
-			</div>
-
-
-			<div class="app-bottombar">
-				<div class="app-button nav-home"><img src="/public/images/home.svg" class="svg-icons"></div>
-				<div class="app-button nav-statsPage"><img src="/public/images/chart.svg" class="svg-icons"></div>
-				<div class="app-button nav-settings"><img src="/public/images/gear.svg" class="svg-icons"></div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Javascript Includes -->
-	<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-	<script src="/public/js/jquery.mobile.min.js"></script>
-	<script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
-	<script src="/socket.io/socket.io.js"></script>
-	<script>
-
-		// Get the data! Create a new User Data object.
-		var myDataRef = new Firebase('https//glaring-torch-9647.firebaseio.com');
-		var socket = io.connect('http://10.10.4.247:8080');
-		// var socket = io.connect('http://localhost:8080');
-		// myDataRef.child('server').once("value", function(data) {
-			//socket = io.connect('http://' + data.val().server_ip + ':8080');
-		// });
-
-		var settings = {
-			glass_fill_time: 2000,
-			glass_ounces: 12,
-			weight_lbs: 120,
-			name: "Default"
-		};
-
-	</script>
-	<script src="/public/js/app.min.js"></script>
-	<script src="/public/js/controllers.js"></script>
- 	<script src="/public/js/scripts.js"></script>
+  <!-- <script src="/socket.io/socket.io.js"></script> -->
+  <script src="http://code.jquery.com/jquery-2.1.3.js"></script>
+  <script src="/public/scripts/vendors.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+	  var socket = io.connect('http://10.10.4.247:8080');
+  </script>
+  <script src="/public/scripts/scripts.js"></script>
 
 </body>
+
+  <nav class="demo">
+    <a href="#" class="brand">
+      <span>BakeWatch</span>
+    </a>
+
+    <!-- responsive-->
+    <input id="bmenub" type="checkbox" class="show">
+    <label for="bmenub" class="burger pseudo button">menu</label>
+
+    <div class="menu">
+      <a href="#" class="">Live</a>        
+      <a href="#" class="">Share</a>
+      <a href="#" class="">Control</a>
+    </div>
+  </nav>
+
+  <div class="container">
+        
+    <div class="oven-image-container">
+      <img id="ovenImage" src="/public/images/oven.png" width="640" height="480" alt="">
+      <img id="logo" src="/public/images/logo.png" width="151" height="94" alt="" style="display: none">
+    </div>
+
+    <div class="button-group">
+      <button id="btn-photo" class='success'>Capture Photo</button>
+      <button id="btn-timelapse" class='success'>Capture Timelapse</button>
+      <button id="btn-share" class='success' >Share on Facebook</button>
+      <button id="btn-oven-off" class='error'>Turn Oven Off</button>
+    </div>
+
+    <div class="modal">
+      <input id="modal_1" type="checkbox" />
+      <label for="modal_1" class="overlay"></label>
+      <article>
+        <header>
+          <h3>Success!</h3>
+          <label for="modal_1" class="close">&times;</label>
+        </header>
+        <section class="content">
+          Your delicious food has been shared with your Facebook friends!
+        </section>
+        <footer>
+          <label for="modal_1" class="button success">
+            Ok
+          </label>
+        </footer>
+      </article>
+    </div>
+    
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+	  var socket = io.connect('http://10.10.4.247:8080');
+  </script>
+
 </html>
+
