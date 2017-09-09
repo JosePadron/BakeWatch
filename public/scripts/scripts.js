@@ -1,5 +1,8 @@
 var socket = io.connect('http://10.203.26.184:8080');
 
+socket.on('get_picture', function(){
+  location.reload();
+});
 
 // Constructor
 var App = function () {

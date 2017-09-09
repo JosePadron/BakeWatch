@@ -25,6 +25,7 @@ io.on('connection', function(client) {
     client.on('take_picture', function(){
         console.log("io.on:Taking picture");
         TakePicture();
+        io.emit('get_picture');
     });
 });
 
@@ -35,19 +36,15 @@ app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
 });
 
-app.post('/get-picture/', function(req, res){
-  console.log("Taking picture");
-  TakePicture();
-});
 
 function TakePicture()
 {
    console.log("Taking picture");
    var exec = require('child_process').exec;
 
-    exec('raspistill -vf -hf -o /home/pi/firstbuild_hackathon/public/image.jpg', function(error, stdout, stderr) {
-        console.log('stdout: ' + stdout);
-        console.log('stderr: ' + stderr);
+    exec('raspistill -t 1500 -vf -hf -o /home/pi/firstbuild_hackathon/public/image.jpg', function(error, stdout, stderr) {
+        // console.log('stdout: ' + stdout);
+        // console.log('stderr: ' + stderr);
         if (error !== null) {
             console.log('exec error: ' + error);
         }
