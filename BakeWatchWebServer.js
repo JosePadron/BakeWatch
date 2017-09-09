@@ -249,18 +249,18 @@ function executeCommand(voice_command) {
 //   server_ip: ip_address('wlan0')
 // });
 
-greenBean.connect("range", function(refer) {
-  console.log("========> Appliance connected");
-  rangeAppliance = refer;
-
-    range.lowerOven.displayTemperature.read(function(value) {
-        console.log("lower oven display temperature is:", value);
-    });
-
-    range.lowerOven.displayTemperature.subscribe(function(value) {
-        console.log("lower oven display temperature changed:", value);
-    });
-});
+// greenBean.connect("range", function(refer) {
+//   console.log("========> Appliance connected");
+//   rangeAppliance = refer;
+//
+//     range.lowerOven.displayTemperature.read(function(value) {
+//         console.log("lower oven display temperature is:", value);
+//     });
+//
+//     range.lowerOven.displayTemperature.subscribe(function(value) {
+//         console.log("lower oven display temperature changed:", value);
+//     });
+// });
   // io.on('connection', function(client) {
   //   client.on('join', function(user_info) {
   //     console.log("Username ===> " + user_info.name);
