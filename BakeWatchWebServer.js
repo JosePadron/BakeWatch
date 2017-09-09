@@ -25,7 +25,6 @@ function StopCooking()
 greenBean.connect("range", function(range) {
   console.log("========> Appliance connected");
   rangeAppliance = range;
-});
 
 io.on('connection', function(client) {
     client.on('take_picture', function(){
@@ -60,6 +59,7 @@ io.on('connection', function(client) {
            io.emit('oven_data', value);
         });
     });
+});
 });
 
 // Serve Static Files
