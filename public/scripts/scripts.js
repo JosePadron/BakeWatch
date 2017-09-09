@@ -36,6 +36,7 @@ var App = function () {
     });
 
     jQuery("#btn-capture").on('click', function(){
+      console.log("btn capture");
       socket.emit('take_picture', {}, function(data){
         console.log("Event Happened");
         jQuery("#ovenImage").attr('src', '/public/image.jpg');
