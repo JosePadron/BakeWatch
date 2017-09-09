@@ -2,16 +2,16 @@ var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
-var Firebase = require("firebase");
+// var Firebase = require("firebase");
 var os = require('os');
 
-var myDataRef = new Firebase('https://glaring-torch-9647.firebaseio.com');
-var usersRef = myDataRef.child("Users");
+// var myDataRef = new Firebase('https://glaring-torch-9647.firebaseio.com');
+// var usersRef = myDataRef.child("Users");
 
-var mraa = require('mraa');
-var light = new mraa.Gpio(3); //TODO: change to relay port
-light.dir(mraa.DIR_OUT);
-var light_state = 0;
+// var mraa = require('mraa');
+// var light = new mraa.Gpio(3); //TODO: change to relay port
+// light.dir(mraa.DIR_OUT);
+// var light_state = 0;
 
 var INDEX_PRIMARY_CMD = 0;
 var INDEX_SECOND_CMD_OR_OUNCES = 1;
@@ -44,13 +44,13 @@ var rangeAppliance;
 //   weight_lbs: 180,
 // };
 
-function updateLightState(new_state) {
-  myDataRef.child("light").set({
-    state: new_state
-  });
-  light.write(new_state);
-  console.log("New light state ===> " + new_state);
-}
+// function updateLightState(new_state) {
+//   myDataRef.child("light").set({
+//     state: new_state
+//   });
+//   light.write(new_state);
+//   console.log("New light state ===> " + new_state);
+// }
 
 function turnLightOn() {
   updateLightState(ON);
@@ -245,9 +245,9 @@ function executeCommand(voice_command) {
 }
 
 //Set server ip
-myDataRef.child("server").set({
-  server_ip: ip_address('wlan0')
-});
+// myDataRef.child("server").set({
+//   server_ip: ip_address('wlan0')
+// });
 
 greenBean.connect("range", function(refer) {
   console.log("========> Appliance connected");
