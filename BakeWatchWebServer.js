@@ -347,6 +347,22 @@ app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
 });
 
+function TakePicture()
+{
+   console.log("Taking picture");
+   var exec = require('child_process').exec;
+exec('takePicture.sh', function(error, stdout, stderr) {
+    console.log('stdout: ' + stdout);
+    console.log('stderr: ' + stderr);
+    if (error !== null) {
+        console.log('exec error: ' + error);
+    }
+});
+}
+
 server.listen(8080, function() {
 	console.log('listening on *:8080');
+  var timer = setInterval(function () {
+    TakePicture();
+  }, 1000);
 });
