@@ -351,7 +351,7 @@ function TakePicture()
 {
    console.log("Taking picture");
    var exec = require('child_process').exec;
-exec('takePicture.sh', function(error, stdout, stderr) {
+exec('raspistill -vf -hf -o /home/pi/firstbuild_hackathon/public/image.jpg', function(error, stdout, stderr) {
     console.log('stdout: ' + stdout);
     console.log('stderr: ' + stderr);
     if (error !== null) {
@@ -362,7 +362,4 @@ exec('takePicture.sh', function(error, stdout, stderr) {
 
 server.listen(8080, function() {
 	console.log('listening on *:8080');
-  var timer = setInterval(function () {
-    TakePicture();
-  }, 1000);
 });
