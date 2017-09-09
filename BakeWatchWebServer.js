@@ -13,13 +13,13 @@ var lightState = OFF;
 function UpdateLight(state)
 {
    console.log("Update light:", state)
-   range.lightState.Write(state);
+   rangeAppliance.lightState.Write(state);
 }
 
 function StopCooking()
 {
    console.log("Stop cooking")
-   range.upperOven.cookMode.Write(OFF);
+   rangeAppliance.upperOven.cookMode.Write(OFF);
 }
 
 greenBean.connect("range", function(range) {
