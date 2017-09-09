@@ -38,6 +38,11 @@ io.on('connection', function(client) {
 
     client.on('get_oven_data', function(){
         console.log("io.on:Oven Data");
+        var ovenData = {};
+
+        // get the oven data and attach it to ovenData object
+
+        io.emit('oven_data', ovenData);
     });
 
 });
