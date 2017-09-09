@@ -1,9 +1,5 @@
 var socket = io.connect('http://10.203.26.184:8080');
 
-socket.on('get_picture', function(){
-  location.reload();
-});
-
 // Constructor
 var App = function () {
     console.log("Constructor");
@@ -26,7 +22,10 @@ var App = function () {
   }
   
   App.prototype.updateImage = function(){
-    var image_element = document.getElementById('ovenImage');
+    var image = new Image(640, 480);
+    image.src = "/public/image.jpg";
+    jQuery("#ovenImage").remove();
+    jQuery(".oven-image-container").append(image);
   }
   
   // START EVERYTHING UP!
@@ -38,11 +37,26 @@ var App = function () {
       app.submit_photo();
     });
 
-    jQuery("#btn-capture").on('click', function(){
-      console.log("btn capture");
+    jQuery("#btn-capture").on('click', function(){      
       socket.emit('take_picture', {}, function(data){
-        console.log("Event Happened");
-        jQuery("#ovenImage").attr('src', '/public/image.jpg');
+        console.log("Take Picture");
+        app.updateImage();
       });
-    })
+    });
+
+    jQuery("#btn-light-toggle").on('click', function(){
+      socket.emit('oven_light_toggle');
+    });
+
+    jQuery("#btn-oven-off").on('click', function(){
+      socket.emit('oven_temp_off');
+    });
+
+    jQuery("#btn-data").on('click', function(){
+      socket.emit('get_oven_data');
+    });
+  });
+
+  socket.on('get_picture', function(){
+    app.updateImage();
   });

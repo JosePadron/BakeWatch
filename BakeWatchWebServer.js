@@ -27,6 +27,19 @@ io.on('connection', function(client) {
         TakePicture();
         io.emit('get_picture');
     });
+
+    client.on('oven_light_toggle', function(){
+        console.log("io.on:Oven Light Toggle");
+    });
+
+    client.on('oven_temp_off', function(){
+        console.log("io.on:Oven Off");
+    });
+
+    client.on('get_oven_data', function(){
+        console.log("io.on:Oven Data");
+    });
+
 });
 
 // Serve Static Files
