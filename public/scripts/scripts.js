@@ -231,3 +231,14 @@ var App = function () {
     console.log('time_left Time: '+ time_left);
     app.time_left = time_left;
   });
+<<<<<<< Updated upstream
+=======
+
+  socket.on('notify', function(message){
+    if(message == 1){
+      app.notify(message);
+    } else {
+      app.notify(message);
+    }
+  });
+>>>>>>> Stashed changes
