@@ -135,7 +135,7 @@ var App = function () {
     jQuery("#oven-image-container canvas, #oven-image-container h2").remove();
         var image = new Image(680, 420);
             image.src = '/public/image.png';
-        var logo = new Image(151, 94);
+        var logo = new Image(75, 45);
             logo.src = '/public/images/logo.png';
         var canvas = document.createElement('canvas');
             canvas.width = image.width;
