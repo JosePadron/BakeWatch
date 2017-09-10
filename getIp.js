@@ -7,6 +7,8 @@ myDataRef.child("server").set({
   server_ip: ip_address('wlan0')
 });
 
+process.exit(0);
+
 function ip_address(interface) {
   var items = os.networkInterfaces()[interface] || [];
 
