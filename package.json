@@ -27,7 +27,9 @@
     "picnic": "^6.4.0"
   },
   "dependencies": {
+    "firebase": "^4.3.1",
     "green-bean": "^0.1.1",
-    "node-raspistill": "0.0.14"
+    "node-raspistill": "0.0.14",
+    "socket.io": "^1.7.4"
   }
 }
