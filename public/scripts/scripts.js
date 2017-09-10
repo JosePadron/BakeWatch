@@ -201,6 +201,8 @@ var App = function () {
 
     jQuery("#btn-capture").on('click', function(){   
       console.log("Take Picture");
+      socket.emit('get_oven_time_left');
+      socket.emit('get_oven_temperature');
       socket.emit('take_picture');
     });
 
@@ -243,14 +245,6 @@ var App = function () {
   socket.on('oven_time_left', function(time_left){
     console.log('time_left Time: '+ time_left);
     app.time_left = time_left;
-  });
-
-  socket.on('notify', function(message){
-    if(message == 1){
-      app.notify(message);
-    } else {
-      app.notify(message);
-    }
   });
 
   socket.on('notify', function(message){
