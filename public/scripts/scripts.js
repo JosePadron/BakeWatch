@@ -166,7 +166,7 @@ var App = function () {
                 ctx3.drawImage(canvas2, 0, 0);
             }, 400);
           // }
-        jQuery("#oven-image-container").innerHtml(canvas3);
+        jQuery("#oven-image-container").append(canvas3);
 
     var c = canvas3.toDataURL("image/png");
     var data = c.replace(/^data:image\/(png|jpe?g);base64,/, '');
