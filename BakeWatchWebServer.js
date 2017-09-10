@@ -75,9 +75,10 @@ io.on('connection', function(client) {
 
         // listen for read responses for an ERD
        savedBus.on("read-response", function (erd) {
+          var temperature = (erd.data[1]<<8) | erd.data[0];
           console.log("read response:", erd);
-          console.log("Oven display temperature is:", erd.data);
-          io.emit('oven_data', erd.data);
+          console.log("Oven display temperature is:", temperature);
+          io.emit('oven_data', temperature);
        });
 
        // read an ERD
