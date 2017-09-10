@@ -112,6 +112,6 @@ function TakePicture()
     });
 }
 
-server.listen(8080, function() {
-	console.log('listening on *:8080');
+server.listen(80, function() {
+	console.log('listening on *:80');
 });
