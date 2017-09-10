@@ -82,6 +82,7 @@ var postImage = function (opts) {
 function fileUpload(access_token) {
   var image = document.getElementById('view');
   var image_data = image.toDataURL("image/png");
+  var encoded = conversions.base64ToString(image_data);
   postImage({
     fb: {
       caption: 'Look what I\'m cookin\'! #firstbuild #hackthehome',
@@ -90,7 +91,7 @@ function fileUpload(access_token) {
       file: {
         name: 'upload.png',
         type: 'image/png', // or png
-        dataString: image_data // the string containing the binary data
+        dataString: encoded // the string containing the binary data
       }
     },
     call: { // options of the $.ajax call
