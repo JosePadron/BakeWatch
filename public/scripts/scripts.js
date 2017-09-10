@@ -10,6 +10,7 @@ window.fbAsyncInit = function () {
 };
 
 var temp = 0;
+var elapsed_time = 0;
 
 var conversions = {
   stringToBinaryArray: function (string) {
@@ -82,30 +83,40 @@ var postImage = function (opts) {
 };
 
 function getBase64Image() {
-  var img = document.getElementById('ovenImage');
+  // var img = document.getElementById('ovenImage');
   var logo = document.getElementById('logo');
+  
+  var img = new Image();
+  img.src = '/public/image.jpg';
   var canvas = document.createElement("canvas");  
       canvas.width = 640;
       canvas.height = 480;
   var ctx = canvas.getContext("2d");
-      ctx.drawImage(img, 0, 0, 640, 480);
+      img.onload = function(){
+        ctx.drawImage(img, 0, 0, 640, 480);
+      };
   
+  var logo = new Image();
+      logo.src = '/public/images/logo.png';
   var canvas2 = document.createElement("canvas");
   var ctx2 = canvas2.getContext("2d");
-      ctx2.drawImage(logo, 0, 0, 151, 94);
+      logo.onload = function(){
+        ctx2.drawImage(logo, 0, 0, 151, 94);
+      }
 
   var canvas3 = document.createElement("canvas");
   var ctx3 = canvas3.getContext('2d');
       canvas3.width = 640;
       canvas3.height= 480;
+      ctx3.drawImage(canvas, 0, 0);
+      ctx3.drawImage(canvas2, 479, 376);
+      
       ctx3.fillStyle = "white";
       ctx3.font = "30px sans-serif";
       ctx3.textBaseline = 'bottom';
       ctx3.fillText(temp + "°F", 0, 0);
-      ctx3.drawImage(canvas, 0, 0);
-      ctx3.drawImage(canvas2, 479, 376);
       
-      jQuery('.oven-image-container img, .oven-image-container canvas').remove();
+      jQuery('.oven-image-container canvas').remove();
       jQuery('.oven-image-container').append(canvas3);
       var c = canvas3.toDataURL("image/jpg");
       var data = c.replace(/^data:image\/(png|jpe?g);base64,/, '');
@@ -172,7 +183,8 @@ var App = function () {
   var app = new App();
   
   jQuery(document).on('ready', function () {
-  
+    app.updateImage();
+
     jQuery("#btn-share").on('click', function () {
       console.log("Share");
       app.submit_photo();
@@ -206,7 +218,12 @@ var App = function () {
     app.updateImage();
   });
 
-  socket.on('oven_data', function(data){
-    console.log('Data', data);
-    temp = data;
+  socket.on('oven_temperature', function(temp){
+    console.log('Temp: ' + temp);
+    temp = temp;
   });
+
+  socket.on('oven_elapsed_time', function(elapsed_time){
+    console.log('Elapsed Time: '+ elapsed_time);
+    elapsed_time = elapsed_time;
+  })
