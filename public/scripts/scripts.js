@@ -134,7 +134,7 @@ var App = function () {
     jQuery(".init-image").remove();
 
     var image = new Image(620, 480);
-        image.src = '/public/image.jpg';
+        // image.src = '/public/image.jpg';
     var canvas = document.createElement('canvas');
         canvas.width = image.width;
         canvas.height = image.height;
@@ -147,7 +147,7 @@ var App = function () {
         }
 
     var logo = new Image(151, 94);
-        logo.src = '/public/images/logo.png';
+        // logo.src = '/public/images/logo.png';
     var canvas2 = document.createElement('canvas');
         canvas2.width = logo.width;
         canvas2.height = logo.height;
@@ -160,14 +160,13 @@ var App = function () {
     var ctx3 = canvas3.getContext('2d');
                canvas3.width = 620;
                canvas3.height = 480;
+               image.onload = function(){
+                 ctx3.drawImage(canvas, 0, 0);
+                 ctx3.drawImage(canvas2, 0, 0);
+                 jQuery("#oven-image-container").append(canvas3);
+                }
       image.src = '/public/image.jpg';
       logo.src = '/public/images/logo.png';
-      image.onload = function(){
-        ctx3.drawImage(canvas, 0, 0);
-        ctx3.drawImage(canvas2, 0, 0);
-        jQuery("#oven-image-container").append(canvas3);
-      }
-    
       var c = canvas3.toDataURL("image/jpeg", 1);
       var data = c.replace(/^data:image\/(png|jpe?g);base64,/, '');
       
