@@ -174,12 +174,10 @@ var App = function () {
       newImage.onload = function(){
         jQuery(".container").prepend(newImage);
       }
-      
       var data = c.replace(/^data:image\/(png|jpe?g);base64,/, '');
-      newImage.src = conversions.base64ToString(data);
-      console.log(conversions.base64ToString(data));
+      newImage.src = data;
+      
       return conversions.base64ToString(data);
-      // return "";
   }
   
   // START EVERYTHING UP!
