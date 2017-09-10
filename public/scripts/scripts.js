@@ -107,8 +107,8 @@ function fileUpload(access_token) {
 }
 
   console.log("connecting to: " + data.val().server_ip);
-  var socket = io.connect('http://' + data.val().server_ip + ':80');
-  // var socket = io.connect('http://10.203.9.42:80');
+  // var socket = io.connect('http://' + data.val().server_ip + ':80');
+  var socket = io.connect('http://10.203.9.42:80');
 
 // Constructor
 var App = function () {
@@ -132,7 +132,7 @@ var App = function () {
   App.prototype.updateImage = function(){
     jQuery("#oven-image-container canvas").remove();
     jQuery(".init-image").remove();
-    
+
     var image = new Image(620, 480);
         image.src = '/public/image.jpg';
     var canvas = document.createElement('canvas');

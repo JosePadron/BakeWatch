@@ -23,6 +23,10 @@ body{
     border: 7px solid black;
 }
 
+#oven-image-container img{
+    max-width: 100%;
+}
+
 .button-group{
     text-align: center;
     position: relative;
