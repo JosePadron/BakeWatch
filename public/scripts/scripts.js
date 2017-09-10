@@ -132,8 +132,8 @@ var App = function () {
   
   App.prototype.updateImage = function(){
     jQuery("#oven-image-container canvas").remove();
-        var image = new Image(620, 480);
-            image.src = '/public/image.jpg';
+        var image = new Image(680, 420);
+            image.src = '/public/image.png';
         var canvas = document.createElement('canvas');
             canvas.width = image.width;
             canvas.height = image.height;
@@ -157,8 +157,8 @@ var App = function () {
     
         var canvas3 = document.createElement('canvas');
         var ctx3 = canvas3.getContext('2d');
-            canvas3.width = 620;
-            canvas3.height = 480;
+            canvas3.width = 680;
+            canvas3.height = 420;
             window.onload = function(){
                 setTimeout(function(){
                     ctx3.drawImage(canvas, 0, 0);
