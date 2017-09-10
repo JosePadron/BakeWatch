@@ -80,6 +80,7 @@ io.on('connection', function(client) {
            UpdateLight(OFF);
            StopCooking();
         }
+        io.emit('get_picture');
     });
 
     client.on('oven_light_toggle', function(){
@@ -146,12 +147,13 @@ function TakePicture()
    console.log("Taking picture");
    var exec = require('child_process').exec;
 
-    exec('raspistill -t 5000 -vf -hf -o /home/pi/firstbuild_hackathon/public/image.jpg', function(error, stdout, stderr) {
+    exec('raspistill -t 2000 -vf -hf -o /home/pi/firstbuild_hackathon/public/image.jpg', function(error, stdout, stderr) {
         //console.log('stdout: ' + stdout);
         //console.log('stderr: ' + stderr);
         if (error !== null) {
             console.log('exec error: ' + error);
         }
+
     });
 }
 
