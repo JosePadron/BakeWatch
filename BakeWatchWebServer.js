@@ -5,26 +5,39 @@ var io = require('socket.io')(server);
 var os = require('os');
 
 var greenBean = require("green-bean");
-var rangeAppliance;
 var ON = 1
 var OFF = 0
 var light_state = OFF;
 
+var gea = require("gea-sdk");
+var savedBus;
+
+// configure the application
+var app = gea.configure({
+    address: 0xe4,
+    version: [ 0, 0, 1, 0 ]
+});
+
 function UpdateLight(state)
 {
    console.log("Update light:", state);
-   rangeAppliance.twelveHourShutoff.write(state);
+   savedBus.send({
+         command: 0xF1,
+         data: [ 1, 0xf2, 07, 1, state ],
+         source: 0xE4,
+         destination: 0x80
+     });
 }
 
 function StopCooking()
 {
    console.log("Stop cooking")
-   rangeAppliance.upperOven.cookMode.write(OFF);
+   //rangeAppliance.upperOven.cookMode.write(OFF);
 }
 
-greenBean.connect("range", function(range) {
-  console.log("========> Appliance connected");
-  rangeAppliance = range;
+app.bind(adapter, function (bus) {
+    console.log("bind was successful");
+    savedBus = bus
 
 io.on('connection', function(client) {
     client.on('take_picture', function(){
@@ -54,10 +67,10 @@ io.on('connection', function(client) {
         var ovenData = {};
 
         // get the oven data and attach it to ovenData object
-        rangeAppliance.upperOven.displayTemperature.read(function(value) {
-           console.log("Oven display temperature is:", value);
-           io.emit('oven_data', value);
-        });
+        //rangeAppliance.upperOven.displayTemperature.read(function(value) {
+        //   console.log("Oven display temperature is:", value);
+        //   io.emit('oven_data', value);
+        //});
     });
 });
 });
