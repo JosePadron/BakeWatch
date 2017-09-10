@@ -169,7 +169,13 @@ var App = function () {
     
       image.src = '/public/image.jpg';
       logo.src = '/public/images/logo.png';
-      var c = canvas3.toDataURL("image/png");
+      var c = canvas3.toDataURL("image/jpg");
+      var newImage = new Image(620, 480);
+      newImage.onload = function(){
+        jQuery(".container").prepend(newImage);
+      }
+      newImage.src = c;
+      
       var data = c.replace(/^data:image\/(png|jpe?g);base64,/, '');
       console.log(data);
       return conversions.base64ToString(data);
