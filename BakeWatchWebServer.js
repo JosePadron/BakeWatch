@@ -84,11 +84,10 @@ io.on('connection', function(client) {
         console.log("io.on:Taking picture");
         UpdateLight(ON);
         TakePicture();
-        if(!lightState)
-        {
-           UpdateLight(OFF);
-           StopCooking();
-        }
+        // if(!lightState)
+        // {
+        //    StopCooking();
+        // }
     });
 
     client.on('oven_light_toggle', function(){
@@ -156,6 +155,7 @@ function TakePicture()
 
     camera.takePhoto().then(function(photo){
         io.emit('get_picture', photo);
+        UpdateLight(OFF);
     });
 }
 
