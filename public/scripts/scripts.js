@@ -9,9 +9,6 @@ window.fbAsyncInit = function () {
   FB.AppEvents.logPageView();
 };
 
-var temp = 0;
-var time_left = 0;
-
 var conversions = {
   stringToBinaryArray: function (string) {
     return Array.prototype.map.call(string, function (c) {
@@ -143,7 +140,7 @@ var App = function () {
             ctx.drawImage(image, 0, 0, image.width, image.height);
             ctx.fillStyle = "white";
             ctx.font="40px sans-serif";
-            ctx.fillText(temp + "°F: " + time_left + " mins left", 20, 440);
+            ctx.fillText(app.temp + "°F: " + app.time_left + " mins left", 20, 440);
         }
 
     var logo = new Image(151, 94);
@@ -164,7 +161,7 @@ var App = function () {
             setTimeout(function(){
                 ctx3.drawImage(canvas, 0, 0);
                 ctx3.drawImage(canvas2, 0, 0);
-            }, 300);
+            }, 400);
             jQuery("#oven-image-container").append(canvas3);
         }
 
@@ -175,14 +172,14 @@ var App = function () {
   
   // START EVERYTHING UP!
   var app = new App();
+      app.temp = 0;
+      app.time_left = 0;
   
   jQuery(document).on('ready', function () {
-    socket.emit('take_picture');
     socket.emit('get_oven_time_left');
     socket.emit('get_oven_temperature');
-    setTimeout(function(){
-      app.updateImage();
-    }, 4000);
+    socket.emit('take_picture');
+
     
     jQuery("#btn-share").on('click', function () {
       console.log("Share");
@@ -190,11 +187,8 @@ var App = function () {
     });
 
     jQuery("#btn-capture").on('click', function(){   
-      console.log("Take Picture");   
-      socket.emit('take_picture', {}, function(data){
-        console.log("Take Picture");
-      });
-      app.updateImage();
+      console.log("Take Picture");
+      socket.emit('take_picture');
     });
 
     jQuery("#btn-light-toggle").on('click', function(){
@@ -222,15 +216,15 @@ var App = function () {
     setTimeout(function(){
       console.log("Getting new photo");
       app.updateImage();
-    }, 5000);
+    }, 3000);
   });
 
   socket.on('oven_temperature', function(temp){
     console.log('Temp: ' + temp);
-    temp = temp;
+    app.temp = temp;
   });
 
   socket.on('oven_time_left', function(time_left){
     console.log('time_left Time: '+ time_left);
-    time_left = time_left;
+    app.time_left = time_left;
   });
