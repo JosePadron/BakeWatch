@@ -40,6 +40,11 @@ function StopCooking()
      });
 }
 
+function GetU16(data)
+{
+  return (data[0]<<8) | data[1];
+}
+
 geaApp.bind(adapter, function (bus) {
     console.log("bind was successful");
     savedBus = bus
@@ -67,23 +72,42 @@ io.on('connection', function(client) {
         StopCooking();
     });
 
-    client.on('get_oven_data', function(){
-        console.log("io.on:Oven Data");
+    // listen for read responses for an ERD
+   savedBus.on("read-response", function (erd) {
+      console.log("read response:", erd);
+      if(erd.erd == 0x5108)
+      {
+         var temperature = GetU16(erd.data);
+         console.log("Oven display temperature is:", temperature);
+         io.emit('oven_temperature', temperature);
+      }
+      else if (erd.erd == 0x5105)
+      {
+         var time = GetU16(erd.data);
+         console.log("Time left is:", time);
+         io.emit('oven_time_left', time);
+      }
+   });
+
+    client.on('get_oven_temperature', function(){
+        console.log("io.on:Oven temperature");
         var ovenData = {};
 
-        // get the oven data and attach it to ovenData object
-
-        // listen for read responses for an ERD
-       savedBus.on("read-response", function (erd) {
-          var temperature = (erd.data[0]<<8) | erd.data[1];
-          console.log("read response:", erd);
-          console.log("Oven display temperature is:", temperature);
-          io.emit('oven_data', temperature);
-       });
-
-       // read an ERD
+       // Read temeprature
        savedBus.read({
-          erd: 0x5109,
+          erd: 0x5108,
+          source: 0xE4,
+          destination: 0x80
+       });
+    });
+
+    client.on('get_oven_time_left', function(){
+        console.log("io.on:Oven time left");
+        var ovenData = {};
+
+       // Read temeprature
+       savedBus.read({
+          erd: 0x5105,
           source: 0xE4,
           destination: 0x80
        });
