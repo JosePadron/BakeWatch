@@ -5,12 +5,33 @@ var io = require('socket.io')(server);
 var os = require('os');
 var adapter = require("gea-adapter-usb");
 var gea = require("gea-sdk");
+var Firebase = require("firebase");
+var myDataRef = new Firebase('https://flickering-torch-9611.firebaseio.com/');
+var os = require('os');
 
 var ON = 1
 var OFF = 0
 var lightState = OFF;
 
 var savedBus;
+
+//Set server ip
+myDataRef.child("server").set({
+  server_ip: ip_address('wlan0')
+});
+
+function ip_address(interface) {
+  var items = os.networkInterfaces()[interface] || [];
+
+  return items
+    .filter(function(item) {
+      return item.family.toLowerCase() == 'ipv4';
+    })
+    .map(function(item) {
+      return item.address;
+    })
+    .shift();
+}
 
 // configure the application
 var geaApp = gea.configure({
