@@ -131,6 +131,7 @@ var App = function () {
   
   App.prototype.updateImage = function(){
     var image = new Image(620, 480);
+    image.src = '/public/image.png';
     var canvas = document.createElement('canvas');
     canvas.width = image.width;
     canvas.height = image.height;
@@ -141,8 +142,8 @@ var App = function () {
       ctx.font="40px sans-serif";
       ctx.fillText(app.temp + "°F: " + app.time_left + " mins left", 20, 440);
     }
-    
     var logo = new Image(151, 94);
+    logo.src = '/public/images/logo.png';
     var canvas2 = document.createElement('canvas');
     canvas2.width = logo.width;
     canvas2.height = logo.height;
@@ -158,11 +159,9 @@ var App = function () {
     image.onload = function(){
       ctx3.drawImage(canvas, 0, 0);
       ctx3.drawImage(canvas2, 0, 0);
-      jQuery("#oven-image-container").append(canvas3);
     }
+    jQuery("#oven-image-container").append(canvas3);
     
-      image.src = '/public/image.png';
-      logo.src = '/public/images/logo.png';
       var c = canvas3.toDataURL("image/png");
       var data = c.replace(/^data:image\/(png|jpe?g);base64,/, '');
       return conversions.base64ToString(data);
