@@ -209,6 +209,11 @@ var App = function () {
       console.log("Time Left");
       socket.emit('get_oven_time_left');
     });
+
+    jQuery("#btn-timelapse").on('click', function(){
+      console.log("TimeLapse");
+      socket.emit('take_timelapse');
+    });
   });
 
   socket.on('get_picture', function(){

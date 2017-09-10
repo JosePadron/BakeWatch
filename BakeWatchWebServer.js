@@ -87,7 +87,33 @@ io.on('connection', function(client) {
         // if(!lightState)
         // {
         //    StopCooking();
+        // UpdateLight(OFF);
         // }
+    });
+
+    client.on('take_timelapse', function(){
+        const timelapse = new Raspistill({ 
+            verticalFlip: true,
+            width: 680,
+            height: 420,
+            outputDir: './public/timelapse',
+            fileName: 'image',
+            encoding: 'png'
+        });
+        var num_of_shots = 10;
+        var count = 0;
+        timelapse.timelapse('timelapse%04d', 500, 3000, (image) => {
+            // got image from camera, do something
+            if(num_of_shots == count){
+                timelapse.stop();                
+            }
+            count ++;
+        }).then(() => {
+            // timelapse ended
+            console.log("Timelapse has ended");
+        }).catch((err) => {
+            // something bad happened
+        });
     });
 
     client.on('oven_light_toggle', function(){
