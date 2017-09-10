@@ -141,13 +141,13 @@ var App = function () {
             ctx.drawImage(image, 0, 0, image.width, image.height);
             ctx.fillStyle = "white";
             ctx.font="40px sans-serif";
-            if(time_left > 0){
-              ctx.fillText(temp + "°F: " + time_left + " mins left", 20, 440);
-            } else if(temp < 6000 && temp > 0) {
-              ctx.fillText(temp + "°F", 20, 440);
-            } else {
-              ctx.fillText("#BakeWatch", 20, 440);
-            }
+            ctx.fillText(temp + "°F: " + time_left + " mins left", 20, 440);
+            // if(time_left > 0){
+            // } else if(temp < 6000 && temp > 0) {
+            //   ctx.fillText(temp + "°F", 20, 440);
+            // } else {
+            //   ctx.fillText("#BakeWatch", 20, 440);
+            // }
         }
 
     var logo = new Image(151, 94);
@@ -219,8 +219,10 @@ var App = function () {
   });
 
   socket.on('get_picture', function(){
-    console.log("Getting new photo");
-    app.updateImage();
+    setTimeout(function(){
+      console.log("Getting new photo");
+      app.updateImage();
+    }, 5000);
   });
 
   socket.on('oven_temperature', function(temp){
