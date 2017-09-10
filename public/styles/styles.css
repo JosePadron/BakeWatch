@@ -71,12 +71,10 @@ body{
     padding: 1em;
     padding-top: 4em;
     background: rgba(0,0,0,0.2);
-    text-align: center;    
 }
 
 .icon-toolbar *{
-    position: relative;
-    display: inline-block;
+    display: block;
     margin-top: 0.25em;
     margin-bottom: 0.25em;
 }
