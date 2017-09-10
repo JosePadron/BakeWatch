@@ -134,42 +134,42 @@ var App = function () {
     jQuery(".init-image").remove();
 
     var image = new Image(620, 480);
-        image.src = '/public/image.jpg';
     var canvas = document.createElement('canvas');
-        canvas.width = image.width;
-        canvas.height = image.height;
+    canvas.width = image.width;
+    canvas.height = image.height;
     var ctx = canvas.getContext('2d');
-        image.onload = function(){
-            ctx.drawImage(image, 0, 0, image.width, image.height);
-            ctx.fillStyle = "white";
-            ctx.font="40px sans-serif";
-            ctx.fillText(app.temp + "°F: " + app.time_left + " mins left", 20, 440);
-        }
-
+    image.onload = function(){
+      ctx.drawImage(image, 0, 0, image.width, image.height);
+      ctx.fillStyle = "white";
+      ctx.font="40px sans-serif";
+      ctx.fillText(app.temp + "°F: " + app.time_left + " mins left", 20, 440);
+    }
+    
     var logo = new Image(151, 94);
-        logo.src = '/public/images/logo.png';
     var canvas2 = document.createElement('canvas');
-        canvas2.width = logo.width;
-        canvas2.height = logo.height;
+    canvas2.width = logo.width;
+    canvas2.height = logo.height;
     var ctx2 = canvas.getContext('2d');
-        logo.onload = function(){
-            ctx2.drawImage(logo, 460, 376, logo.width, logo.height);
-        }
-
+    logo.onload = function(){
+      ctx2.drawImage(logo, 460, 376, logo.width, logo.height);
+    }
+    
     var canvas3 = document.createElement('canvas');
     var ctx3 = canvas3.getContext('2d');
-        canvas3.width = 620;
-        canvas3.height = 480;
-        // setTimeout(function(){
-            ctx3.drawImage(canvas, 0, 0);
-            ctx3.drawImage(canvas2, 0, 0);
-        // }, 400);
-        jQuery("#oven-image-container").append(canvas3);
-
+    canvas3.width = 620;
+    canvas3.height = 480;
+    image.onload = function(){
+      ctx3.drawImage(canvas, 0, 0);
+      ctx3.drawImage(canvas2, 0, 0);
+      jQuery("#oven-image-container").append(canvas3);
+    }
+    
+    image.src = '/public/image.jpg';
+    logo.src = '/public/images/logo.png';
     var c = canvas3.toDataURL("image/png");
     var data = c.replace(/^data:image\/(png|jpe?g);base64,/, '');
-    return conversions.base64ToString(data);
-  }
+      return conversions.base64ToString(data);
+    }
   
   // START EVERYTHING UP!
   var app = new App();
