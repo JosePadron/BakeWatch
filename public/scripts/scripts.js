@@ -90,6 +90,10 @@ function getBase64Image() {
       canvas.width = 640;
       canvas.height = 480;
   var ctx = canvas.getContext("2d");
+      ctx.fillStyle = "white";
+      ctx.font = "20px sans-serif";
+      ctx.textBaseline = 'bottom';
+      ctx.fillText("Hello World", 0, 0);
       ctx.drawImage(img, 0, 0, 640, 480);
   
   var canvas2 = document.createElement("canvas");
@@ -102,10 +106,10 @@ function getBase64Image() {
       canvas3.height= img.height;
       ctx3.drawImage(canvas, 0, 0);
       ctx3.drawImage(canvas2, 479, 376);
-      ctx3.fillStyle = "white";
-      ctx3.font = "30px sans-serif";
-      ctx3.textBaseline = 'bottom';
-      ctx3.fillText(temp + "°F", 50, 50);
+      // ctx3.fillStyle = "white";
+      // ctx3.font = "30px sans-serif";
+      // ctx3.textBaseline = 'bottom';
+      // ctx3.fillText(temp + "°F", 50, 50);
       
       jQuery('.oven-image-container img, .oven-image-container canvas').remove();
       jQuery('.oven-image-container').append(canvas3);
