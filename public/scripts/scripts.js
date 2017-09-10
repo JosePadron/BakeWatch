@@ -106,9 +106,7 @@ function fileUpload(access_token) {
 
 }
 
-var myDataRef = new Firebase('https://flickering-torch-9611.firebaseio.com/');
-myDataRef.child('server').once("value", function(data) {
-  console.log("connecting to: " + data.val());
+  console.log("connecting to: " + data.val().server_ip);
   var socket = io.connect('http://' + data.val().server_ip + ':80');
   // var socket = io.connect('http://10.203.9.42:80');
 
@@ -133,7 +131,8 @@ var App = function () {
   
   App.prototype.updateImage = function(){
     jQuery("#oven-image-container canvas").remove();
-
+    jQuery(".init-image").remove();
+    
     var image = new Image(620, 480);
         image.src = '/public/image.jpg';
     var canvas = document.createElement('canvas');
@@ -232,4 +231,3 @@ var App = function () {
     console.log('time_left Time: '+ time_left);
     app.time_left = time_left;
   });
-});
