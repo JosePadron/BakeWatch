@@ -127,7 +127,7 @@ io.on('connection', function(client) {
             var pngFileStream = require('png-file-stream');
             var fs = require('fs');
              
-            pngFileStream('public/timelapse/image?.png')
+            pngFileStream('public/timelapse/*.png')
               .pipe(encoder.createWriteStream({ repeat: -1, delay: 500, quality: 10 }))
               .pipe(fs.createWriteStream('myanimated.gif'));
               
