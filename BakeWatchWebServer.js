@@ -102,7 +102,9 @@ io.on('connection', function(client) {
         });
         var num_of_shots = 10;
         var count = 0;
+        UpdateLight(ON);
         timelapse.timelapse('timelapse%04d', 500, 3000, (image) => {
+            console.log("Taking timelapse photo");
             // got image from camera, do something
             if(num_of_shots == count){
                 timelapse.stop();                
@@ -111,8 +113,10 @@ io.on('connection', function(client) {
         }).then(() => {
             // timelapse ended
             console.log("Timelapse has ended");
+            UpdateLight(OFF);
         }).catch((err) => {
             // something bad happened
+            UpdateLight(OFF);            
         });
     });
 
