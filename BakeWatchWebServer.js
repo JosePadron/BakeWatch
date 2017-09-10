@@ -3,8 +3,8 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var os = require('os');
+var adapter = require("gea-adapter-usb");
 
-var greenBean = require("green-bean");
 var ON = 1
 var OFF = 0
 var light_state = OFF;
@@ -13,7 +13,7 @@ var gea = require("gea-sdk");
 var savedBus;
 
 // configure the application
-var app = gea.configure({
+var geaApp = gea.configure({
     address: 0xe4,
     version: [ 0, 0, 1, 0 ]
 });
@@ -35,7 +35,7 @@ function StopCooking()
    //rangeAppliance.upperOven.cookMode.write(OFF);
 }
 
-app.bind(adapter, function (bus) {
+geaApp.bind(adapter, function (bus) {
     console.log("bind was successful");
     savedBus = bus
 
