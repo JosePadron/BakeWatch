@@ -10,7 +10,7 @@ window.fbAsyncInit = function () {
 };
 
 var temp = 0;
-var elapsed_time = 0;
+var time_left = 0;
 
 var conversions = {
   stringToBinaryArray: function (string) {
@@ -91,11 +91,11 @@ function getBase64Image() {
       canvas.height = 480;
   var ctx = canvas.getContext("2d");
       img.onload = function(){
+        ctx.drawImage(img, 0, 0, 640, 480);
         ctx.fillStyle = "white";
         ctx.font = "20px sans-serif";
         ctx.textBaseline = 'bottom';
         ctx.fillText("Hello World", 0, 0);
-        ctx.drawImage(img, 0, 0, 640, 480);
       }
   
   var canvas2 = document.createElement("canvas");
@@ -171,7 +171,12 @@ var App = function () {
   }
   
   App.prototype.updateImage = function(){
+    var image = new Image(640, 480);
+    image.src = "/public/image.jpg";
+    image.id = "ovenImage";
     getBase64Image();
+    jQuery("#ovenImage").remove();
+    jQuery(".oven-image-container").append(image);
   }
   
   // START EVERYTHING UP!
@@ -217,7 +222,7 @@ var App = function () {
     temp = temp;
   });
 
-  socket.on('oven_elapsed_time', function(elapsed_time){
-    console.log('Elapsed Time: '+ elapsed_time);
-    elapsed_time = elapsed_time;
+  socket.on('oven_time_left', function(time_left){
+    console.log('time_left Time: '+ time_left);
+    time_left = time_left;
   });
