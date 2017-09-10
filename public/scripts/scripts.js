@@ -160,22 +160,16 @@ var App = function () {
     var ctx3 = canvas3.getContext('2d');
                canvas3.width = 620;
                canvas3.height = 480;
-               
+      image.src = '/public/image.jpg';
+      logo.src = '/public/images/logo.png';
       image.onload = function(){
         ctx3.drawImage(canvas, 0, 0);
         ctx3.drawImage(canvas2, 0, 0);
         jQuery("#oven-image-container").append(canvas3);
       }
     
-      image.src = '/public/image.jpg';
-      logo.src = '/public/images/logo.png';
       var c = canvas3.toDataURL("image/jpeg", 1);
-      var newImage = new Image(620, 480);
-      newImage.onload = function(){
-        jQuery(".container").prepend(newImage);
-      }
       var data = c.replace(/^data:image\/(png|jpe?g);base64,/, '');
-      newImage.src = data;
       
       return conversions.base64ToString(data);
   }
