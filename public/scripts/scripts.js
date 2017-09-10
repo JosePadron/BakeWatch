@@ -254,6 +254,10 @@ var App = function () {
   });
 
   socket.on('notify', function(message){
-    app.notify(message);
+    if(message == 1){
+      app.notify("Cycle Started!");
+    } else {
+      app.notify("Cycle has Stopped");
+    }
   });
 
