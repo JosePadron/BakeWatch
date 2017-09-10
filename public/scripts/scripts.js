@@ -244,9 +244,6 @@ var App = function () {
     console.log('time_left Time: '+ time_left);
     app.time_left = time_left;
   });
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
 
   socket.on('notify', function(message){
     if(message == 1){
@@ -255,10 +252,8 @@ var App = function () {
       app.notify(message);
     }
   });
->>>>>>> Stashed changes
-=======
 
   socket.on('notify', function(message){
     app.notify(message);
   });
->>>>>>> da6e8a4556725677a92987e20c4ad0d2cf094118
+
