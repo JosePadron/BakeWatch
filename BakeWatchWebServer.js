@@ -80,15 +80,10 @@ geaApp.bind(adapter, function (bus) {
     savedBus = bus
 
 io.on('connection', function(client) {
-<<<<<<< HEAD
 
     setInterval(function(){
         io.emit('take_picture');
     }, 30000);
-
-=======
-    
->>>>>>> parent of a323284... Adding notifications
     client.on('take_picture', function(){
         console.log("io.on:Taking picture");
         UpdateLight(ON);
