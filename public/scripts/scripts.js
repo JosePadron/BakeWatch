@@ -152,13 +152,14 @@ var App = function () {
             canvas2.height = logo.height;
         var ctx2 = canvas.getContext('2d');
             logo.onload = function(){
-                ctx2.drawImage(logo, 519, 30, logo.width, logo.height);
+                ctx2.drawImage(logo, 519, 316, logo.width, logo.height);
             }
     
         var canvas3 = document.createElement('canvas');
         var ctx3 = canvas3.getContext('2d');
             canvas3.width = 680;
             canvas3.height = 420;
+            canvas3.id = "view";
             setTimeout(function(){
                 ctx3.drawImage(canvas, 0, 0);
                 ctx3.drawImage(canvas2, 0, 0);
