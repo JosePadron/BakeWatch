@@ -8,18 +8,18 @@ var greenBean = require("green-bean");
 var rangeAppliance;
 var ON = 1
 var OFF = 0
-var lightState = OFF;
+var light_state = OFF;
 
 function UpdateLight(state)
 {
-   console.log("Update light:", state)
-   rangeAppliance.lightState.Write(state);
+   console.log("Update light:", state);
+   rangeAppliance.twelveHourShutoff.write(state);
 }
 
 function StopCooking()
 {
    console.log("Stop cooking")
-   rangeAppliance.upperOven.cookMode.Write(OFF);
+   rangeAppliance.upperOven.cookMode.write(OFF);
 }
 
 greenBean.connect("range", function(range) {
@@ -40,8 +40,8 @@ io.on('connection', function(client) {
 
     client.on('oven_light_toggle', function(){
         console.log("io.on:Oven Light Toggle");
-        lightState = !lightState;
-        UpdateLight(lightState);
+        light_state = !light_state;
+        UpdateLight(light_state);
     });
 
     client.on('oven_temp_off', function(){
