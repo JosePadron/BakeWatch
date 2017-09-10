@@ -143,7 +143,7 @@ var App = function () {
         var ctx = canvas.getContext('2d');
             image.onload = function(){
                 ctx.drawImage(image, 0, 0, image.width, image.height);
-                ctx1.drawImage(logo, 519, 316, logo.width, logo.height);
+                ctx.drawImage(logo, 519, 316, logo.width, logo.height);
                 ctx.fillStyle = "white";
                 ctx.font="40px sans-serif";
                 if( app.temp < 65000 && app.time_left == 0){
