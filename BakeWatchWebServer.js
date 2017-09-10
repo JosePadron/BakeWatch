@@ -92,31 +92,38 @@ io.on('connection', function(client) {
     });
 
     client.on('take_timelapse', function(){
+        const RaspistillInterruptError = require('node-raspistill').RaspistillInterruptError;
         const timelapse = new Raspistill({ 
             verticalFlip: true,
             width: 680,
             height: 420,
-            outputDir: './public/timelapse',
+            outputDir: './public/timelapse/',
             fileName: 'image',
             encoding: 'png'
         });
         var num_of_shots = 10;
         var count = 0;
         UpdateLight(ON);
-        timelapse.timelapse('timelapse%04d', 500, 3000, (image) => {
+        console.log("Taking timelapse photo");        
+        timelapse.timelapse('timelapse%04d', 3000, 6000, (image) => {
             console.log("Taking timelapse photo");
+
             // got image from camera, do something
-            if(num_of_shots == count){
+            if(num_of_shots === count){
+                console.log("STOP!");
                 timelapse.stop();                
             }
-            count ++;
+
+            count = count + 1;
         }).then(() => {
             // timelapse ended
             console.log("Timelapse has ended");
             UpdateLight(OFF);
         }).catch((err) => {
+            console.error(err);
             // something bad happened
-            UpdateLight(OFF);            
+            UpdateLight(OFF);   
+            console.log(err instanceof RaspistillInterruptError) // true, raspistill was interrupted;
         });
     });
 
