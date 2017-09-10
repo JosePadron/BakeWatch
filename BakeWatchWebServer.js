@@ -80,10 +80,15 @@ geaApp.bind(adapter, function (bus) {
     savedBus = bus
 
 io.on('connection', function(client) {
+    
     client.on('take_picture', function(){
         console.log("io.on:Taking picture");
         UpdateLight(ON);
-        TakePicture();
+        
+        camera.takePhoto().then(function(photo){
+            io.emit('get_picture', photo);
+            UpdateLight(OFF);
+        });
         // if(!lightState)
         // {
         //    StopCooking();
@@ -105,7 +110,7 @@ io.on('connection', function(client) {
         var count = 0;
         UpdateLight(ON);
         console.log("Taking timelapse photo");        
-        timelapse.timelapse('timelapse%04d', 3000, 6000, (image) => {
+        timelapse.timelapse(3000, 6000, (image) => {
             console.log("Taking timelapse photo");
 
             // got image from camera, do something
@@ -185,16 +190,6 @@ app.use( "/public/", express.static( __dirname + '/public/'));
 app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
 });
-
-function TakePicture()
-{
-   console.log("Taking picture");
-
-    camera.takePhoto().then(function(photo){
-        io.emit('get_picture', photo);
-        UpdateLight(OFF);
-    });
-}
 
 server.listen(80, function() {
 	console.log('listening on *:80');
