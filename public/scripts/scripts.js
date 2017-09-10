@@ -80,16 +80,18 @@ var postImage = function (opts) {
 };
 
 function fileUpload(access_token) {
-  var image = app.updateImage();
+  var image = document.getElementById('view');
+  var image_data = image.toDataURL("image/png");
+  var encoded = conversions.base64ToString(image_data.replace(/^data:image\/(png|jpe?g);base64,/, ''));
   postImage({
     fb: {
       caption: 'Look what I\'m cookin\'! #firstbuild #hackthehome',
       /* place any other API params you wish to send. Ex: place / tags etc.*/
       accessToken: access_token,
       file: {
-        name: 'upload.jpg',
-        type: 'image/jpg', // or png
-        dataString: image // the string containing the binary data
+        name: 'upload.png',
+        type: 'image/png', // or png
+        dataString: encoded // the string containing the binary data
       }
     },
     call: { // options of the $.ajax call
@@ -128,50 +130,58 @@ var App = function () {
     var modal_switch = document.getElementById('modal_1'); 
     modal_switch.checked = true;
   }
+
+  App.prototype.notify = function(message){
+    if(!("Notification" in window)){
+      console.log("No Notifications are available");
+    } else if( Notification.permission === 'granted'){
+      var notification = new Notification(message);
+    } else if(Notification.permission !== 'denied'){
+      Notification.requestPermission(function(permission){
+        if(permission === "granted"){
+          var notification = new Notification(message);
+        }
+      });
+    }
+  };
   
   App.prototype.updateImage = function(){
-    jQuery("#oven-image-container canvas").remove();
-    jQuery(".init-image").remove();
-
-    var image = new Image(620, 480);
-        // image.src = '/public/image.jpg';
-    var canvas = document.createElement('canvas');
-        canvas.width = image.width;
-        canvas.height = image.height;
-    var ctx = canvas.getContext('2d');
-        image.onload = function(){
-            ctx.drawImage(image, 0, 0, image.width, image.height);
-            ctx.fillStyle = "white";
-            ctx.font="40px sans-serif";
-            ctx.fillText(app.temp + "°F: " + app.time_left + " mins left", 20, 440);
-        }
-
-    var logo = new Image(151, 94);
-        // logo.src = '/public/images/logo.png';
-    var canvas2 = document.createElement('canvas');
-        canvas2.width = logo.width;
-        canvas2.height = logo.height;
-    var ctx2 = canvas.getContext('2d');
-        logo.onload = function(){
-            ctx2.drawImage(logo, 460, 376, logo.width, logo.height);
-        }
-
-    var canvas3 = document.createElement('canvas');
-    var ctx3 = canvas3.getContext('2d');
-               canvas3.width = 620;
-               canvas3.height = 480;
-               image.onload = function(){
-                 ctx3.drawImage(canvas, 0, 0);
-                 ctx3.drawImage(canvas2, 0, 0);
-                 jQuery("#oven-image-container").append(canvas3);
+    jQuery("#oven-image-container canvas, #oven-image-container h2").remove();
+        var image = new Image(680, 420);
+            image.src = '/public/image.png';
+        var logo = new Image(75, 45);
+            logo.src = '/public/images/logo.png';
+        var canvas = document.createElement('canvas');
+            canvas.width = image.width;
+            canvas.height = image.height;
+        var ctx = canvas.getContext('2d');
+            image.onload = function(){
+                ctx.drawImage(image, 0, 0, image.width, image.height);
+                ctx.drawImage(logo, 519, 326, logo.width, logo.height);
+                ctx.fillStyle = "white";
+                ctx.font="40px sans-serif";
+                if( app.temp < 65000 && app.time_left == 0){
+                  ctx.fillText("#BakeWatch: " + app.temp + "°F", 20, 380);                  
+                } else if( app.temp < 65000 && app.time_left > 0){
+                  ctx.fillText(app.temp + "°F w/ " + app.time_left + " mins left", 20, 380);
+                } else if( app.temp >= 65000 && app.time_left > 0){
+                  ctx.fillText("#BakeWatch: " + app.time_left + " mins left", 20, 380);
+                } else {
+                  ctx.fillText("#BakeWatch", 20, 380);
                 }
-      image.src = '/public/image.jpg';
-      logo.src = '/public/images/logo.png';
-      var c = canvas3.toDataURL("image/jpeg", 1);
-      var data = c.replace(/^data:image\/(png|jpe?g);base64,/, '');
-      
-      return conversions.base64ToString(data);
-  }
+            }
+    
+          setTimeout(function(){
+            var canvas3 = document.createElement('canvas');
+            var ctx3 = canvas3.getContext('2d');
+              canvas3.width = 680;
+              canvas3.height = 420;
+              canvas3.id = "view";
+              ctx3.drawImage(canvas, 0, 0);
+              jQuery("#oven-image-container").append(canvas3);
+          }, 400);
+    }
+
   
   // START EVERYTHING UP!
   var app = new App();
@@ -213,13 +223,16 @@ var App = function () {
       console.log("Time Left");
       socket.emit('get_oven_time_left');
     });
+
+    jQuery("#btn-timelapse").on('click', function(){
+      console.log("TimeLapse");
+      socket.emit('take_timelapse');
+    });
   });
 
   socket.on('get_picture', function(){
-    setTimeout(function(){
-      console.log("Getting new photo");
-      app.updateImage();
-    }, 3000);
+    console.log("Getting new photo");
+    app.updateImage();
   });
 
   socket.on('oven_temperature', function(temp){
@@ -230,4 +243,8 @@ var App = function () {
   socket.on('oven_time_left', function(time_left){
     console.log('time_left Time: '+ time_left);
     app.time_left = time_left;
+  });
+
+  socket.on('notify', function(message){
+    app.notify(message);
   });

@@ -8,6 +8,15 @@ var gea = require("gea-sdk");
 var Firebase = require("firebase");
 var myDataRef = new Firebase('https://flickering-torch-9611.firebaseio.com/');
 var os = require('os');
+const Raspistill = require('node-raspistill').Raspistill;
+const camera = new Raspistill({ 
+    verticalFlip: true,
+    width: 680,
+    height: 420,
+    outputDir: './public',
+    fileName: 'image',
+    encoding: 'png'
+});
 
 var ON = 1
 var OFF = 0
@@ -71,16 +80,55 @@ geaApp.bind(adapter, function (bus) {
     savedBus = bus
 
 io.on('connection', function(client) {
+    
     client.on('take_picture', function(){
         console.log("io.on:Taking picture");
         UpdateLight(ON);
-        TakePicture();
-        if(!lightState)
-        {
-           UpdateLight(OFF);
-           StopCooking();
-        }
-        io.emit('get_picture');
+        
+        camera.takePhoto().then(function(photo){
+            io.emit('get_picture', photo);
+            UpdateLight(OFF);
+        });
+        // if(!lightState)
+        // {
+        //    StopCooking();
+        // UpdateLight(OFF);
+        // }
+    });
+
+    client.on('take_timelapse', function(){
+        const RaspistillInterruptError = require('node-raspistill').RaspistillInterruptError;
+        const timelapse = new Raspistill({ 
+            verticalFlip: true,
+            width: 680,
+            height: 420,
+            outputDir: './public/timelapse/',
+            encoding: 'png'
+        });
+         
+        UpdateLight(ON);
+        console.log("Taking timelapse photo");        
+        timelapse.timelapse('image%04d', 500, 10000, (image) => {
+            console.log("Taking timelapse photo");
+        }).then(() => {
+            // timelapse ended
+            console.log("Timelapse has ended");
+            var GIFEncoder = require('gifencoder');
+            var encoder = new GIFEncoder(680, 420);
+            var pngFileStream = require('png-file-stream');
+            var fs = require('fs');
+             
+            pngFileStream('public/timelapse/*.png')
+              .pipe(encoder.createWriteStream({ repeat: -1, delay: 500, quality: 10 }))
+              .pipe(fs.createWriteStream('myanimated.gif'));
+              
+            UpdateLight(OFF);
+        }).catch((err) => {
+            console.error(err);
+            // something bad happened
+            UpdateLight(OFF);   
+            console.log(err instanceof RaspistillInterruptError) // true, raspistill was interrupted;
+        });
     });
 
     client.on('oven_light_toggle', function(){
@@ -97,7 +145,7 @@ io.on('connection', function(client) {
     // listen for read responses for an ERD
    savedBus.on("read-response", function (erd) {
       console.log("read response:", erd);
-      if(erd.erd == 0x5108)
+      if(erd.erd == 0x5109)
       {
          var temperature = GetU16(erd.data);
          console.log("Oven display temperature is:", temperature);
@@ -116,7 +164,7 @@ io.on('connection', function(client) {
 
        // Read temeprature
        savedBus.read({
-          erd: 0x5108,
+          erd: 0x5109,
           source: 0xE4,
           destination: 0x80
        });
@@ -141,21 +189,6 @@ app.use( "/public/", express.static( __dirname + '/public/'));
 app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
 });
-
-function TakePicture()
-{
-   console.log("Taking picture");
-   var exec = require('child_process').exec;
-
-    exec('raspistill -t 2000 -vf -hf -o /home/pi/firstbuild_hackathon/public/image.jpg', function(error, stdout, stderr) {
-        //console.log('stdout: ' + stdout);
-        //console.log('stderr: ' + stderr);
-        if (error !== null) {
-            console.log('exec error: ' + error);
-        }
-
-    });
-}
 
 server.listen(80, function() {
 	console.log('listening on *:80');
