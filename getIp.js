@@ -13,7 +13,7 @@ myDataRef.child("server").set({
 });
 
 setInterval(function () {
-   bye(bus);
+   bye();
 }, 2000);
 
 function ip_address(interface) {
