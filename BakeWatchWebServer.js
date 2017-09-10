@@ -9,7 +9,7 @@ var Firebase = require("firebase");
 var myDataRef = new Firebase('https://flickering-torch-9611.firebaseio.com/');
 var os = require('os');
 const Raspistill = require('node-raspistill').Raspistill;
-const camera = new Raspistill({
+const camera = new Raspistill({ 
     verticalFlip: true,
     width: 680,
     height: 420,
