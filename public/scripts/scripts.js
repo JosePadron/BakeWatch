@@ -211,6 +211,11 @@ var App = function () {
       console.log("Get Oven Temp");
       socket.emit('get_oven_temperature');
     });
+
+    jQuery("#btn-time-left").on('click', function(){
+      console.log("Time Left");
+      socket.emit('get_oven_time_left');
+    });
   });
 
   socket.on('get_picture', function(){
