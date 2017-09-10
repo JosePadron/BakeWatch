@@ -161,11 +161,11 @@ var App = function () {
                 ctx.fillStyle = "white";
                 ctx.font="40px sans-serif";
                 if( app.temp < 65000 && app.time_left == 0){
-                  ctx.fillText(app.temp + "°F", 20, 380);                  
+                  ctx.fillText("#BakeWatch: " + app.temp + "°F", 20, 380);                  
                 } else if( app.temp < 65000 && app.time_left > 0){
-                  ctx.fillText(app.temp + "°F: " + app.time_left + " mins left", 20, 380);
+                  ctx.fillText(app.temp + "°F w/ " + app.time_left + " mins left", 20, 380);
                 } else if( app.temp >= 65000 && app.time_left > 0){
-                  ctx.fillText(app.time_left + " mins left", 20, 380);
+                  ctx.fillText("#BakeWatch: " + app.time_left + " mins left", 20, 380);
                 } else {
                   ctx.fillText("#BakeWatch", 20, 380);
                 }

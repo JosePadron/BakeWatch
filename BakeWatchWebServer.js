@@ -105,20 +105,11 @@ io.on('connection', function(client) {
             outputDir: './public/timelapse/',
             encoding: 'png'
         });
-        var num_of_shots = 10;
-        var count = 0;
+         
         UpdateLight(ON);
         console.log("Taking timelapse photo");        
         timelapse.timelapse('image%04d', 500, 10000, (image) => {
             console.log("Taking timelapse photo");
-
-            // got image from camera, do something
-            if(num_of_shots === count){
-                console.log("STOP!");
-                timelapse.stop();                
-            }
-
-            count = count + 1;
         }).then(() => {
             // timelapse ended
             console.log("Timelapse has ended");
@@ -154,7 +145,7 @@ io.on('connection', function(client) {
     // listen for read responses for an ERD
    savedBus.on("read-response", function (erd) {
       console.log("read response:", erd);
-      if(erd.erd == 0x5108)
+      if(erd.erd == 0x5109)
       {
          var temperature = GetU16(erd.data);
          console.log("Oven display temperature is:", temperature);
@@ -173,7 +164,7 @@ io.on('connection', function(client) {
 
        // Read temeprature
        savedBus.read({
-          erd: 0x5108,
+          erd: 0x5109,
           source: 0xE4,
           destination: 0x80
        });
