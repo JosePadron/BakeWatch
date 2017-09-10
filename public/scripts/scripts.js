@@ -219,6 +219,7 @@ var App = function () {
   });
 
   socket.on('get_picture', function(){
+    console.log("Getting new photo");
     app.updateImage();
   });
 
