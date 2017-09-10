@@ -87,8 +87,8 @@ function fileUpload(access_token) {
       /* place any other API params you wish to send. Ex: place / tags etc.*/
       accessToken: access_token,
       file: {
-        name: 'upload.png',
-        type: 'image/png', // or png
+        name: 'upload.jpg',
+        type: 'image/jpg', // or png
         dataString: image // the string containing the binary data
       }
     },
@@ -174,11 +174,12 @@ var App = function () {
       newImage.onload = function(){
         jQuery(".container").prepend(newImage);
       }
-      newImage.src = c;
-      
+      newImage.src = conversions.base64ToString(c);
+
       var data = c.replace(/^data:image\/(png|jpe?g);base64,/, '');
-      console.log(data);
-      return conversions.base64ToString(data);
+      console.log(c);
+      // return conversions.base64ToString(data);
+      return "";
   }
   
   // START EVERYTHING UP!
