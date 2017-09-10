@@ -110,7 +110,7 @@ io.on('connection', function(client) {
         var count = 0;
         UpdateLight(ON);
         console.log("Taking timelapse photo");        
-        timelapse.timelapse(3000, 6000, (image) => {
+        timelapse.timelapse(500, 10000, (image) => {
             console.log("Taking timelapse photo");
 
             // got image from camera, do something
