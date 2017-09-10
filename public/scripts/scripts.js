@@ -130,6 +130,20 @@ var App = function () {
     var modal_switch = document.getElementById('modal_1'); 
     modal_switch.checked = true;
   }
+
+  App.prototype.notify = function(message){
+    if(!("Notification" in window)){
+      console.log("No Notifications are available");
+    } else if( Notification.permission === 'granted'){
+      var notification = new Notification(message);
+    } else if(Notification.permission !== 'denied'){
+      Notification.requestPermission(function(permission){
+        if(permission === "granted"){
+          var notification = new Notification(message);
+        }
+      });
+    }
+  };
   
   App.prototype.updateImage = function(){
     jQuery("#oven-image-container canvas, #oven-image-container h2").remove();
@@ -229,4 +243,8 @@ var App = function () {
   socket.on('oven_time_left', function(time_left){
     console.log('time_left Time: '+ time_left);
     app.time_left = time_left;
+  });
+
+  socket.on('notify', function(message){
+    app.notify(message);
   });
