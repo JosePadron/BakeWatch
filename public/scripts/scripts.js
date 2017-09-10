@@ -1,5 +1,5 @@
 
-var socket = io.connect('http://bakewatch.com/');
+var socket = io.connect('http://bakewatch.com');
 
 
 // Constructor
