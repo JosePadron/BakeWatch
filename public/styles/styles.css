@@ -48,22 +48,17 @@ body{
 #btn-oven-off{
     color: #D2210E;
 }
-
 #btn-light-toggle{
     color: #F3B547;
 }
-
 #btn-capture{
     color: #E4E3E3;
-    margin-top: 1em;
-    margin-bottom: 0.5em;
+    /* margin-top: 1em; */
 }
-
 #btn-timelapse{
     color: #E4E3E3;
-    margin-bottom: 2em;
+    /* margin-bottom: 2em; */
 }
-
 #btn-share{
     color: #484EFE;
 }
@@ -73,7 +68,7 @@ body{
     top: 0;
     bottom:0;
     padding: 1em;
-    padding-top: 3em;
+    padding-top: 4em;
     background: rgba(0,0,0,0.2);
 }
 
