@@ -72,26 +72,19 @@ io.on('connection', function(client) {
         StopCooking();
     });
 
-    // listen for read responses for an ERD
-   savedBus.on("read-response", function (erd) {
-      console.log("read response:", erd);
-      if(erd.erd == 0x5108)
-      {
-         var temperature = GetU16(erd.data);
-         console.log("Oven display temperature is:", temperature);
-         io.emit('oven_temperature', temperature);
-      }
-      else if (erd.erd == 0x5105)
-      {
-         var time = GetU16(erd.data);
-         console.log("Time left is:", time);
-         io.emit('oven_time_left', time);
-      }
-   });
-
     client.on('get_oven_temperature', function(){
         console.log("io.on:Oven temperature");
-        var ovenData = {};
+
+        // listen for read responses for an ERD
+       savedBus.on("read-response", function (erd) {
+          console.log("read response:", erd);
+          if(erd.erd == 0x5108)
+          {
+             var temperature = GetU16(erd.data);
+             console.log("Oven display temperature is:", temperature);
+             io.emit('oven_temperature', temperature);
+          }
+       });
 
        // Read temeprature
        savedBus.read({
@@ -103,7 +96,17 @@ io.on('connection', function(client) {
 
     client.on('get_oven_time_left', function(){
         console.log("io.on:Oven time left");
-        var ovenData = {};
+
+        // listen for read responses for an ERD
+       savedBus.on("read-response", function (erd) {
+          console.log("read response:", erd);
+          if (erd.erd == 0x5105)
+          {
+             var time = GetU16(erd.data);
+             console.log("Time left is:", time);
+             io.emit('oven_time_left', time);
+          }
+       });
 
        // Read temeprature
        savedBus.read({
