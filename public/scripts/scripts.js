@@ -132,7 +132,7 @@ var App = function () {
   }
   
   App.prototype.updateImage = function(){
-    jQuery("#oven-image-container canvas").remove();
+    jQuery("#oven-image-container canvas, #oven-image-container h2").remove();
         var image = new Image(680, 420);
             image.src = '/public/image.png';
         var canvas = document.createElement('canvas');
@@ -147,14 +147,14 @@ var App = function () {
             }
     
         var logo = new Image(151, 94);
-            logo.src = '/public/images/logo.png';
         var canvas2 = document.createElement('canvas');
             canvas2.width = logo.width;
             canvas2.height = logo.height;
         var ctx2 = canvas.getContext('2d');
             logo.onload = function(){
-                ctx2.drawImage(logo, 519, 316, logo.width, logo.height);
+              ctx2.drawImage(logo, 519, 316, logo.width, logo.height);
             }
+            logo.src = '/public/images/logo.png';
     
         var canvas3 = document.createElement('canvas');
         var ctx3 = canvas3.getContext('2d');

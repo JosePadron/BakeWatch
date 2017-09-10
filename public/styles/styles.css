@@ -27,6 +27,12 @@ body{
     max-width: 100%;
 }
 
+#oven-image-container h2{
+    text-align: center;
+    width: 100%;
+    display: block;
+}
+
 .button-group{
     text-align: center;
     position: relative;
