@@ -4,12 +4,12 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var os = require('os');
 var adapter = require("gea-adapter-usb");
+var gea = require("gea-sdk");
 
 var ON = 1
 var OFF = 0
-var light_state = OFF;
+var lightState = OFF;
 
-var gea = require("gea-sdk");
 var savedBus;
 
 // configure the application
@@ -32,7 +32,12 @@ function UpdateLight(state)
 function StopCooking()
 {
    console.log("Stop cooking")
-   //rangeAppliance.upperOven.cookMode.write(OFF);
+   savedBus.send({
+         command: 0xF1,
+         data: [ 1, 0x51, 0x00, 13, 0,0,0,0,0, 0,0,0,0,0, 0,0,0 ],
+         source: 0xE4,
+         destination: 0x80
+     });
 }
 
 geaApp.bind(adapter, function (bus) {
@@ -53,8 +58,8 @@ io.on('connection', function(client) {
 
     client.on('oven_light_toggle', function(){
         console.log("io.on:Oven Light Toggle");
-        light_state = !light_state;
-        UpdateLight(light_state);
+        lightState = !lightState;
+        UpdateLight(lightState);
     });
 
     client.on('oven_temp_off', function(){
@@ -67,10 +72,20 @@ io.on('connection', function(client) {
         var ovenData = {};
 
         // get the oven data and attach it to ovenData object
-        //rangeAppliance.upperOven.displayTemperature.read(function(value) {
-        //   console.log("Oven display temperature is:", value);
-        //   io.emit('oven_data', value);
-        //});
+
+        // listen for read responses for an ERD
+       savedBus.on("read-response", function (erd) {
+          console.log("read response:", erd);
+          console.log("Oven display temperature is:", erd.data);
+          io.emit('oven_data', erd.data);
+       });
+
+       // read an ERD
+       savedBus.read({
+          erd: 0x5109,
+          source: 0xE4,
+          destination: 0x80
+       });
     });
 });
 });
@@ -88,8 +103,8 @@ function TakePicture()
    var exec = require('child_process').exec;
 
     exec('raspistill -vf -hf -o /home/pi/firstbuild_hackathon/public/image.jpg', function(error, stdout, stderr) {
-        console.log('stdout: ' + stdout);
-        console.log('stderr: ' + stderr);
+        //console.log('stdout: ' + stdout);
+        //console.log('stderr: ' + stderr);
         if (error !== null) {
             console.log('exec error: ' + error);
         }
