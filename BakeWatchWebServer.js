@@ -103,14 +103,13 @@ io.on('connection', function(client) {
             width: 680,
             height: 420,
             outputDir: './public/timelapse/',
-            fileName: 'image',
             encoding: 'png'
         });
         var num_of_shots = 10;
         var count = 0;
         UpdateLight(ON);
         console.log("Taking timelapse photo");        
-        timelapse.timelapse(500, 10000, (image) => {
+        timelapse.timelapse('image%04d', 500, 10000, (image) => {
             console.log("Taking timelapse photo");
 
             // got image from camera, do something
