@@ -68,10 +68,7 @@ var App = function () {
   socket.on('get_picture', function(){
     app.updateImage();
   });
-<<<<<<< HEAD
-=======
 
   socket.on('oven_data', function(data){
     console.log('Data', data);
   });
->>>>>>> b96ca2e288e604e6b98155dd54a9699baec2ddc2
