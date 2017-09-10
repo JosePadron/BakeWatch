@@ -90,11 +90,13 @@ function getBase64Image() {
       canvas.width = 640;
       canvas.height = 480;
   var ctx = canvas.getContext("2d");
-      ctx.fillStyle = "white";
-      ctx.font = "20px sans-serif";
-      ctx.textBaseline = 'bottom';
-      ctx.fillText("Hello World", 0, 0);
-      ctx.drawImage(img, 0, 0, 640, 480);
+      img.onload = function(){
+        ctx.drawImage(img, 0, 0, 640, 480);
+        ctx.fillStyle = "white";
+        ctx.font = "20px sans-serif";
+        ctx.textBaseline = 'bottom';
+        ctx.fillText("Hello World", 0, 0);
+      }
   
   var canvas2 = document.createElement("canvas");
   var ctx2 = canvas2.getContext("2d");
