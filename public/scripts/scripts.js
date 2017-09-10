@@ -1,7 +1,6 @@
 
 var socket = io.connect('http://10.203.9.130:8080');
 
-
 // Constructor
 var App = function () {
     console.log("Constructor");
