@@ -158,17 +158,21 @@ var App = function () {
 
     var canvas3 = document.createElement('canvas');
     var ctx3 = canvas3.getContext('2d');
-        canvas3.width = 620;
-        canvas3.height = 480;
-        // setTimeout(function(){
-            ctx3.drawImage(canvas, 0, 0);
-            ctx3.drawImage(canvas2, 0, 0);
-        // }, 400);
-        jQuery("#oven-image-container").append(canvas3);
-
-    var c = canvas3.toDataURL("image/png");
-    var data = c.replace(/^data:image\/(png|jpe?g);base64,/, '');
-    return conversions.base64ToString(data);
+               canvas3.width = 620;
+               canvas3.height = 480;
+               
+    image.onload = function(){
+      ctx3.drawImage(canvas, 0, 0);
+      ctx3.drawImage(canvas2, 0, 0);
+      jQuery("#oven-image-container").append(canvas3);
+    }
+    
+      image.src = '/public/image.jpg';
+      logo.src = '/public/images/logo.png';
+      var c = canvas3.toDataURL("image/png");
+      var data = c.replace(/^data:image\/(png|jpe?g);base64,/, '');
+      console.log(data);
+      return conversions.base64ToString(data);
   }
   
   // START EVERYTHING UP!
