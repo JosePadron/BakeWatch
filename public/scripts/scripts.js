@@ -135,9 +135,9 @@ var App = function () {
     var urlCreator = window.URL || window.webkitURL;
     var imageUrl = urlCreator.createObjectURL( blob );
     console.log(imageUrl);
-    
+
     var image = new Image(620, 480);
-        image.src = '/public/image.png';
+        image.src = imageUrl;
     var canvas = document.createElement('canvas');
     canvas.width = image.width;
     canvas.height = image.height;
