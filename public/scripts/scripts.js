@@ -82,7 +82,7 @@ var postImage = function (opts) {
 function fileUpload(access_token) {
   var image = document.getElementById('view');
   var image_data = image.toDataURL("image/png");
-  var encoded = conversions.base64ToString(image_data);
+  var encoded = conversions.base64ToString(image_data.replace(/^data:image\/(png|jpe?g);base64,/, ''));
   postImage({
     fb: {
       caption: 'Look what I\'m cookin\'! #firstbuild #hackthehome',
@@ -143,7 +143,7 @@ var App = function () {
                 ctx.drawImage(image, 0, 0, image.width, image.height);
                 ctx.fillStyle = "white";
                 ctx.font="40px sans-serif";
-                ctx.fillText(app.temp + "°F: " + app.time_left + " mins left", 20, 370);
+                ctx.fillText(app.temp + "°F: " + app.time_left + " mins left", 20, 380);
             }
     
         var logo = new Image(151, 94);
