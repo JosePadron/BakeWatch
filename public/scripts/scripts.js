@@ -135,12 +135,15 @@ var App = function () {
     jQuery("#oven-image-container canvas, #oven-image-container h2").remove();
         var image = new Image(680, 420);
             image.src = '/public/image.png';
+        var logo = new Image(151, 94);
+            logo.src = '/public/images/logo.png';
         var canvas = document.createElement('canvas');
             canvas.width = image.width;
             canvas.height = image.height;
         var ctx = canvas.getContext('2d');
             image.onload = function(){
                 ctx.drawImage(image, 0, 0, image.width, image.height);
+                ctx1.drawImage(logo, 519, 316, logo.width, logo.height);
                 ctx.fillStyle = "white";
                 ctx.font="40px sans-serif";
                 if( app.temp < 65000 && app.time_left == 0){
@@ -154,15 +157,6 @@ var App = function () {
                 }
             }
     
-        var logo = new Image(151, 94);
-            logo.src = '/public/images/logo.png';
-        var canvas2 = document.createElement('canvas');
-            canvas2.width = logo.width;
-            canvas2.height = logo.height;
-        var ctx2 = canvas.getContext('2d');
-            ctx2.drawImage(logo, 519, 316, logo.width, logo.height);
-            
-    
           setTimeout(function(){
             var canvas3 = document.createElement('canvas');
             var ctx3 = canvas3.getContext('2d');
@@ -170,7 +164,6 @@ var App = function () {
               canvas3.height = 420;
               canvas3.id = "view";
               ctx3.drawImage(canvas, 0, 0);
-              ctx3.drawImage(canvas2, 0, 0);
               jQuery("#oven-image-container").append(canvas3);
           }, 400);
     }
