@@ -159,13 +159,11 @@ var App = function () {
         var ctx3 = canvas3.getContext('2d');
             canvas3.width = 680;
             canvas3.height = 420;
-            window.onload = function(){
-                setTimeout(function(){
-                    ctx3.drawImage(canvas, 0, 0);
-                    ctx3.drawImage(canvas2, 0, 0);
-                }, 300);
-                jQuery("#oven-image-container").append(canvas3);
-            }
+            setTimeout(function(){
+                ctx3.drawImage(canvas, 0, 0);
+                ctx3.drawImage(canvas2, 0, 0);
+            }, 300);
+            jQuery("#oven-image-container").append(canvas3);
     
         var c = canvas3.toDataURL("image/png");
         var data = c.replace(/^data:image\/(png|jpe?g);base64,/, '');
