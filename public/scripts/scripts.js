@@ -109,7 +109,7 @@ function fileUpload(access_token) {
 
 }
 
-var socket = io.connect('http://10.203.25.93:80');
+var socket = io.connect('http://10.203.9.42:80');
 
 // Constructor
 var App = function () {
