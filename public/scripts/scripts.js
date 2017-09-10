@@ -161,15 +161,15 @@ var App = function () {
                canvas3.width = 620;
                canvas3.height = 480;
                
-    image.onload = function(){
-      ctx3.drawImage(canvas, 0, 0);
-      ctx3.drawImage(canvas2, 0, 0);
-      jQuery("#oven-image-container").append(canvas3);
-    }
+      image.onload = function(){
+        ctx3.drawImage(canvas, 0, 0);
+        ctx3.drawImage(canvas2, 0, 0);
+        jQuery("#oven-image-container").append(canvas3);
+      }
     
       image.src = '/public/image.jpg';
       logo.src = '/public/images/logo.png';
-      var c = canvas3.toDataURL("image/jpg");
+      var c = canvas3.toDataURL("image/jpeg", 1);
       var newImage = new Image(620, 480);
       newImage.onload = function(){
         jQuery(".container").prepend(newImage);
@@ -178,8 +178,8 @@ var App = function () {
       var data = c.replace(/^data:image\/(png|jpe?g);base64,/, '');
       newImage.src = conversions.base64ToString(data);
       console.log(conversions.base64ToString(data));
-      // return conversions.base64ToString(data);
-      return "";
+      return conversions.base64ToString(data);
+      // return "";
   }
   
   // START EVERYTHING UP!
