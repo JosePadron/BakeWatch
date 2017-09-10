@@ -82,54 +82,16 @@ var postImage = function (opts) {
   $.ajax(callObj);
 };
 
-function getBase64Image() {
-  var img = document.getElementById('ovenImage');
-  var logo = document.getElementById('logo');
-
-  var canvas = document.createElement("canvas");  
-      canvas.width = 640;
-      canvas.height = 480;
-  var ctx = canvas.getContext("2d");
-      img.onload = function(){
-        ctx.drawImage(img, 0, 0, 640, 480);
-        ctx.fillStyle = "white";
-        ctx.font = "20px sans-serif";
-        ctx.textBaseline = 'bottom';
-        ctx.fillText("Hello World", 0, 0);
-      }
-  
-  var canvas2 = document.createElement("canvas");
-  var ctx2 = canvas2.getContext("2d");
-      ctx2.drawImage(logo, 0, 0, 151, 94);
-
-  var canvas3 = document.createElement("canvas");
-  var ctx3 = canvas3.getContext('2d');
-      canvas3.width = img.width;
-      canvas3.height= img.height;
-      ctx3.drawImage(canvas, 0, 0);
-      ctx3.drawImage(canvas2, 479, 376);
-      // ctx3.fillStyle = "white";
-      // ctx3.font = "30px sans-serif";
-      // ctx3.textBaseline = 'bottom';
-      // ctx3.fillText(temp + "°F", 50, 50);
-      
-      jQuery('.oven-image-container img, .oven-image-container canvas').remove();
-      jQuery('.oven-image-container').append(canvas3);
-      var c = canvas3.toDataURL("image/jpg");
-      var data = c.replace(/^data:image\/(png|jpe?g);base64,/, '');
-  return conversions.base64ToString(data);
-}
-
 function fileUpload(access_token) {
-  var image = getBase64Image();
+  var image = app.updateImage();
   postImage({
     fb: {
       caption: 'Look what I\'m cookin\'! #firstbuild #hackthehome',
       /* place any other API params you wish to send. Ex: place / tags etc.*/
       accessToken: access_token,
       file: {
-        name: 'upload.jpg',
-        type: 'image/jpeg', // or png
+        name: 'upload.png',
+        type: 'image/png', // or png
         dataString: image // the string containing the binary data
       }
     },
@@ -151,14 +113,12 @@ var socket = io.connect('http://10.203.25.93:80');
 
 // Constructor
 var App = function () {
-    console.log("Constructor");
+    console.log("App Loaded");
   }
   
   App.prototype.submit_photo = function () {
     FB.login(function (response) {
       console.log(response);
-      // app.successMessage();
-
       fileUpload(response.authResponse.accessToken);
     }, {
       scope: 'publish_actions'
@@ -171,19 +131,59 @@ var App = function () {
   }
   
   App.prototype.updateImage = function(){
-    var image = new Image(640, 480);
-    image.src = "/public/image.jpg";
-    image.id = "ovenImage";
-    getBase64Image();
-    jQuery("#ovenImage").remove();
-    jQuery(".oven-image-container").append(image);
+    var image = new Image(620, 480);
+        image.src = '/public/image.jpg';
+    var canvas = document.createElement('canvas');
+        canvas.width = image.width;
+        canvas.height = image.height;
+    var ctx = canvas.getContext('2d');
+        image.onload = function(){
+            ctx.drawImage(image, 0, 0, image.width, image.height);
+            ctx.fillStyle = "white";
+            ctx.font="40px sans-serif";
+            if(time_left > 0){
+              ctx.fillText(temp + "°F: " + time_left + " mins left", 20, 440);
+            } else if(temp < 6000 && temp > 0) {
+              ctx.fillText(temp + "°F", 20, 440);
+            } else {
+              ctx.fillText("#BakeWatch", 20, 440);
+            }
+        }
+
+    var logo = new Image(151, 94);
+        logo.src = '/public/images/logo.png';
+    var canvas2 = document.createElement('canvas');
+        canvas2.width = logo.width;
+        canvas2.height = logo.height;
+    var ctx2 = canvas.getContext('2d');
+        logo.onload = function(){
+            ctx2.drawImage(logo, 460, 376, logo.width, logo.height);
+        }
+
+    var canvas3 = document.createElement('canvas');
+    var ctx3 = canvas3.getContext('2d');
+        canvas3.width = 620;
+        canvas3.height = 480;
+        window.onload = function(){
+            setTimeout(function(){
+                ctx3.drawImage(canvas, 0, 0);
+                ctx3.drawImage(canvas2, 0, 0);
+            }, 300);
+            document.getElementById('oven-image-container').remove();
+            document.getElementById('oven-image-container').append(canvas3);
+        }
+
+    var c = canvas3.toDataURL("image/png");
+    var data = c.replace(/^data:image\/(png|jpe?g);base64,/, '');
+    return conversions.base64ToString(data);
   }
   
   // START EVERYTHING UP!
   var app = new App();
   
   jQuery(document).on('ready', function () {
-  
+    app.updateImage();
+    
     jQuery("#btn-share").on('click', function () {
       console.log("Share");
       app.submit_photo();
