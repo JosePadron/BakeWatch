@@ -9,7 +9,7 @@ var Firebase = require("firebase");
 var myDataRef = new Firebase('https://flickering-torch-9611.firebaseio.com/');
 var os = require('os');
 const Raspistill = require('node-raspistill').Raspistill;
-const camera = new Raspistill({ 
+const camera = new Raspistill({
     verticalFlip: true,
     width: 680,
     height: 420,
@@ -79,6 +79,27 @@ geaApp.bind(adapter, function (bus) {
     console.log("bind was successful");
     savedBus = bus
 
+    savedBus.subscribe({
+        source: 0xE4,
+        destination: 0x80,
+        erd: 0xF20D
+    });
+
+    // listen for publishes for an ERD
+    savedBus.on("publish", function (erd) {
+        console.log("Got a data published:", erd);
+        if(erd.erd == 0xF20D) {
+          if(erd.data == 1) {
+            console.log("Cycle Started");
+            io.emit('notify', erd.data);
+          }
+          else {
+            console.log("Cycle Stopped");
+            io.emit('notify', erd.data);
+          }
+        }
+    });
+
 io.on('connection', function(client) {
 
     setInterval(function(){
@@ -87,30 +108,25 @@ io.on('connection', function(client) {
     client.on('take_picture', function(){
         console.log("io.on:Taking picture");
         UpdateLight(ON);
-        
+
         camera.takePhoto().then(function(photo){
             io.emit('get_picture', photo);
             UpdateLight(OFF);
         });
-        // if(!lightState)
-        // {
-        //    StopCooking();
-        // UpdateLight(OFF);
-        // }
     });
 
     client.on('take_timelapse', function(){
         const RaspistillInterruptError = require('node-raspistill').RaspistillInterruptError;
-        const timelapse = new Raspistill({ 
+        const timelapse = new Raspistill({
             verticalFlip: true,
             width: 680,
             height: 420,
             outputDir: './public/timelapse/',
             encoding: 'png'
         });
-         
+
         UpdateLight(ON);
-        console.log("Taking timelapse photo");        
+        console.log("Taking timelapse photo");
         timelapse.timelapse('image%04d', 500, 10000, (image) => {
             console.log("Taking timelapse photo");
         }).then(() => {
@@ -120,16 +136,16 @@ io.on('connection', function(client) {
             var encoder = new GIFEncoder(680, 420);
             var pngFileStream = require('png-file-stream');
             var fs = require('fs');
-             
+
             pngFileStream('public/timelapse/*.png')
               .pipe(encoder.createWriteStream({ repeat: -1, delay: 500, quality: 10 }))
               .pipe(fs.createWriteStream('myanimated.gif'));
-              
+
             UpdateLight(OFF);
         }).catch((err) => {
             console.error(err);
             // something bad happened
-            UpdateLight(OFF);   
+            UpdateLight(OFF);
             console.log(err instanceof RaspistillInterruptError) // true, raspistill was interrupted;
         });
     });
