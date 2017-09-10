@@ -87,8 +87,8 @@ function fileUpload(access_token) {
       /* place any other API params you wish to send. Ex: place / tags etc.*/
       accessToken: access_token,
       file: {
-        name: 'upload.png',
-        type: 'image/png', // or png
+        name: 'upload.jpg',
+        type: 'image/jpg', // or png
         dataString: image // the string containing the binary data
       }
     },
@@ -170,6 +170,7 @@ var App = function () {
     var data = c.replace(/^data:image\/(png|jpe?g);base64,/, '');
       return conversions.base64ToString(data);
     }
+
   
   // START EVERYTHING UP!
   var app = new App();
@@ -213,11 +214,12 @@ var App = function () {
     });
   });
 
-  socket.on('get_picture', function(){
-    setTimeout(function(){
-      console.log("Getting new photo");
-      app.updateImage();
-    }, 3000);
+  socket.on('get_picture', function(photo){
+    console.log(photo);
+    // setTimeout(function(){
+    //   console.log("Getting new photo");
+    //   app.updateImage();
+    // }, 3000);
   });
 
   socket.on('oven_temperature', function(temp){

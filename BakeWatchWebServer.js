@@ -8,6 +8,15 @@ var gea = require("gea-sdk");
 var Firebase = require("firebase");
 var myDataRef = new Firebase('https://flickering-torch-9611.firebaseio.com/');
 var os = require('os');
+const Raspistill = require('node-raspistill').Raspistill;
+const camera = new Raspistill({
+    verticalFlip: true,
+    width: 680,
+    height: 420,
+    outputDir: './public',
+    fileName: 'image',
+    encoding: 'png'
+});
 
 var ON = 1
 var OFF = 0
@@ -80,7 +89,6 @@ io.on('connection', function(client) {
            UpdateLight(OFF);
            StopCooking();
         }
-        io.emit('get_picture');
     });
 
     client.on('oven_light_toggle', function(){
@@ -145,15 +153,9 @@ app.get('/', function(req, res) {
 function TakePicture()
 {
    console.log("Taking picture");
-   var exec = require('child_process').exec;
 
-    exec('raspistill -t 2000 -vf -hf -o /home/pi/firstbuild_hackathon/public/image.jpg', function(error, stdout, stderr) {
-        //console.log('stdout: ' + stdout);
-        //console.log('stderr: ' + stderr);
-        if (error !== null) {
-            console.log('exec error: ' + error);
-        }
-
+    camera.takePhoto().then(function(photo){
+        io.emit('get_picture', photo);
     });
 }
 
