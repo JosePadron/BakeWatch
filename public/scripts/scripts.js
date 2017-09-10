@@ -129,9 +129,15 @@ var App = function () {
     modal_switch.checked = true;
   }
   
-  App.prototype.updateImage = function(){
+  App.prototype.updateImage = function(photo){
+    var arrayBufferView = new Uint8Array( photo );
+    var blob = new Blob( [ arrayBufferView ], { type: "image/jpeg" } );
+    var urlCreator = window.URL || window.webkitURL;
+    var imageUrl = urlCreator.createObjectURL( blob );
+    console.log(imageUrl);
+    
     var image = new Image(620, 480);
-    image.src = '/public/image.png';
+        image.src = '/public/image.png';
     var canvas = document.createElement('canvas');
     canvas.width = image.width;
     canvas.height = image.height;
@@ -142,8 +148,9 @@ var App = function () {
       ctx.font="40px sans-serif";
       ctx.fillText(app.temp + "°F: " + app.time_left + " mins left", 20, 440);
     }
+
     var logo = new Image(151, 94);
-    logo.src = '/public/images/logo.png';
+        logo.src = '/public/images/logo.png';
     var canvas2 = document.createElement('canvas');
     canvas2.width = logo.width;
     canvas2.height = logo.height;
@@ -212,10 +219,10 @@ var App = function () {
 
   socket.on('get_picture', function(photo){
     console.log(photo);
-    // setTimeout(function(){
-    //   console.log("Getting new photo");
-    //   app.updateImage();
-    // }, 3000);
+    setTimeout(function(){
+      console.log("Getting new photo");
+      app.updateImage(photo);
+    }, 3000);
   });
 
   socket.on('oven_temperature', function(temp){
