@@ -91,11 +91,11 @@ function getBase64Image() {
       canvas.height = 480;
   var ctx = canvas.getContext("2d");
       img.onload = function(){
-        ctx.drawImage(img, 0, 0, 640, 480);
         ctx.fillStyle = "white";
         ctx.font = "20px sans-serif";
         ctx.textBaseline = 'bottom';
         ctx.fillText("Hello World", 0, 0);
+        ctx.drawImage(img, 0, 0, 640, 480);
       }
   
   var canvas2 = document.createElement("canvas");
@@ -147,10 +147,6 @@ function fileUpload(access_token) {
 
 }
 
-
-
-
-
 var socket = io.connect('http://10.203.9.130:80');
 
 // Constructor
@@ -175,12 +171,7 @@ var App = function () {
   }
   
   App.prototype.updateImage = function(){
-    var image = new Image(640, 480);
-    image.src = "/public/image.jpg";
-    image.id = "ovenImage";
     getBase64Image();
-    jQuery("#ovenImage").remove();
-    jQuery(".oven-image-container").append(image);
   }
   
   // START EVERYTHING UP!
@@ -212,7 +203,7 @@ var App = function () {
     });
 
     jQuery("#btn-temp").on('click', function(){
-      console.log("Get Oven Data");
+      console.log("Get Oven Temp");
       socket.emit('get_oven_temperature');
     });
   });
