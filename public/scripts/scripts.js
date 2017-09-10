@@ -87,8 +87,8 @@ function fileUpload(access_token) {
       /* place any other API params you wish to send. Ex: place / tags etc.*/
       accessToken: access_token,
       file: {
-        name: 'upload.jpg',
-        type: 'image/jpg', // or png
+        name: 'upload.png',
+        type: 'image/png', // or png
         dataString: image // the string containing the binary data
       }
     },
@@ -164,7 +164,7 @@ var App = function () {
       jQuery("#oven-image-container").append(canvas3);
     }
     
-    image.src = '/public/image.jpg';
+    image.src = '/public/image.png';
     logo.src = '/public/images/logo.png';
     var c = canvas3.toDataURL("image/png");
     var data = c.replace(/^data:image\/(png|jpe?g);base64,/, '');
