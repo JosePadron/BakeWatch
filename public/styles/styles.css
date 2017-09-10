@@ -14,13 +14,13 @@ body{
 }
 
 .oven-image-container img{
-    display: none;
+    max-width: 100%;
+    display: inline-block;
 }
 
 .button-group{
     text-align: center;
     position: relative;
-    margin-top: 2em;
 }
 
 .button-group button{
