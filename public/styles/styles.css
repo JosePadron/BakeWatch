@@ -20,6 +20,7 @@ body{
 .button-group{
     text-align: center;
     position: relative;
+    margin-top: 2em;
 }
 
 .button-group button{
