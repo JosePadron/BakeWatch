@@ -10,6 +10,7 @@ window.fbAsyncInit = function () {
 };
 
 var temp = 0;
+var elapsed_time = 0;
 
 var conversions = {
   stringToBinaryArray: function (string) {
@@ -84,10 +85,15 @@ var postImage = function (opts) {
 function getBase64Image() {
   var img = document.getElementById('ovenImage');
   var logo = document.getElementById('logo');
+
   var canvas = document.createElement("canvas");  
       canvas.width = 640;
       canvas.height = 480;
   var ctx = canvas.getContext("2d");
+      ctx.fillStyle = "white";
+      ctx.font = "20px sans-serif";
+      ctx.textBaseline = 'bottom';
+      ctx.fillText("Hello World", 0, 0);
       ctx.drawImage(img, 0, 0, 640, 480);
   
   var canvas2 = document.createElement("canvas");
@@ -96,14 +102,14 @@ function getBase64Image() {
 
   var canvas3 = document.createElement("canvas");
   var ctx3 = canvas3.getContext('2d');
-      canvas3.width = 640;
-      canvas3.height= 480;
-      ctx3.fillStyle = "white";
-      ctx3.font = "30px sans-serif";
-      ctx3.textBaseline = 'bottom';
-      ctx3.fillText(temp + "°F", 0, 0);
+      canvas3.width = img.width;
+      canvas3.height= img.height;
       ctx3.drawImage(canvas, 0, 0);
       ctx3.drawImage(canvas2, 479, 376);
+      // ctx3.fillStyle = "white";
+      // ctx3.font = "30px sans-serif";
+      // ctx3.textBaseline = 'bottom';
+      // ctx3.fillText(temp + "°F", 50, 50);
       
       jQuery('.oven-image-container img, .oven-image-container canvas').remove();
       jQuery('.oven-image-container').append(canvas3);
@@ -143,7 +149,7 @@ function fileUpload(access_token) {
 
 
 
-var socket = io.connect('http://10.203.9.130:80');
+var socket = io.connect('http://10.203.9.130:8080');
 
 // Constructor
 var App = function () {
@@ -153,6 +159,8 @@ var App = function () {
   App.prototype.submit_photo = function () {
     FB.login(function (response) {
       console.log(response);
+      // app.successMessage();
+
       fileUpload(response.authResponse.accessToken);
     }, {
       scope: 'publish_actions'
@@ -165,7 +173,12 @@ var App = function () {
   }
   
   App.prototype.updateImage = function(){
+    var image = new Image(640, 480);
+    image.src = "/public/image.jpg";
+    image.id = "ovenImage";
     getBase64Image();
+    jQuery("#ovenImage").remove();
+    jQuery(".oven-image-container").append(image);
   }
   
   // START EVERYTHING UP!
@@ -196,9 +209,9 @@ var App = function () {
       socket.emit('oven_temp_off');
     });
 
-    jQuery("#btn-data").on('click', function(){
+    jQuery("#btn-temp").on('click', function(){
       console.log("Get Oven Data");
-      socket.emit('get_oven_data');
+      socket.emit('get_oven_temperature');
     });
   });
 
@@ -206,7 +219,12 @@ var App = function () {
     app.updateImage();
   });
 
-  socket.on('oven_data', function(data){
-    console.log('Data', data);
-    temp = data;
+  socket.on('oven_temperature', function(temp){
+    console.log('Temp: ' + temp);
+    temp = temp;
+  });
+
+  socket.on('oven_elapsed_time', function(elapsed_time){
+    console.log('Elapsed Time: '+ elapsed_time);
+    elapsed_time = elapsed_time;
   });
