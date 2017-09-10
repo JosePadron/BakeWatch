@@ -131,6 +131,8 @@ var App = function () {
   }
   
   App.prototype.updateImage = function(){
+    jQuery("#oven-image-container canvas").remove();
+
     var image = new Image(620, 480);
         image.src = '/public/image.jpg';
     var canvas = document.createElement('canvas');
@@ -141,13 +143,7 @@ var App = function () {
             ctx.drawImage(image, 0, 0, image.width, image.height);
             ctx.fillStyle = "white";
             ctx.font="40px sans-serif";
-            if(time_left > 0){
-              ctx.fillText(temp + "°F: " + time_left + " mins left", 20, 440);
-            } else if(temp < 6000 && temp > 0) {
-              ctx.fillText(temp + "°F", 20, 440);
-            } else {
-              ctx.fillText("#BakeWatch", 20, 440);
-            }
+            ctx.fillText(temp + "°F: " + time_left + " mins left", 20, 440);
         }
 
     var logo = new Image(151, 94);
@@ -169,8 +165,7 @@ var App = function () {
                 ctx3.drawImage(canvas, 0, 0);
                 ctx3.drawImage(canvas2, 0, 0);
             }, 300);
-            // document.getElementById('oven-image-container').remove();
-            document.getElementById('oven-image-container').append(canvas3);
+            jQuery("#oven-image-container").append(canvas3);
         }
 
     var c = canvas3.toDataURL("image/png");
@@ -182,7 +177,12 @@ var App = function () {
   var app = new App();
   
   jQuery(document).on('ready', function () {
-    app.updateImage();
+    socket.emit('take_picture');
+    socket.emit('get_oven_time_left');
+    socket.emit('get_oven_temperature');
+    setTimeout(function(){
+      app.updateImage();
+    }, 4000);
     
     jQuery("#btn-share").on('click', function () {
       console.log("Share");
@@ -219,8 +219,10 @@ var App = function () {
   });
 
   socket.on('get_picture', function(){
-    console.log("Getting new photo");
-    app.updateImage();
+    setTimeout(function(){
+      console.log("Getting new photo");
+      app.updateImage();
+    }, 5000);
   });
 
   socket.on('oven_temperature', function(temp){

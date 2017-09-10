@@ -21,6 +21,7 @@ body{
 .button-group{
     text-align: center;
     position: relative;
+    margin-top: 3em;
 }
 
 .button-group button{
