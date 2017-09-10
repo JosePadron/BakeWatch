@@ -131,6 +131,8 @@ var App = function () {
   }
   
   App.prototype.updateImage = function(){
+    jQuery("#oven-image-container canvas").remove();
+
     var image = new Image(620, 480);
         image.src = '/public/image.jpg';
     var canvas = document.createElement('canvas');
@@ -142,12 +144,6 @@ var App = function () {
             ctx.fillStyle = "white";
             ctx.font="40px sans-serif";
             ctx.fillText(temp + "°F: " + time_left + " mins left", 20, 440);
-            // if(time_left > 0){
-            // } else if(temp < 6000 && temp > 0) {
-            //   ctx.fillText(temp + "°F", 20, 440);
-            // } else {
-            //   ctx.fillText("#BakeWatch", 20, 440);
-            // }
         }
 
     var logo = new Image(151, 94);
@@ -169,7 +165,6 @@ var App = function () {
                 ctx3.drawImage(canvas, 0, 0);
                 ctx3.drawImage(canvas2, 0, 0);
             }, 300);
-            // document.getElementById('oven-image-container').remove();
             document.getElementById('oven-image-container').append(canvas3);
         }
 
@@ -182,7 +177,12 @@ var App = function () {
   var app = new App();
   
   jQuery(document).on('ready', function () {
-    app.updateImage();
+    socket.emit('take_picture');
+    socket.emit('get_oven_time_left');
+    socket.emit('get_oven_temperature');
+    setTimeout(function(){
+      app.updateImage();
+    }, 4000);
     
     jQuery("#btn-share").on('click', function () {
       console.log("Share");
