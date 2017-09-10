@@ -142,7 +142,7 @@ var App = function () {
                 ctx.drawImage(image, 0, 0, image.width, image.height);
                 ctx.fillStyle = "white";
                 ctx.font="40px sans-serif";
-                ctx.fillText(app.temp + "°F: " + app.time_left + " mins left", 20, 440);
+                ctx.fillText(app.temp + "°F: " + app.time_left + " mins left", 20, 370);
             }
     
         var logo = new Image(151, 94);
@@ -152,7 +152,7 @@ var App = function () {
             canvas2.height = logo.height;
         var ctx2 = canvas.getContext('2d');
             logo.onload = function(){
-                ctx2.drawImage(logo, 460, 376, logo.width, logo.height);
+                ctx2.drawImage(logo, 519, 30, logo.width, logo.height);
             }
     
         var canvas3 = document.createElement('canvas');
