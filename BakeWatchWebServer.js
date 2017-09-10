@@ -6,7 +6,7 @@ var os = require('os');
 var adapter = require("gea-adapter-usb");
 var gea = require("gea-sdk");
 var Firebase = require("firebase");
-var myDataRef = new Firebase('https://glaring-torch-9647.firebaseio.com');
+var myDataRef = new Firebase('https://flickering-torch-9611.firebaseio.com/');
 var os = require('os');
 
 var ON = 1
