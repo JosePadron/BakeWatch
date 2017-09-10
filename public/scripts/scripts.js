@@ -1,4 +1,6 @@
+
 var socket = io.connect('http://10.203.9.130:8080');
+
 
 // Constructor
 var App = function () {
@@ -24,6 +26,7 @@ var App = function () {
   App.prototype.updateImage = function(){
     var image = new Image(640, 480);
     image.src = "/public/image.jpg";
+    image.id = "ovenImage";
     jQuery("#ovenImage").remove();
     jQuery(".oven-image-container").append(image);
   }
@@ -34,25 +37,30 @@ var App = function () {
   jQuery(document).on('ready', function () {
   
     jQuery("#btn-share").on('click', function () {
+      console.log("Share");
       app.submit_photo();
     });
 
-    jQuery("#btn-capture").on('click', function(){      
+    jQuery("#btn-capture").on('click', function(){   
+      console.log("Take Picture");   
       socket.emit('take_picture', {}, function(data){
         console.log("Take Picture");
-        app.updateImage();
       });
+      app.updateImage();
     });
 
     jQuery("#btn-light-toggle").on('click', function(){
+      console.log("Light Toggle");
       socket.emit('oven_light_toggle');
     });
 
     jQuery("#btn-oven-off").on('click', function(){
+      console.log("Oven Off");
       socket.emit('oven_temp_off');
     });
 
     jQuery("#btn-data").on('click', function(){
+      console.log("Get Oven Data");
       socket.emit('get_oven_data');
     });
   });
@@ -60,3 +68,10 @@ var App = function () {
   socket.on('get_picture', function(){
     app.updateImage();
   });
+<<<<<<< HEAD
+=======
+
+  socket.on('oven_data', function(data){
+    console.log('Data', data);
+  });
+>>>>>>> b96ca2e288e604e6b98155dd54a9699baec2ddc2
