@@ -165,7 +165,7 @@ var App = function () {
                 ctx3.drawImage(canvas, 0, 0);
                 ctx3.drawImage(canvas2, 0, 0);
             }, 300);
-            document.getElementById('oven-image-container').append(canvas3);
+            jQuery("#oven-image-container").append(canvas3);
         }
 
     var c = canvas3.toDataURL("image/png");
