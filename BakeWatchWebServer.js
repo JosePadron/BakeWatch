@@ -80,6 +80,7 @@ io.on('connection', function(client) {
            UpdateLight(OFF);
            StopCooking();
         }
+        io.emit('get_picture');
     });
 
     client.on('oven_light_toggle', function(){
@@ -152,6 +153,7 @@ function TakePicture()
         if (error !== null) {
             console.log('exec error: ' + error);
         }
+
     });
 }
 
