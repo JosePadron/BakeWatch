@@ -123,7 +123,7 @@ io.on('connection', function(client) {
             // timelapse ended
             console.log("Timelapse has ended");
             var GIFEncoder = require('gifencoder');
-            var encoder = new GIFEncoder(620, 420);
+            var encoder = new GIFEncoder(680, 420);
             var pngFileStream = require('png-file-stream');
             var fs = require('fs');
              
