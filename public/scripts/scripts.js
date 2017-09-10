@@ -106,7 +106,12 @@ function fileUpload(access_token) {
 
 }
 
-var socket = io.connect('http://10.203.9.42:80');
+var myDataRef = new Firebase('https://flickering-torch-9611.firebaseio.com/');
+var socket;
+myDataRef.child('server').once("value", function(data) {
+  socket = io.connect('http://' + data.val().server_ip + ':80');
+});
+// var socket = io.connect('http://10.203.9.42:80');
 
 // Constructor
 var App = function () {
