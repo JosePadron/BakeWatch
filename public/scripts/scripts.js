@@ -84,27 +84,40 @@ var postImage = function (opts) {
 function getBase64Image() {
   var img = document.getElementById('ovenImage');
   var logo = document.getElementById('logo');
+  var img = new Image(640, 480);
+      img.src = '/public/image.jpg';
+      img.style.display = 'hidden';
+
+  var logo = new Image(151, 94);
+      logo.src = '/public/images/logo.png';
+      logo.style.display = "hidden";
 
   var canvas = document.createElement("canvas");  
-      canvas.width = img.width;
-      canvas.height = img.height;
+      canvas.width = 640;
+      canvas.height = 480;
   var ctx = canvas.getContext("2d");
-      ctx.drawImage(img, 0, 0, img.width, img.height);
+      img.onload = function(){
+        ctx.drawImage(img, 0, 0, 640, 480);
+      }
   
   var canvas2 = document.createElement("canvas");
   var ctx2 = canvas2.getContext("2d");
-      ctx2.drawImage(logo, 0, 0, logo.width, logo.height);
+      logo.onload = function(){
+        ctx2.drawImage(logo, 0, 0, 151, 94);
+      }
 
   var canvas3 = document.createElement("canvas");
   var ctx3 = canvas3.getContext('2d');
-      canvas3.width = img.width;
-      canvas3.height= img.height;
-      ctx3.drawImage(canvas, 0, 0);
-      ctx3.drawImage(canvas2, 479, 376);
-      ctx3.fillStyle = "white";
-      ctx3.font = "30px sans-serif";
-      ctx3.textBaseline = 'bottom';
-      ctx3.fillText(temp + "°F", 0, 0);
+      canvas3.width = 640;
+      canvas3.height= 480;
+      img.onload = function(){
+        ctx3.drawImage(canvas, 0, 0);
+        ctx3.drawImage(canvas2, 479, 376);
+        ctx3.fillStyle = "white";
+        ctx3.font = "30px sans-serif";
+        ctx3.textBaseline = 'bottom';
+        ctx3.fillText(temp + "°F", 0, 0);
+      }
       
       jQuery('.oven-image-container img, .oven-image-container canvas').remove();
       jQuery('.oven-image-container').append(canvas3);
