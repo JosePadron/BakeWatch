@@ -122,6 +122,15 @@ io.on('connection', function(client) {
         }).then(() => {
             // timelapse ended
             console.log("Timelapse has ended");
+            var GIFEncoder = require('gifencoder');
+            var encoder = new GIFEncoder(620, 420);
+            var pngFileStream = require('png-file-stream');
+            var fs = require('fs');
+             
+            pngFileStream('public/timelapse/**/image?.png')
+              .pipe(encoder.createWriteStream({ repeat: -1, delay: 500, quality: 10 }))
+              .pipe(fs.createWriteStream('myanimated.gif'));
+              
             UpdateLight(OFF);
         }).catch((err) => {
             console.error(err);
