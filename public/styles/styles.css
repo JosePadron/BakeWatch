@@ -14,8 +14,7 @@ body{
 }
 
 .oven-image-container img{
-    max-width: 100%;
-    display: inline-block;
+    display: none;
 }
 
 .button-group{

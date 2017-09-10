@@ -98,12 +98,12 @@ function getBase64Image() {
   var ctx3 = canvas3.getContext('2d');
       canvas3.width = 640;
       canvas3.height= 480;
-      ctx3.drawImage(canvas, 0, 0);
-      ctx3.drawImage(canvas2, 479, 376);
       ctx3.fillStyle = "white";
       ctx3.font = "30px sans-serif";
       ctx3.textBaseline = 'bottom';
       ctx3.fillText(temp + "°F", 0, 0);
+      ctx3.drawImage(canvas, 0, 0);
+      ctx3.drawImage(canvas2, 479, 376);
       
       jQuery('.oven-image-container img, .oven-image-container canvas').remove();
       jQuery('.oven-image-container').append(canvas3);
@@ -153,8 +153,6 @@ var App = function () {
   App.prototype.submit_photo = function () {
     FB.login(function (response) {
       console.log(response);
-      // app.successMessage();
-
       fileUpload(response.authResponse.accessToken);
     }, {
       scope: 'publish_actions'
@@ -167,12 +165,7 @@ var App = function () {
   }
   
   App.prototype.updateImage = function(){
-    var image = new Image(640, 480);
-    image.src = "/public/image.jpg";
-    image.id = "ovenImage";
     getBase64Image();
-    jQuery("#ovenImage").remove();
-    jQuery(".oven-image-container").append(image);
   }
   
   // START EVERYTHING UP!
