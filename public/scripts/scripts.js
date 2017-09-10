@@ -143,7 +143,15 @@ var App = function () {
                 ctx.drawImage(image, 0, 0, image.width, image.height);
                 ctx.fillStyle = "white";
                 ctx.font="40px sans-serif";
-                ctx.fillText(app.temp + "°F: " + app.time_left + " mins left", 20, 380);
+                if( app.temp < 65000 && app.time_left == 0){
+                  ctx.fillText(app.temp + "°F", 20, 380);                  
+                } else if( app.temp < 65000 && app.time_left > 0){
+                  ctx.fillText(app.temp + "°F: " + app.time_left + " mins left", 20, 380);
+                } else if( app.temp >= 65000 && app.time_left > 0){
+                  ctx.fillText(app.time_left + " mins left", 20, 380);
+                } else {
+                  ctx.fillText("#BakeWatch", 20, 380);
+                }
             }
     
         var logo = new Image(151, 94);
@@ -156,20 +164,16 @@ var App = function () {
             }
             logo.src = '/public/images/logo.png';
     
-        var canvas3 = document.createElement('canvas');
-        var ctx3 = canvas3.getContext('2d');
-            canvas3.width = 680;
-            canvas3.height = 420;
-            canvas3.id = "view";
-            setTimeout(function(){
-                ctx3.drawImage(canvas, 0, 0);
-                ctx3.drawImage(canvas2, 0, 0);
-            }, 300);
-            jQuery("#oven-image-container").append(canvas3);
-    
-        var c = canvas3.toDataURL("image/png");
-        var data = c.replace(/^data:image\/(png|jpe?g);base64,/, '');
-        return conversions.base64ToString(data);
+          setTimeout(function(){
+            var canvas3 = document.createElement('canvas');
+            var ctx3 = canvas3.getContext('2d');
+              canvas3.width = 680;
+              canvas3.height = 420;
+              canvas3.id = "view";
+              ctx3.drawImage(canvas, 0, 0);
+              ctx3.drawImage(canvas2, 0, 0);
+              jQuery("#oven-image-container").append(canvas3);
+          }, 400);
     }
 
   
