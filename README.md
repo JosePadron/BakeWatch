@@ -1,40 +1,21 @@
-# FixOfWater Wiki Page
-### Project for the 2015 Hack the Home Hackathon at First Build
+# Bake Watch Wiki Page
+### Project for the 2017 Hack the Home Hackathon at First Build
 
-Keep track of how much water you drink per day. This project uses the Intel Edison ioT
-development board and the Green Bean to control the water dispenser of a GE Refrigerator
-with voice commands like Dispense, Stop, Water, Cubed, Crushed. The system uses Firebase
-to store user data such as water consumption.
-
-
-###### Examples of valid commands:
-
-***Dispense*** 6 ounces ***Water***
-
-***Dispense Cubed***   => ***Stop***
-
-***Dispense Crushed***   => ***Stop***
-
-***Light On***
-
-***Light Off***
+The application starts a server in the RaspberryPi to take pictures inside an oven. The cook time and temperature is displayed. Photos can be uploaded to Facebook. The light can be turned on/off. Also, the oven can be turned off from the web app. NodeJs and Sockets are used to emit events from/to the server. 
 
 ## Project Setup
 
-### Configure Edison Board
-Follow instructions from: https://github.com/FirstBuild/edison_iot
+### Configure Board
+Need RaspberryPi, PiCamera and Green Bean,
 
 ### Install Node
 https://nodejs.org/download/
 
 ### Install Node packages
-
 ```
 npm install green-bean
 npm install socket.io
 npm install express
+npm install gree-bean
 ```
-
-### Install GEA Refer Plugin
-Modified to allow dispenser control: https://github.com/elrafapadron/gea-plugin-refrigerator
 
